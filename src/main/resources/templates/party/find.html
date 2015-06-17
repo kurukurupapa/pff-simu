@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <link rel="icon" href="./favicon.ico" />
+
+    <title th:text="#{project_name}">Dashboard Template for Bootstrap</title>
+
+    <!-- Bootstrap -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/assets/css/dashboard.css" rel="stylesheet" />
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#" th:text="#{project_name}">Project name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search..." />
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li><a href="/">Overview</a></li>
+            <li class="active"><a href="#">パーティ検討 <span class="sr-only">(current)</span></a></li>
+            <li><a href="/memoria">メモリア検討</a></li>
+            <li><a href="/item">アイテム検討</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">パーティ検討</h1>
+          <h2 class="sub-header">評価条件</h2>
+          <form method="get" th:action="@{/party/find}" th:object="${form}">
+            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+              <p th:errors="*">ErrorMessage</p>
+            </div>
+            <div class="form-group">
+              <label>敵の弱点属性</label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="fire" th:checked="${#arrays.contains(form.enemyWeakPoints,'fire')}" />炎属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="water" th:checked="${#arrays.contains(form.enemyWeakPoints,'water')}" />水属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="ice" th:checked="${#arrays.contains(form.enemyWeakPoints,'ice')}" />氷属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="cold" th:checked="${#arrays.contains(form.enemyWeakPoints,'cold')}" />冷気属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="wind" th:checked="${#arrays.contains(form.enemyWeakPoints,'wind')}" />風属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="earth" th:checked="${#arrays.contains(form.enemyWeakPoints,'earth')}" />地属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="thunder" th:checked="${#arrays.contains(form.enemyWeakPoints,'thunder')}" />雷属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="holiness" th:checked="${#arrays.contains(form.enemyWeakPoints,'holiness')}" />聖属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="flight" th:checked="${#arrays.contains(form.enemyWeakPoints,'flight')}" />飛行属性
+              </label>
+            </div>
+            <div class="form-group">
+              <label>敵の耐性属性</label><br/>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="fire" th:checked="${#arrays.contains(form.enemyStrongPoints,'fire')}" />炎属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="water" th:checked="${#arrays.contains(form.enemyStrongPoints,'water')}" />水属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="ice" th:checked="${#arrays.contains(form.enemyStrongPoints,'ice')}" />氷属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="cold" th:checked="${#arrays.contains(form.enemyStrongPoints,'cold')}" />冷気属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="wind" th:checked="${#arrays.contains(form.enemyStrongPoints,'wind')}" />風属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="earth" th:checked="${#arrays.contains(form.enemyStrongPoints,'earth')}" />地属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="thunder" th:checked="${#arrays.contains(form.enemyStrongPoints,'thunder')}" />雷属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="holiness" th:checked="${#arrays.contains(form.enemyStrongPoints,'holiness')}" />聖属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="flight" th:checked="${#arrays.contains(form.enemyStrongPoints,'flight')}" />飛行属性
+              </label>
+            </div>
+            <div class="form-group">
+              <label for="physicalResistance">敵の物理防御</label>
+              <input type="number" class="form-control" id="physicalResistance" name="physicalResistance" placeholder="数値を入力してください。" th:value="*{physicalResistance}" />
+            </div>
+            <input type="submit" name="btn" value="スタート" />
+          </form>
+          <h2 class="sub-header">検索結果</h2>
+          <div th:if="${party} != null">
+            <!--
+            <div>
+              <p th:text="${party}">26147,ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS,トレイ+黄忠の長弓(レア5)+トレイLS,パンネロ+ダンシングダガー+ファイアRF+3+ケアル+トレイLS,アーロン+五月雨+トレイLS</p>
+            </div>
+            -->
+            <h4>評価値：<span th:text="${party.fitness}">26147</span>ポイント</h4>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>項目</th>
+                    <th>値</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>評価値</td>
+                    <td><span th:text="${party.fitness}">26147</span>ポイント</td>
+                  </tr>
+                  <tr>
+                    <td>HP</td>
+                    <td><span th:text="${party.fitness}">1234</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!--
+            <span th:each="memoria : ${party.memoriaList}">
+              <span th:text="${memoria}">ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS</span><br/>
+            </span>
+            -->
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th><span class="glyphicon glyphicon-user"></span>メモリア+武器+アクセサリ+スキル</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="memoria : ${party.memoriaList}">
+                    <td><span class="glyphicon glyphicon-user"></span><span th:text="${memoria}">メモリア+武器+アクセサリ+スキル</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="/assets/js/vendor/holder.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="/assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+2015年3月頃
+ピクトロジカファイナルファンタジーの最強パーティを求める！
+
+
+
+■遺伝的アルゴリズム
+遺伝的アルゴリズムを用いて、ピクトロジカファイナルファンタジーの最強パーティを求める！
+
+◎概要
+遺伝的アルゴリズムの用語集
+http://mikilab.doshisha.ac.jp/dia/research/pdga/words.html
+
+◎Apache Commons Mathの遺伝的アルゴリズム
+参考サイト
+Apache Commons Mathに含まれてるgeneticパッケージで遺伝的アルゴリズムが簡単に実装できる件について - Umeyashikiの日記
+http://d.hatena.ne.jp/Umeyashiki/20090813/1250171174
+
+Apache Commons Mathの遺伝的アルゴリズムを使用するためのMaven(pom.xml)追加設定
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-math3</artifactId>
+    <version>3.4.1</version>
+</dependency>
+
+◎所感
+遺伝的アルゴリズムだと、正しい解が得られているかわかりにくい。
+
+
+
+■動的計画法
+動的計画法を用いて、ピクトロジカファイナルファンタジーの最強パーティを求める！
+

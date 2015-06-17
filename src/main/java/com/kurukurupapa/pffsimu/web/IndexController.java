@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 	@RequestMapping
 	public String index() {
-		return "/index";
+		// "/index"とすると、JARから起動したとき、Thymeleafがテンプレートを見つけられなくなった。
+		return "index";
 	}
 }

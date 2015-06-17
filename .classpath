@@ -27,6 +27,9 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/pff"/>
+	<classpathentry kind="lib" path="src2/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="src2/lib/jfreechart-1.0.19-experimental.jar"/>
+	<classpathentry kind="lib" path="src2/lib/jfreechart-1.0.19-swt.jar"/>
+	<classpathentry kind="lib" path="src2/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
