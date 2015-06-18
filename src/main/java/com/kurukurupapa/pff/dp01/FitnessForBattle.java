@@ -6,25 +6,25 @@ import java.util.List;
 import com.kurukurupapa.pff.domain.Attr;
 
 /**
- * 適応度クラス
+ * 適応度クラス（通常バトル用）
  */
 public class FitnessForBattle extends Fitness {
 	/** 1バトルあたりのターン数 */
-	private static final int TURN = 10;
+	protected static final int TURN = 10;
 	/** 1ターンあたりのチャージ */
-	private static final int CHARGE_PER_TURN = 5 * 5 / 2;
+	protected static final int CHARGE_PER_TURN = 5 * 5 / 2;
 	/** 1バトルあたりのチャージ */
-	private static final int CHARGE_PER_BATTLE = CHARGE_PER_TURN * TURN;
+	protected static final int CHARGE_PER_BATTLE = CHARGE_PER_TURN * TURN;
 
 	/** 敵の弱点属性 */
-	private List<Attr> mWeakList;
+	protected List<Attr> mWeakList;
 	/** 敵の耐性属性 */
-	private List<Attr> mResistanceList;
+	protected List<Attr> mResistanceList;
 	/** 敵の物理防御 */
-	private int mPhysicalResistance;
+	protected int mPhysicalResistance;
 
 	/** 敵の力 */
-	private int mEnemyPower;
+	protected int mEnemyPower;
 
 	/**
 	 * コンストラクタ
@@ -35,7 +35,7 @@ public class FitnessForBattle extends Fitness {
 	}
 
 	@Override
-	public int calc(Party party) {
+	public FitnessValue calc(Party party) {
 		// 敵の力
 		// とりあえず、パーティの力の平均を、敵の力とします。
 		mEnemyPower = party.getAveragePower();
@@ -44,23 +44,30 @@ public class FitnessForBattle extends Fitness {
 	}
 
 	@Override
-	protected int calc(Memoria memoria) {
-		int value = 0;
+	protected MemoriaFitnessValue calc(Memoria memoria) {
+		MemoriaFitnessValue value = new MemoriaFitnessValue(memoria);
 
 		// HP
-		value += memoria.getHp();
+		value.setHp(memoria.getHp());
 
 		// 物理/魔法与ダメージ
-		value += memoria.getAttackDamage(TURN, CHARGE_PER_BATTLE, mWeakList,
-				mResistanceList, mPhysicalResistance);
+		value.setAttackDamage(memoria.getAttackDamage(TURN, CHARGE_PER_BATTLE,
+				mWeakList, mResistanceList, mPhysicalResistance));
 
 		// 物理被ダメージ
-		value += memoria.getPhysicalDefenceDamage(TURN, mEnemyPower);
+		value.setPhysicalDefenceDamage(memoria.getPhysicalDefenceDamage(TURN,
+				mEnemyPower));
+
 		// 魔法被ダメージ
-		value += memoria.getMagicDefenceDamage(TURN);
+		value.setMagicDefenceDamage(memoria.getMagicDefenceDamage(TURN));
 
 		// 回復量
-		value += memoria.getRecovery(TURN, CHARGE_PER_BATTLE);
+		value.setRecovery(memoria.getRecovery(TURN, CHARGE_PER_BATTLE));
+
+		// 評価
+		value.setValue(value.getHp() + value.getAttackDamage()
+				+ value.getPhysicalDefenceDamage()
+				+ value.getMagicDefenceDamage() + value.getRecovery());
 
 		return value;
 	}

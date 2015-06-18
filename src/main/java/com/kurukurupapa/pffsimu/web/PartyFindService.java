@@ -7,6 +7,7 @@ import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.Dp01;
 import com.kurukurupapa.pff.dp01.FitnessForBattle;
+import com.kurukurupapa.pff.dp01.FitnessForExaBattlia;
 import com.kurukurupapa.pff.dp01.Party;
 
 @Service
@@ -30,7 +31,11 @@ public class PartyFindService {
 		memoriaDataSet.readUserFile();
 
 		// パーティ洗い出し
-		fitness = new FitnessForBattle();
+		if (form.getBattleType().equals(PartyFindForm.BATTLE_TYPE_EXA_BATTLIA)) {
+			fitness = new FitnessForExaBattlia();
+		} else {
+			fitness = new FitnessForBattle();
+		}
 		for (String e : form.getEnemyWeakPoints()) {
 			fitness.addEnemyWeak(AttrFactory.create(e));
 		}

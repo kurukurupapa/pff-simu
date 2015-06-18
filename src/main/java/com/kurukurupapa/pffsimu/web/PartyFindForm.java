@@ -1,21 +1,55 @@
 package com.kurukurupapa.pffsimu.web;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.ui.Model;
 
+/**
+ * パーティ検討フォームクラス
+ */
 public class PartyFindForm {
+	/** バトル形式 通常バトル */
+	public static final String BATTLE_TYPE_NORMAL = "1";
+	/** バトル形式 エクサバトリア */
+	public static final String BATTLE_TYPE_EXA_BATTLIA = "2";
 
+	/** バトル形式 */
+	@NotEmpty
+	private String battleType;
+
+	/** 敵の弱点属性 */
 	private String[] enemyWeakPoints = new String[] {};
 
+	/** 敵の耐性属性 */
 	private String[] enemyStrongPoints = new String[] {};
 
+	/** 敵の物理防御 */
 	@Range(min = 0, max = 1000)
 	private int physicalResistance;
+
+	/**
+	 * コンストラクタ
+	 */
+	public PartyFindForm() {
+		battleType = BATTLE_TYPE_NORMAL;
+	}
+
+	public String getBattleType() {
+		return battleType;
+	}
+
+	public boolean isBattleTypeNormal() {
+		return BATTLE_TYPE_NORMAL.equals(battleType);
+	}
+
+	public boolean isBattleTypeExaBattlia() {
+		return BATTLE_TYPE_EXA_BATTLIA.equals(battleType);
+	}
+
+	public void setBattleType(String battleType) {
+		this.battleType = battleType;
+	}
 
 	public String[] getEnemyWeakPoints() {
 		return enemyWeakPoints;

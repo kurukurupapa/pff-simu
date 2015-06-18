@@ -58,7 +58,9 @@ public class AccessoryFitness {
 	}
 
 	private int calcDifference(Fitness fitness, Memoria before, Memoria after) {
-		return fitness.calc(new Party(after)) - fitness.calc(new Party(before));
+		FitnessValue beforeValue = fitness.calc(new Party(before));
+		FitnessValue afterValue = fitness.calc(new Party(after));
+		return afterValue.getValue() - beforeValue.getValue();
 	}
 
 	public int getFitness() {

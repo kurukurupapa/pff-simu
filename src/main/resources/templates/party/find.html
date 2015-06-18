@@ -71,6 +71,15 @@
               <p th:errors="*">ErrorMessage</p>
             </div>
             <div class="form-group">
+              <label>バトル形式</label><br/>
+              <label class="radio-inline">
+                <input type="radio" name="battleType" value="1" th:checked="${#strings.equals(form.battleType,'1')}" />通常バトル
+              </label>
+              <label class="radio-inline">
+                <input type="radio" name="battleType" value="2" th:checked="${#strings.equals(form.battleType,'2')}" />エクサバトリア
+              </label>
+            </div>
+            <div class="form-group">
               <label>敵の弱点属性</label><br/>
               <label class="checkbox-inline">
                 <input type="checkbox" name="enemyWeakPoints" value="fire" th:checked="${#arrays.contains(form.enemyWeakPoints,'fire')}" />炎属性
@@ -95,6 +104,9 @@
               </label>
               <label class="checkbox-inline">
                 <input type="checkbox" name="enemyWeakPoints" value="holiness" th:checked="${#arrays.contains(form.enemyWeakPoints,'holiness')}" />聖属性
+              </label>
+              <label class="checkbox-inline">
+                <input type="checkbox" name="enemyWeakPoints" value="darkness" th:checked="${#arrays.contains(form.enemyWeakPoints,'darkness')}" />闇属性
               </label>
               <label class="checkbox-inline">
                 <input type="checkbox" name="enemyWeakPoints" value="flight" th:checked="${#arrays.contains(form.enemyWeakPoints,'flight')}" />飛行属性
@@ -127,6 +139,9 @@
                 <input type="checkbox" name="enemyStrongPoints" value="holiness" th:checked="${#arrays.contains(form.enemyStrongPoints,'holiness')}" />聖属性
               </label>
               <label class="checkbox-inline">
+                <input type="checkbox" name="enemyStrongPoints" value="darkness" th:checked="${#arrays.contains(form.enemyStrongPoints,'darkness')}" />闇属性
+              </label>
+              <label class="checkbox-inline">
                 <input type="checkbox" name="enemyStrongPoints" value="flight" th:checked="${#arrays.contains(form.enemyStrongPoints,'flight')}" />飛行属性
               </label>
             </div>
@@ -143,7 +158,38 @@
               <p th:text="${party}">26147,ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS,トレイ+黄忠の長弓(レア5)+トレイLS,パンネロ+ダンシングダガー+ファイアRF+3+ケアル+トレイLS,アーロン+五月雨+トレイLS</p>
             </div>
             -->
-            <h4>評価値：<span th:text="${party.fitness}">26147</span>ポイント</h4>
+            <h4>パーティ構成</h4>
+            <!--
+            <span th:each="memoria : ${party.memoriaList}">
+              <span th:text="${memoria}">ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS</span><br/>
+            </span>
+            -->
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th><span class="glyphicon glyphicon-user"></span>メモリア</th>
+                    <th><span class="glyphicon glyphicon-asterisk"></span>武器</th>
+                    <th><span class="glyphicon glyphicon-asterisk"></span>アクセサリ</th>
+                    <!--
+                    <th>メモリア+武器+アクセサリ+スキル</th>
+                    -->
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="memoria : ${party.memoriaList}">
+                    <td><span class="glyphicon glyphicon-user" th:text="${memoria.name}">メモリア</span></td>
+                    <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-asterisk" th:text="${memoria.weapon.name}">武器</span></span></td>
+                    <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-asterisk" th:text="${e.name}">アクセサリ</span></span></td>
+                    <!--
+                    <td><span th:text="${memoria}">メモリア+武器+アクセサリ+スキル</span></td>
+                    -->
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h4>評価内容</h4>
+            <h4>評価値：<span th:text="${party.fitness}">12345</span>ポイント</h4>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
@@ -155,30 +201,23 @@
                 <tbody>
                   <tr>
                     <td>評価値</td>
-                    <td><span th:text="${party.fitness}">26147</span>ポイント</td>
+                    <td><span th:text="${party.fitnessObj.value}">12345</span>ポイント</td>
                   </tr>
-                  <tr>
+                  <tr th:if="${form.battleTypeNormal}">
                     <td>HP</td>
-                    <td><span th:text="${party.fitness}">1234</span></td>
+                    <td><span th:text="${party.fitnessObj.hp}">1234</span></td>
                   </tr>
-                </tbody>
-              </table>
-            </div>
-            <!--
-            <span th:each="memoria : ${party.memoriaList}">
-              <span th:text="${memoria}">ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS</span><br/>
-            </span>
-            -->
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
                   <tr>
-                    <th><span class="glyphicon glyphicon-user"></span>メモリア+武器+アクセサリ+スキル</th>
+                    <td>物理/魔法与ダメージ</td>
+                    <td><span th:text="${party.fitnessObj.attackDamage}">1234</span></td>
                   </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="memoria : ${party.memoriaList}">
-                    <td><span class="glyphicon glyphicon-user"></span><span th:text="${memoria}">メモリア+武器+アクセサリ+スキル</span></td>
+                  <tr th:if="${form.battleTypeNormal}">
+                    <td>物理/魔法被ダメージ</td>
+                    <td><span th:text="${party.fitnessObj.defenceDamage}">1234</span></td>
+                  </tr>
+                  <tr th:if="${form.battleTypeNormal}">
+                    <td>回復量</td>
+                    <td><span th:text="${party.fitnessObj.recovery}">1234</span></td>
                   </tr>
                 </tbody>
               </table>

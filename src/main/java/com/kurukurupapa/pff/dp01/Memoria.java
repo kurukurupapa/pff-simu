@@ -116,6 +116,14 @@ public class Memoria implements Cloneable {
 		return mMemoriaData.getName().equals(memoria.mMemoriaData.getName());
 	}
 
+	public boolean isWeapon() {
+		return mWeaponData != null;
+	}
+
+	public ItemData getWeapon() {
+		return mWeaponData;
+	}
+
 	public int getRemainWeaponSlot() {
 		return mWeaponData == null ? 1 : 0;
 	}
@@ -134,6 +142,10 @@ public class Memoria implements Cloneable {
 
 	public void clearWeapon() {
 		mWeaponData = null;
+	}
+
+	public ItemData[] getAccessories() {
+		return mAccessoryDataArr;
 	}
 
 	public boolean validAccessoryData(ItemData accessoryData) {

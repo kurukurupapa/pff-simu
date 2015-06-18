@@ -14,7 +14,7 @@ public class Party implements Cloneable {
 	public static final int MAX_MEMORIAS = 4;
 
 	private List<Memoria> mMemoriaList;
-	private int mFitness;
+	private FitnessValue mFitness;
 
 	public Party() {
 		mMemoriaList = new ArrayList<Memoria>();
@@ -117,11 +117,11 @@ public class Party implements Cloneable {
 	}
 
 	public int getFitness() {
-		return mFitness;
+		return mFitness != null ? mFitness.getValue() : 0;
 	}
 
-	public void setFitness(int fitness) {
-		mFitness = fitness;
+	public FitnessValue getFitnessObj() {
+		return mFitness;
 	}
 
 	public void calcFitness(Fitness fitness) {
