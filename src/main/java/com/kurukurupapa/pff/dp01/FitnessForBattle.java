@@ -37,8 +37,10 @@ public class FitnessForBattle extends Fitness {
 	@Override
 	public FitnessValue calc(Party party) {
 		// 敵の力
-		// とりあえず、パーティの力の平均を、敵の力とします。
-		mEnemyPower = party.getAveragePower();
+		// 案１：とりあえず、パーティの力の平均を、敵の力とします。
+		// mEnemyPower = party.getAveragePower();
+		// 案２：敵1体、自メモリア4対での戦いを想定し、敵は自メモリアの4倍の力とします。
+		mEnemyPower = party.getAveragePower() * 4;
 
 		return super.calc(party);
 	}
