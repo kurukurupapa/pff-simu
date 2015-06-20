@@ -46,7 +46,7 @@ public enum Attr {
 
 	public static Attr parse(String nameOrText) {
 		for (Attr e : values()) {
-			if (e.name().equals(nameOrText)
+			if (e.name().equals(nameOrText.toUpperCase())
 					|| e.getShortText().equals(nameOrText)
 					|| e.getLongText().equals(nameOrText)) {
 				return e;
