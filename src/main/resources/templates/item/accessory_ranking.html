@@ -103,16 +103,26 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th>評価値</th>
+                    <th align="right">評価値</th>
                     <th>アクセサリ</th>
+                    <th>属性</th>
                     <th>装備例</th>
+                    <th align="right">HP</th>
+                    <th align="right">攻撃</th>
+                    <th align="right">防御</th>
+                    <th align="right">回復量</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr th:each="fitness : ${fitnesses}">
-                    <td th:text="${fitness.fitness}">評価値</td>
+                    <td align="right" th:text="${fitness.fitness}">評価値</td>
                     <td th:text="${fitness.accessory}">アクセサリ</td>
+                    <td th:text="${fitness.accessory.attr.shortText}">属性</td>
                     <td th:text="${fitness.memoria}">装備例</td>
+                    <td align="right" th:text="${fitness.hp}">HP</td>
+                    <td align="right" th:text="${fitness.attackDamage}">物理/魔法与ダメージ</td>
+                    <td align="right" th:text="${fitness.defenceDamage}">物理/魔法被ダメージ</td>
+                    <td align="right" th:text="${fitness.recovery}">回復量</td>
                   </tr>
                 </tbody>
               </table>
@@ -121,6 +131,11 @@
           </div>
         </div>
       </div>
+      
+      <hr/>
+      <footer>
+        <p>@ kurukurupapa 2015</p>
+      </footer>
     </div>
 
     <!-- Bootstrap core JavaScript

@@ -242,8 +242,8 @@ public class ItemDataSet {
 
 	private void parseLine(String line) {
 		// コメント行や空行の扱い
-		if (line.startsWith("#")
-				|| line.replaceAll(SEP, "").trim().length() <= 0) {
+		line = line.replaceFirst("#.*", "").trim();
+		if (line.replaceAll(SEP, "").trim().length() <= 0) {
 			return;
 		}
 
@@ -270,7 +270,7 @@ public class ItemDataSet {
 				toUnit(columns[5]), toInt(columns[6]), toUnit(columns[6]),
 				toInt(columns[7]), toUnit(columns[7]),
 				toDefenceInt(columns[8]), toDefenceInt(columns[9]), magicType,
-				magicCharge, magicEffect, AttrFactory.create(columns[12]),
+				magicCharge, magicEffect, Attr.parse(columns[12]),
 				toStr(columns[13]), toInt(columns[14]));
 		switch (itemType) {
 		case WEAPON:
