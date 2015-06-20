@@ -11,6 +11,8 @@ public class AccessoryFitness {
 	private ItemData mAccessory;
 	private Memoria mMemoria;
 	private int mFitness;
+	private FitnessValue mBeforeValue;
+	private FitnessValue mAfterValue;
 
 	/**
 	 * コンストラクタ
@@ -58,9 +60,9 @@ public class AccessoryFitness {
 	}
 
 	private int calcDifference(Fitness fitness, Memoria before, Memoria after) {
-		FitnessValue beforeValue = fitness.calc(new Party(before));
-		FitnessValue afterValue = fitness.calc(new Party(after));
-		return afterValue.getValue() - beforeValue.getValue();
+		mBeforeValue = fitness.calc(new Party(before));
+		mAfterValue = fitness.calc(new Party(after));
+		return mAfterValue.getValue() - mBeforeValue.getValue();
 	}
 
 	public int getFitness() {
@@ -75,6 +77,22 @@ public class AccessoryFitness {
 		return mMemoria;
 	}
 
+	public int getHp() {
+		return mAfterValue.getHp() - mBeforeValue.getHp();
+	}
+	
+	public int getAttackDamage() {
+		return mAfterValue.getAttackDamage() - mBeforeValue.getAttackDamage();
+	}
+	
+	public int getDefenceDamage() {
+		return mAfterValue.getDefenceDamage() - mBeforeValue.getDefenceDamage();
+	}
+	
+	public int getRecovery() {
+		return mAfterValue.getRecovery() - mBeforeValue.getRecovery();
+	}
+	
 	@Override
 	public String toString() {
 		return mFitness + "," + mAccessory + "," + mMemoria;

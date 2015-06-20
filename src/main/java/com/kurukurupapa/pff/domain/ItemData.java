@@ -427,7 +427,7 @@ public class ItemData {
 			result = memoriaValue * effectValue / 100;
 			break;
 		}
-		return result;
+		return Math.max(result, 0);
 	}
 
 }

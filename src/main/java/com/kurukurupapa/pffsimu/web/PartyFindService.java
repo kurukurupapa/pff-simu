@@ -2,7 +2,7 @@ package com.kurukurupapa.pffsimu.web;
 
 import org.springframework.stereotype.Service;
 
-import com.kurukurupapa.pff.domain.AttrFactory;
+import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.Dp01;
@@ -37,10 +37,10 @@ public class PartyFindService {
 			fitness = new FitnessForBattle();
 		}
 		for (String e : form.getEnemyWeakPoints()) {
-			fitness.addEnemyWeak(AttrFactory.create(e));
+			fitness.addEnemyWeak(Attr.parse(e));
 		}
 		for (String e : form.getEnemyStrongPoints()) {
-			fitness.addEnemyResistance(AttrFactory.create(e));
+			fitness.addEnemyResistance(Attr.parse(e));
 		}
 		fitness.setEnemyPhysicalResistance(form.getPhysicalResistance());
 		dp = new Dp01(memoriaDataSet, itemDataSet, fitness);
