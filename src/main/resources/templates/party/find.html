@@ -67,6 +67,7 @@
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">パーティ検討</h1>
+          <p>下のパラメータを選択/入力して、「検討スタート」ボタンを押してください。</p>
           <h2 class="sub-header">評価条件</h2>
           <form method="get" th:action="@{/party/find}" th:object="${form}">
             <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
@@ -83,84 +84,33 @@
             </div>
             <div class="form-group">
               <label>敵の弱点属性</label><br/>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="fire" th:checked="${#arrays.contains(form.enemyWeakPoints,'fire')}" />炎属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="water" th:checked="${#arrays.contains(form.enemyWeakPoints,'water')}" />水属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="ice" th:checked="${#arrays.contains(form.enemyWeakPoints,'ice')}" />氷属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="cold" th:checked="${#arrays.contains(form.enemyWeakPoints,'cold')}" />冷気属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="wind" th:checked="${#arrays.contains(form.enemyWeakPoints,'wind')}" />風属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="earth" th:checked="${#arrays.contains(form.enemyWeakPoints,'earth')}" />地属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="thunder" th:checked="${#arrays.contains(form.enemyWeakPoints,'thunder')}" />雷属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="holiness" th:checked="${#arrays.contains(form.enemyWeakPoints,'holiness')}" />聖属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="darkness" th:checked="${#arrays.contains(form.enemyWeakPoints,'darkness')}" />闇属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyWeakPoints" value="flight" th:checked="${#arrays.contains(form.enemyWeakPoints,'flight')}" />飛行属性
+              <label class="checkbox-inline" th:each="e : ${attrs}">
+                <input type="checkbox" name="enemyWeakPoints" th:value="${e.name}" th:checked="${#arrays.contains(form.enemyWeakPoints,e.name)}" th:text="${e.longText}" />
               </label>
             </div>
             <div class="form-group">
               <label>敵の耐性属性</label><br/>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="fire" th:checked="${#arrays.contains(form.enemyStrongPoints,'fire')}" />炎属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="water" th:checked="${#arrays.contains(form.enemyStrongPoints,'water')}" />水属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="ice" th:checked="${#arrays.contains(form.enemyStrongPoints,'ice')}" />氷属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="cold" th:checked="${#arrays.contains(form.enemyStrongPoints,'cold')}" />冷気属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="wind" th:checked="${#arrays.contains(form.enemyStrongPoints,'wind')}" />風属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="earth" th:checked="${#arrays.contains(form.enemyStrongPoints,'earth')}" />地属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="thunder" th:checked="${#arrays.contains(form.enemyStrongPoints,'thunder')}" />雷属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="holiness" th:checked="${#arrays.contains(form.enemyStrongPoints,'holiness')}" />聖属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="darkness" th:checked="${#arrays.contains(form.enemyStrongPoints,'darkness')}" />闇属性
-              </label>
-              <label class="checkbox-inline">
-                <input type="checkbox" name="enemyStrongPoints" value="flight" th:checked="${#arrays.contains(form.enemyStrongPoints,'flight')}" />飛行属性
+              <label class="checkbox-inline" th:each="e : ${attrs}">
+                <input type="checkbox" name="enemyStrongPoints" th:value="${e.name}" th:checked="${#arrays.contains(form.enemyStrongPoints,e.name)}" th:text="${e.longText}" />
               </label>
             </div>
             <div class="form-group">
               <label for="physicalResistance">敵の物理防御</label>
               <input type="number" class="form-control" id="physicalResistance" name="physicalResistance" placeholder="数値を入力してください。" th:value="*{physicalResistance}" />
             </div>
-            <input type="submit" name="btn" value="スタート" />
-          </form>
+          <!--
           <h2 class="sub-header">検討結果</h2>
+          -->
           <div th:if="${party} != null">
             <!--
             <div>
               <p th:text="${party}">26147,ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS,トレイ+黄忠の長弓(レア5)+トレイLS,パンネロ+ダンシングダガー+ファイアRF+3+ケアル+トレイLS,アーロン+五月雨+トレイLS</p>
             </div>
             -->
+            <!--
             <h4>パーティ構成</h4>
+            -->
+            <h2 class="sub-header">パーティ構成</h2>
             <!--
             <span th:each="memoria : ${party.memoriaList}">
               <span th:text="${memoria}">ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS</span><br/>
@@ -190,7 +140,10 @@
                 </tbody>
               </table>
             </div>
+            <!--
             <h4>評価内容</h4>
+            -->
+            <h2 class="sub-header">評価内容</h2>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
@@ -225,6 +178,8 @@
             </div>
 
           </div>
+            <input type="submit" name="btn" class="btn btn-primary" value="検討スタート" />
+          </form>
         </div>
       </div>
       

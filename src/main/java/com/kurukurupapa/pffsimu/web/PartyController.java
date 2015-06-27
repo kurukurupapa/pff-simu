@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.dp01.Party;
 
 @Controller
@@ -29,6 +30,7 @@ public class PartyController {
 	public String getFindForm(Model model) {
 		PartyFindForm form = new PartyFindForm();
 		model.addAttribute("form", form);
+		model.addAttribute("attrs", Attr.getValuesWithoutNone());
 		return "party/find";
 	}
 
@@ -49,6 +51,7 @@ public class PartyController {
 			logger.debug("Party=" + party);
 		}
 		model.addAttribute("form", form);
+		model.addAttribute("attrs", Attr.getValuesWithoutNone());
 
 		logger.trace("End");
 		return "party/find";
