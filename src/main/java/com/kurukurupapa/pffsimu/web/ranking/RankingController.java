@@ -26,6 +26,8 @@ public class RankingController {
 	private MemoriaRankingService memoriaRankingService;
 	@Autowired
 	private WeaponRankingService weaponRankingService;
+	@Autowired
+	private MagicRankingService magicRankingService;
 
 	@RequestMapping("/memoria")
 	public String getMemoriaRankingForm(Model model) {
@@ -90,6 +92,36 @@ public class RankingController {
 
 		logger.info("End");
 		return "ranking/weapon";
+	}
+
+	@RequestMapping("/magic")
+	public String getMagicRankingForm(Model model) {
+		logger.info("Start");
+
+		MagicRankingForm form = new MagicRankingForm();
+		model.addAttribute("form", form);
+
+		logger.info("End");
+		return "ranking/magic";
+	}
+
+	@RequestMapping(value = "/magic", params = { "btn" })
+	public String calcMagicRanking(
+			@Valid @ModelAttribute MagicRankingForm form, BindingResult result,
+			Model model) {
+		logger.info("Start");
+
+		if (result.hasErrors()) {
+			// 入力チェックエラー
+		} else {
+			// 入力チェックOK
+			magicRankingService.run();
+			model.addAttribute("ranking", magicRankingService.getRanking());
+		}
+		model.addAttribute("form", form);
+
+		logger.info("End");
+		return "ranking/magic";
 	}
 
 }
