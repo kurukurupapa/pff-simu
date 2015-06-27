@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BattleType;
-import com.kurukurupapa.pff.dp01.AccessoryRanking;
 
 /**
  * ランキング機能コントローラクラス
@@ -25,6 +24,8 @@ public class RankingController {
 
 	@Autowired
 	private MemoriaRankingService memoriaRankingService;
+	@Autowired
+	private WeaponRankingService weaponRankingService;
 
 	@RequestMapping("/memoria")
 	public String getMemoriaRankingForm(Model model) {
@@ -59,6 +60,36 @@ public class RankingController {
 
 		logger.info("End");
 		return "ranking/memoria";
+	}
+
+	@RequestMapping("/weapon")
+	public String getWeaponRankingForm(Model model) {
+		logger.info("Start");
+
+		WeaponRankingForm form = new WeaponRankingForm();
+		model.addAttribute("form", form);
+
+		logger.info("End");
+		return "ranking/weapon";
+	}
+
+	@RequestMapping(value = "/weapon", params = { "btn" })
+	public String calcWeaponRanking(
+			@Valid @ModelAttribute WeaponRankingForm form,
+			BindingResult result, Model model) {
+		logger.info("Start");
+
+		if (result.hasErrors()) {
+			// 入力チェックエラー
+		} else {
+			// 入力チェックOK
+			weaponRankingService.run();
+			model.addAttribute("ranking", weaponRankingService.getRanking());
+		}
+		model.addAttribute("form", form);
+
+		logger.info("End");
+		return "ranking/weapon";
 	}
 
 }
