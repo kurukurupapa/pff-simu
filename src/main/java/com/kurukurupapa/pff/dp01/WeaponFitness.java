@@ -44,7 +44,7 @@ public class WeaponFitness {
 		mMemoria = memoria.clone();
 		mMemoria.setWeapon(mWeapon);
 
-		// 当該アイテムの適応度
+		// 当該武器の適応度
 		Fitness fitness = createFitness();
 		mFitness = calcDifference(fitness, memoria, mMemoria);
 	}

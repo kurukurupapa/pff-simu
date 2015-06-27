@@ -10,6 +10,9 @@ import com.kurukurupapa.pff.dp01.Fitness;
 import com.kurukurupapa.pff.dp01.MemoriaFitnessValue;
 import com.kurukurupapa.pff.dp01.MemoriaRanking;
 
+/**
+ * ランキング機能 メモリアランキングサービスクラス
+ */
 @Service
 public class MemoriaRankingService {
 	private ItemDataSet itemDataSet;

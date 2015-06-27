@@ -2,19 +2,14 @@ package com.kurukurupapa.pff.dp01;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 
 public class WeaponFitnessTest {
-	/** 1バトルあたりのターン数 */
-	private static final int TURN = 10;
-
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
