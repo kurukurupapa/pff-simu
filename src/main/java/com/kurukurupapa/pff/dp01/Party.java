@@ -46,7 +46,7 @@ public class Party implements Cloneable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(mFitness);
+		sb.append(mFitness.getValue());
 		sb.append("," + StringUtils.join(mMemoriaList, ","));
 		return sb.toString();
 	}

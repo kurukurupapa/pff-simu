@@ -23,6 +23,11 @@ public class MemoriaFitnessValue {
 		this.mMemoria = memoria;
 	}
 
+	@Override
+	public String toString() {
+		return mValue + "," + mMemoria;
+	}
+
 	public Memoria getMemoria() {
 		return mMemoria;
 	}
@@ -61,6 +66,10 @@ public class MemoriaFitnessValue {
 
 	public void setMagicDefenceDamage(int magicDefenceDamage) {
 		this.mMagicDefenceDamage = magicDefenceDamage;
+	}
+
+	public int getDefenceDamage() {
+		return getPhysicalDefenceDamage() + getMagicDefenceDamage();
 	}
 
 	public int getRecovery() {

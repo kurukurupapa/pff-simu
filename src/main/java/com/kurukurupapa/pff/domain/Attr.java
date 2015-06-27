@@ -2,6 +2,8 @@ package com.kurukurupapa.pff.domain;
 
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 /**
  * 属性enum
  */
@@ -10,8 +12,12 @@ public enum Attr {
 	NONE("なし", "属性なし"),
 	/** 炎属性 */
 	FIRE("炎", "炎属性"),
+	/** 水属性 */
+	WATER("水", "水属性"),
 	/** 氷属性 */
 	ICE("氷", "氷属性"),
+	/** 冷気属性 */
+	COLD("冷気", "冷気属性"),
 	/** 風属性 */
 	WIND("風", "風属性"),
 	/** 地属性 */
@@ -20,14 +26,10 @@ public enum Attr {
 	THUNDER("雷", "雷属性"),
 	/** 聖属性 */
 	HOLINESS("聖", "聖属性"),
-	/** 水属性 */
-	WATER("水", "水属性"),
-	/** 飛行 */
-	FLIGHT("飛行", "飛行属性"),
-	/** 冷気属性 */
-	COLD("冷気", "冷気属性"),
 	/** 闇属性 */
 	DARKNESS("闇", "闇属性"),
+	/** 飛行 */
+	FLIGHT("飛行", "飛行属性"),
 	//
 	;
 
@@ -53,6 +55,22 @@ public enum Attr {
 			}
 		}
 		throw new AppException("不正な引数です。nameOrText=" + nameOrText);
+	}
+
+	public static Attr[] getValuesWithoutNone() {
+		Attr[] arr = values();
+		return ArrayUtils.subarray(arr, 1, arr.length);
+	}
+
+	/**
+	 * 英字名称を取得します。
+	 * 
+	 * Thymeleafでは、"get"+フィールド名でメソッドを探すため、当メソッドを用意しました。
+	 * 
+	 * @return 英字名称
+	 */
+	public String getName() {
+		return name();
 	}
 
 	public String getShortText() {
