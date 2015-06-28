@@ -1,4 +1,4 @@
-package com.kurukurupapa.pffsimu.web;
+package com.kurukurupapa.pffsimu.web.ranking;
 
 import java.util.List;
 
@@ -9,6 +9,9 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.AccessoryFitness;
 import com.kurukurupapa.pff.dp01.AccessoryRanking;
 
+/**
+ * ランキング機能 アクセサリランキングサービスクラス
+ */
 @Service
 public class AccessoryRankingService {
 	private ItemDataSet itemDataSet;

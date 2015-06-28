@@ -28,17 +28,19 @@ public class RankingController {
 	private WeaponRankingService weaponRankingService;
 	@Autowired
 	private MagicRankingService magicRankingService;
+	@Autowired
+	private AccessoryRankingService accessoryRankingService;
 
 	@RequestMapping("/memoria")
 	public String getMemoriaRankingForm(Model model) {
-		logger.info("Start");
+		logger.info("getMemoriaRankingForm start");
 
 		MemoriaRankingForm form = new MemoriaRankingForm();
 		model.addAttribute("form", form);
 		model.addAttribute("battleTypes", BattleType.values());
 		model.addAttribute("attrs", Attr.getValuesWithoutNone());
 
-		logger.info("End");
+		logger.info("getMemoriaRankingForm end");
 		return "ranking/memoria";
 	}
 
@@ -46,7 +48,7 @@ public class RankingController {
 	public String calcMemoriaRanking(
 			@Valid @ModelAttribute MemoriaRankingForm form,
 			BindingResult result, Model model) {
-		logger.info("Start");
+		logger.info("calcMemoriaRanking start");
 
 		if (result.hasErrors()) {
 			// 入力チェックエラー
@@ -60,18 +62,18 @@ public class RankingController {
 		model.addAttribute("battleTypes", BattleType.values());
 		model.addAttribute("attrs", Attr.getValuesWithoutNone());
 
-		logger.info("End");
+		logger.info("calcMemoriaRanking end");
 		return "ranking/memoria";
 	}
 
 	@RequestMapping("/weapon")
 	public String getWeaponRankingForm(Model model) {
-		logger.info("Start");
+		logger.info("getWeaponRankingForm start");
 
 		WeaponRankingForm form = new WeaponRankingForm();
 		model.addAttribute("form", form);
 
-		logger.info("End");
+		logger.info("getWeaponRankingForm end");
 		return "ranking/weapon";
 	}
 
@@ -79,7 +81,7 @@ public class RankingController {
 	public String calcWeaponRanking(
 			@Valid @ModelAttribute WeaponRankingForm form,
 			BindingResult result, Model model) {
-		logger.info("Start");
+		logger.info("calcWeaponRanking start");
 
 		if (result.hasErrors()) {
 			// 入力チェックエラー
@@ -90,18 +92,18 @@ public class RankingController {
 		}
 		model.addAttribute("form", form);
 
-		logger.info("End");
+		logger.info("calcWeaponRanking end");
 		return "ranking/weapon";
 	}
 
 	@RequestMapping("/magic")
 	public String getMagicRankingForm(Model model) {
-		logger.info("Start");
+		logger.info("getMagicRankingForm start");
 
 		MagicRankingForm form = new MagicRankingForm();
 		model.addAttribute("form", form);
 
-		logger.info("End");
+		logger.info("getMagicRankingForm end");
 		return "ranking/magic";
 	}
 
@@ -109,7 +111,7 @@ public class RankingController {
 	public String calcMagicRanking(
 			@Valid @ModelAttribute MagicRankingForm form, BindingResult result,
 			Model model) {
-		logger.info("Start");
+		logger.info("calcMagicRanking start");
 
 		if (result.hasErrors()) {
 			// 入力チェックエラー
@@ -120,8 +122,39 @@ public class RankingController {
 		}
 		model.addAttribute("form", form);
 
-		logger.info("End");
+		logger.info("calcMagicRanking end");
 		return "ranking/magic";
+	}
+
+	@RequestMapping("/accessory")
+	public String getAccessoryRankingForm(Model model) {
+		logger.info("getAccessoryRankingForm start");
+
+		AccessoryRankingForm form = new AccessoryRankingForm();
+		model.addAttribute("form", form);
+
+		logger.info("getAccessoryRankingForm end");
+		return "ranking/accessory";
+	}
+
+	@RequestMapping(value = "/accessory", params = { "btn" })
+	public String calcAccessoryRanking(
+			@Valid @ModelAttribute AccessoryRankingForm form,
+			BindingResult result, Model model) {
+		logger.info("calcAccessoryRanking start");
+
+		if (result.hasErrors()) {
+			// 入力チェックエラー
+		} else {
+			// 入力チェックOK
+			accessoryRankingService.run();
+			model.addAttribute("ranking",
+					accessoryRankingService.getFitnesses());
+		}
+		model.addAttribute("form", form);
+
+		logger.info("calcAccessoryRanking end");
+		return "ranking/accessory";
 	}
 
 }
