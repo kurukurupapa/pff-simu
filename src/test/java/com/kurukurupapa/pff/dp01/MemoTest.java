@@ -41,7 +41,7 @@ public class MemoTest {
         Party actual = sut.get(0, 0);
 
         // 検証
-        assertThat(actual.toString(), is("0,ヴァニラ"));
+        assertThat(actual.toString(), is("null,ヴァニラ"));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class MemoTest {
         Party actual = sut.get(0, 0);
 
         // 検証
-        assertThat(actual.toString(), is("0,アーロン"));
+        assertThat(actual.toString(), is("null,アーロン"));
     }
 
 }

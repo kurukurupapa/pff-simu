@@ -24,6 +24,16 @@ public class MemoriaDataSet implements Iterable<MemoriaData> {
 		mMemoriaDataList = new ArrayList<MemoriaData>();
 	}
 
+	public MemoriaDataSet(MemoriaDataSet other) {
+		this(other.mItemDataSet);
+		mMemoriaDataList = other.copyMemoriaDataList();
+	}
+
+	@Override
+	public MemoriaDataSet clone() {
+		return new MemoriaDataSet(this);
+	}
+
 	@Override
 	public Iterator<MemoriaData> iterator() {
 		return mMemoriaDataList.iterator();

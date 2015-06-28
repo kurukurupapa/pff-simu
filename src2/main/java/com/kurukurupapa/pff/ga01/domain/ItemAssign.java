@@ -30,7 +30,7 @@ public class ItemAssign {
     private ItemAssign(ItemDataSet itemDataSet) {
         mItemDataSet = itemDataSet;
         mCountMap = new HashMap<String, Integer>();
-        for (ItemData e : itemDataSet.getItemDataList()) {
+        for (ItemData e : itemDataSet.makeAllItemDataList()) {
             mCountMap.put(e.getName(), 0);
         }
     }

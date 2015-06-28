@@ -15,7 +15,6 @@ public class ItemDataSet {
 	/** 区切り文字 */
 	private static final String SEP = ",";
 
-	private List<ItemData> mAllList;
 	private List<ItemData> mWeaponList;
 	private List<ItemData> mMagicAccessoryList;
 
@@ -23,9 +22,19 @@ public class ItemDataSet {
 	 * コンストラクタ
 	 */
 	public ItemDataSet() {
-		mAllList = new ArrayList<ItemData>();
 		mWeaponList = new ArrayList<ItemData>();
 		mMagicAccessoryList = new ArrayList<ItemData>();
+	}
+
+	public ItemDataSet(ItemDataSet other) {
+		this();
+		mWeaponList = new ArrayList<ItemData>(other.mWeaponList);
+		mMagicAccessoryList = new ArrayList<ItemData>(other.mMagicAccessoryList);
+	}
+
+	@Override
+	public ItemDataSet clone() {
+		return new ItemDataSet(this);
 	}
 
 	public void read() {
@@ -33,13 +42,8 @@ public class ItemDataSet {
 	}
 
 	public void readTestData() {
-		mAllList.clear();
-
 		readWeapon();
 		readAccessory();
-
-		mAllList.addAll(mWeaponList);
-		mAllList.addAll(mMagicAccessoryList);
 	}
 
 	private void readWeapon() {
@@ -209,7 +213,6 @@ public class ItemDataSet {
 	}
 
 	private void readFile(String path) {
-		mAllList.clear();
 		mWeaponList.clear();
 		mMagicAccessoryList.clear();
 		BufferedReader r = new BufferedReader(new InputStreamReader(getClass()
@@ -254,7 +257,7 @@ public class ItemDataSet {
 		}
 
 		// 追加
-		ItemType itemType = toItemType(columns[0]);
+		ItemType itemType = ItemType.parse(columns[0]);
 		ItemType2 itemType2 = new ItemType2(columns[1]);
 		MagicType magicType = null;
 		int magicCharge = 0;
@@ -283,10 +286,6 @@ public class ItemDataSet {
 			addAccessoryData(itemData);
 			break;
 		}
-	}
-
-	private static ItemType toItemType(String column) {
-		return ItemTypeFactory.create(column);
 	}
 
 	private static String toName(String column) {
@@ -334,21 +333,21 @@ public class ItemDataSet {
 
 	public void addWeaponData(ItemData weaponData) {
 		mWeaponList.add(weaponData);
-		mAllList.add(weaponData);
 	}
 
 	public void addMagicData(ItemData magicData) {
 		mMagicAccessoryList.add(magicData);
-		mAllList.add(magicData);
 	}
 
 	public void addAccessoryData(ItemData accessoryData) {
 		mMagicAccessoryList.add(accessoryData);
-		mAllList.add(accessoryData);
 	}
 
-	public List<ItemData> getItemDataList() {
-		return mAllList;
+	public List<ItemData> makeAllItemDataList() {
+		List<ItemData> list = new ArrayList<ItemData>();
+		list.addAll(mWeaponList);
+		list.addAll(mMagicAccessoryList);
+		return list;
 	}
 
 	public List<ItemData> getWeaponList() {
@@ -389,8 +388,27 @@ public class ItemDataSet {
 	}
 
 	public ItemData find(String name) {
+		ItemData itemData = findWeapon(name);
+		if (itemData == null) {
+			itemData = findMagicOrAccessory(name);
+		}
+		return itemData;
+	}
+
+	public ItemData findWeapon(String name) {
 		ItemData itemData = null;
-		for (ItemData e : mAllList) {
+		for (ItemData e : mWeaponList) {
+			if (e.getName().equals(name)) {
+				itemData = e;
+				break;
+			}
+		}
+		return itemData;
+	}
+
+	public ItemData findMagicOrAccessory(String name) {
+		ItemData itemData = null;
+		for (ItemData e : mMagicAccessoryList) {
 			if (e.getName().equals(name)) {
 				itemData = e;
 				break;

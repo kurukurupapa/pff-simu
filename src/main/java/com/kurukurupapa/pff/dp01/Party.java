@@ -46,7 +46,7 @@ public class Party implements Cloneable {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(mFitness.getValue());
+		sb.append(mFitness == null ? "null" : mFitness.getValue());
 		sb.append("," + StringUtils.join(mMemoriaList, ","));
 		return sb.toString();
 	}
@@ -74,6 +74,10 @@ public class Party implements Cloneable {
 
 	public void add(MemoriaData memoria) {
 		add(new Memoria(memoria));
+	}
+
+	public void remove(int index) {
+		mMemoriaList.remove(index);
 	}
 
 	public List<Memoria> getMemoriaList() {

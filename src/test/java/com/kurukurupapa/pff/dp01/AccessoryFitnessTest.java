@@ -67,7 +67,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("90,ルフェインブーツ,アーロン+ルフェインブーツ", actual);
+		assertEquals("361,ルフェインブーツ,アーロン+ルフェインブーツ", actual);
 	}
 
 	@Test

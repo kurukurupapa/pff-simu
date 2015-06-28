@@ -168,6 +168,10 @@ public class Memoria implements Cloneable {
 		mAccessoryDataArr = ArrayUtils.add(mAccessoryDataArr, accessoryData);
 	}
 
+	public void removeAccessory(int index) {
+		mAccessoryDataArr = ArrayUtils.remove(mAccessoryDataArr, index);
+	}
+
 	public void clearAccessories() {
 		mAccessoryDataArr = new ItemData[] {};
 	}
