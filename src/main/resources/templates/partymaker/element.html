@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title th:text="#{project_name}">Theme Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/assets/css/bootstrap.min.css" th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <!-- Bootstrap theme -->
+    <link href="../../static/assets/css/bootstrap-theme.min.css" th:href="@{/assets/css/bootstrap-theme.min.css}" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="../../static/assets/css/theme.css" th:href="@{/assets/css/theme.css}" rel="stylesheet" />
+    <!-- 独自CSS -->
+    <link href="../../static/css/base.css" th:href="@{/css/base.css}" rel="stylesheet" />
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js" th:src="@{/assets/js/ie8-responsive-file-warning.js}"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js" th:src="@{/assets/js/ie-emulation-modes-warning.js}"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <style type="text/css">
+      .container table thead tr th {
+        white-space: nowrap;
+      }
+      .container table thead tr th.number {
+        text-align: right;
+      }
+      .container table tbody tr td {
+        vertical-align: baseline;
+      }
+      .container table tbody tr td.number {
+        text-align: right;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+
+  <body role="document">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/" th:text="#{project_name}">Bootstrap theme</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+
+      <div class="page-header">
+        <h1>パーティメーカー</h1>
+      </div>
+
+      <h2>要素選択</h2>
+      <p>パーティに含めたい要素を選んでください。</p>
+      <form method="post" th:action="@{/partymaker/element}">
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>選択</th>
+                <th>
+                  <span th:if="${targetForm.kind.name}=='MEMORIA'"><span class="glyphicon glyphicon-user"></span> メモリア</span>
+                  <span th:if="${targetForm.kind.name}=='WEAPON'"><span class="glyphicon glyphicon-thumbs-up"></span> 武器</span>
+                  <span th:if="${targetForm.kind.name}=='ACCESSORY1' or ${targetForm.kind.name}=='ACCESSORY2'"><span class="glyphicon glyphicon-leaf"></span> 魔法/アクセサリ</span>
+                </th>
+                <th>
+                  <span th:if="${targetForm.kind.name}=='MEMORIA'">装備</span>
+                  <span th:if="${targetForm.kind.name}!='MEMORIA'">装備例</span>
+                </th>
+                <th class="number">評価値</th>
+                <th class="number">HP</th>
+                <th class="number">攻撃値</th>
+                <th class="number">防御値</th>
+                <th class="number">回復値</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="e : ${ranking}">
+                <td><button type="submit" name="btn" class="btn btn-primary" th:value="${eStat.index}">選択</button></td>
+                <td>
+                  <span th:if="${targetForm.kind.name}=='MEMORIA'" th:text="${e.memoria.name}">アーロン</span>
+                  <span th:if="${targetForm.kind.name}!='MEMORIA'" th:text="${e.item.name}">アイテム名</span>
+                </td>
+                <td>
+                  <span th:if="${targetForm.kind.name}=='MEMORIA'" th:text="${e.memoria}">アーロン+おろち+クリスタルの小手+エクサバックラー+2+アーロンLS</span>
+                  <span th:if="${targetForm.kind.name}!='MEMORIA'" th:text="${e.memoria}">装備例</span>
+                </td>
+                <td class="number">
+                  <span th:if="${targetForm.kind.name}=='MEMORIA'" th:text="${e.value}">12345</span>
+                  <span th:if="${targetForm.kind.name}!='MEMORIA'" th:text="${e.fitness}">12345</span>
+                </td>
+                <td class="number" th:text="${e.hp}">1234</td>
+                <td class="number" th:text="${e.attackDamage}">1234</td>
+                <td class="number" th:text="${e.defenceDamage}">1234</td>
+                <td class="number" th:text="${e.recovery}">1234</td>
+              </tr>
+              <tr>
+                <td><button type="submit" class="btn btn-primary" name="btn" th:value="'-1'">選択</button></td>
+                <td>なし</td>
+                <td></td>
+                <td class="number"></td>
+                <td class="number"></td>
+                <td class="number"></td>
+                <td class="number"></td>
+                <td class="number"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button type="submit" class="btn btn-default" name="backBtn">戻る</button>
+      </form>
+
+
+      <hr/>
+      <footer>
+        <p>@ kurukurupapa 2015</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="../../static/assets/js/bootstrap.min.js" th:src="@{/assets/js/bootstrap.min.js}"></script>
+    <script src="../../static/assets/js/docs.min.js" th:src="@{/assets/js/docs.min.js}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../static/assets/js/ie10-viewport-bug-workaround.js" th:src="@{/assets/js/ie10-viewport-bug-workaround.js}"></script>
+  </body>
+</html>
