@@ -33,7 +33,7 @@ public class WeaponRankingTest {
 	}
 
 	@Test
-	public void testCalc() {
+	public void testCalc_パーティなし() {
 		// 準備
 
 		// テスト実行
@@ -63,6 +63,36 @@ public class WeaponRankingTest {
 				+ "1512,フォースイーター,アーシェ+フォースイーター\n" //
 				+ "1181,鉄壁のグリモア(レア3),デシ+鉄壁のグリモア(レア3)\n" //
 				+ "1062,チャームステッキ,ユウナ(No.48)+チャームステッキ\n" //
+		, actualStr);
+	}
+
+	@Test
+	public void testCalc_評価条件とパーティあり() {
+		// 準備
+		Fitness fitness = new FitnessForBattle();
+
+		Party party = new Party();
+		Memoria memoria = new Memoria(mMemoriaDataSet.find("元帥シド"));
+		memoria.addAccessory(mItemDataSet.find("マーシャルネイ"));
+		memoria.addAccessory(mItemDataSet.find("マーシャルネイ"));
+		party.add(memoria);
+		memoria = new Memoria(mMemoriaDataSet.find("パンネロ"));
+		memoria.setWeapon(mItemDataSet.find("ダンシングダガー"));
+		memoria.addAccessory(mItemDataSet.find("ファイアRF+3"));
+		party.add(memoria);
+
+		// テスト実行
+		sut.setParams(mMemoriaDataSet, mItemDataSet, fitness, party, 0);
+		sut.run();
+		List<WeaponFitness> actual = sut.getFitnesses();
+		String actualStr = toString(actual);
+
+		// 検証
+		assertEquals("" //
+				// 2015/07/01
+				+ "2555,烈風,元帥シド+烈風+マーシャルネイ+マーシャルネイ\n" //
+				+ "2555,五月雨,元帥シド+五月雨+マーシャルネイ+マーシャルネイ\n" //
+				+ "2555,おろち,元帥シド+おろち+マーシャルネイ+マーシャルネイ\n" //
 		, actualStr);
 	}
 

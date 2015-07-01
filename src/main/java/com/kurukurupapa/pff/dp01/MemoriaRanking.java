@@ -23,26 +23,42 @@ public class MemoriaRanking {
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
 	private Fitness mFitness;
+	private Party mParty;
 	private List<MemoriaFitnessValue> mFitnessList;
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
 			ItemDataSet itemDataSet, Fitness fitness) {
+		setParams(memoriaDataSet, itemDataSet, fitness, new Party());
+	}
+
+	public void setParams(MemoriaDataSet memoriaDataSet,
+			ItemDataSet itemDataSet, Fitness fitness, Party party) {
 		mMemoriaDataSet = memoriaDataSet;
 		mItemDataSet = itemDataSet;
 		mFitness = fitness;
+		mParty = party;
 	}
 
 	public void run() {
 		mLogger.trace("Start");
 		mLogger.debug("メモリア数=" + mMemoriaDataSet.size());
 
+		// メモリアとアイテムの一覧
+		MemoriaDataSet memoriaDataSet = mMemoriaDataSet.clone();
+		ItemDataSet itemDataSet = mItemDataSet.clone();
+		for (Memoria e : mParty.getMemoriaList()) {
+			memoriaDataSet.remove(e.getName());
+			itemDataSet.removeWeapon(e.getWeapon());
+			itemDataSet.removeMagicOrAccessory(e.getAccessories());
+		}
+
 		// 各メモリアの評価
 		mFitnessList = new ArrayList<MemoriaFitnessValue>();
 		Dp01 dp;
-		for (MemoriaData e : mMemoriaDataSet) {
-			MemoriaDataSet memoriaDataSet = new MemoriaDataSet(mItemDataSet);
-			memoriaDataSet.add(e);
-			dp = new Dp01(memoriaDataSet, mItemDataSet, mFitness);
+		for (MemoriaData e : memoriaDataSet) {
+			MemoriaDataSet tmpMemoriaDataSet = new MemoriaDataSet(itemDataSet);
+			tmpMemoriaDataSet.add(e);
+			dp = new Dp01(tmpMemoriaDataSet, itemDataSet, mFitness);
 			dp.run(1);
 			mFitnessList.add(dp.getParty().getFitnessObj()
 					.getMemoriaFitnesses().get(0));

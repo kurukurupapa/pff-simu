@@ -126,9 +126,10 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th class="number">評価値</th>
+                <th class="number">順位</th>
                 <th><span class="glyphicon glyphicon-user"></span> メモリア</th>
                 <th>装備例</th>
+                <th class="number">評価値</th>
                 <th class="number">HP</th>
                 <th class="number">攻撃値</th>
                 <th class="number">防御値</th>
@@ -137,9 +138,10 @@
             </thead>
             <tbody>
               <tr th:each="e : ${ranking}">
-                <td class="number" th:text="${e.value}">12345</td>
+                <td class="number" th:text="${eStat.index}+1">1</td>
                 <td th:text="${e.memoria.name}">アーロン</td>
                 <td th:text="${e.memoria}">アーロン+おろち+クリスタルの小手+エクサバックラー+2+アーロンLS</td>
+                <td class="number" th:text="${e.value}">12345</td>
                 <td class="number" th:text="${e.hp}">1234</td>
                 <td class="number" th:text="${e.attackDamage}">1234</td>
                 <td class="number" th:text="${e.defenceDamage}">1234</td>

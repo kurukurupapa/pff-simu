@@ -39,7 +39,7 @@ public class Party implements Cloneable {
 	}
 
 	@Override
-	protected Party clone() {
+	public Party clone() {
 		return new Party(this);
 	}
 

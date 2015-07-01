@@ -87,6 +87,7 @@ public class RankingController {
 			// 入力チェックエラー
 		} else {
 			// 入力チェックOK
+			weaponRankingService.setup();
 			weaponRankingService.run();
 			model.addAttribute("ranking", weaponRankingService.getRanking());
 		}
@@ -117,6 +118,7 @@ public class RankingController {
 			// 入力チェックエラー
 		} else {
 			// 入力チェックOK
+			magicRankingService.setup();
 			magicRankingService.run();
 			model.addAttribute("ranking", magicRankingService.getRanking());
 		}
@@ -147,6 +149,7 @@ public class RankingController {
 			// 入力チェックエラー
 		} else {
 			// 入力チェックOK
+			accessoryRankingService.setup();
 			accessoryRankingService.run();
 			model.addAttribute("ranking",
 					accessoryRankingService.getFitnesses());

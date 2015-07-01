@@ -9,6 +9,7 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.Fitness;
 import com.kurukurupapa.pff.dp01.MemoriaFitnessValue;
 import com.kurukurupapa.pff.dp01.MemoriaRanking;
+import com.kurukurupapa.pff.dp01.Party;
 
 /**
  * ランキング機能 メモリアランキングサービスクラス
@@ -18,6 +19,7 @@ public class MemoriaRankingService {
 	private ItemDataSet itemDataSet;
 	private MemoriaDataSet memoriaDataSet;
 	private Fitness fitness;
+	private Party party;
 	private MemoriaRanking memoriaRanking;
 
 	public MemoriaRankingService() {
@@ -29,12 +31,17 @@ public class MemoriaRankingService {
 	}
 
 	public void setup(Fitness fitness) {
+		setup(fitness, new Party());
+	}
+
+	public void setup(Fitness fitness, Party party) {
 		this.fitness = fitness;
+		this.party = party;
 	}
 
 	public void run() {
 		memoriaRanking = new MemoriaRanking();
-		memoriaRanking.setParams(memoriaDataSet, itemDataSet, fitness);
+		memoriaRanking.setParams(memoriaDataSet, itemDataSet, fitness, party);
 		memoriaRanking.run();
 	}
 

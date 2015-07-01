@@ -2,33 +2,10 @@ package com.kurukurupapa.pff.dp01;
 
 import org.apache.commons.lang3.Validate;
 
-import com.kurukurupapa.pff.domain.ItemData;
-
 /**
  * アクセサリ適応度クラス
  */
-public class AccessoryFitness {
-	private ItemData mAccessory;
-	private Memoria mMemoria;
-	private int mFitness;
-	private FitnessValue mBeforeValue;
-	private FitnessValue mAfterValue;
-
-	/**
-	 * コンストラクタ
-	 */
-	public AccessoryFitness() {
-	}
-
-	/**
-	 * 準備
-	 * 
-	 * @param accessory
-	 *            対象アクセサリ
-	 */
-	public void setup(ItemData accessory) {
-		mAccessory = accessory;
-	}
+public class AccessoryFitness extends ItemFitness {
 
 	/**
 	 * 適応度を計算します。
@@ -42,59 +19,11 @@ public class AccessoryFitness {
 
 		// アクセサリ装備後のメモリア
 		mMemoria = memoria.clone();
-		mMemoria.addAccessory(mAccessory);
+		mMemoria.addAccessory(mItem);
 
 		// 当該アイテムの適応度
 		Fitness fitness = createFitness();
-		mFitness = calcDifference(fitness, memoria, mMemoria);
+		calcDifference(fitness, memoria, mMemoria);
 	}
 
-	private Fitness createFitness() {
-		// 当クラスにおける適応度としては、さまざまな敵に対する最大の適応度のみを調べたい。
-		// そのため、属性付きのアクセサリの場合、その属性を弱点とする敵を想定して、適応度を評価します。
-		FitnessForBattle fitness = new FitnessForBattle();
-		if (!mAccessory.getAttr().isNone()) {
-			fitness.addEnemyWeak(mAccessory.getAttr());
-		}
-		return fitness;
-	}
-
-	private int calcDifference(Fitness fitness, Memoria before, Memoria after) {
-		mBeforeValue = fitness.calc(new Party(before));
-		mAfterValue = fitness.calc(new Party(after));
-		return mAfterValue.getValue() - mBeforeValue.getValue();
-	}
-
-	public int getFitness() {
-		return mFitness;
-	}
-
-	public ItemData getAccessory() {
-		return mAccessory;
-	}
-
-	public Memoria getMemoria() {
-		return mMemoria;
-	}
-
-	public int getHp() {
-		return mAfterValue.getHp() - mBeforeValue.getHp();
-	}
-	
-	public int getAttackDamage() {
-		return mAfterValue.getAttackDamage() - mBeforeValue.getAttackDamage();
-	}
-	
-	public int getDefenceDamage() {
-		return mAfterValue.getDefenceDamage() - mBeforeValue.getDefenceDamage();
-	}
-	
-	public int getRecovery() {
-		return mAfterValue.getRecovery() - mBeforeValue.getRecovery();
-	}
-	
-	@Override
-	public String toString() {
-		return mFitness + "," + mAccessory + "," + mMemoria;
-	}
 }

@@ -343,6 +343,43 @@ public class ItemDataSet {
 		mMagicAccessoryList.add(accessoryData);
 	}
 
+	public void remove(String name) {
+		removeWeapon(name);
+		removeMagicOrAccessory(name);
+	}
+
+	public void removeWeapon(ItemData weapon) {
+		removeWeapon(weapon.getName());
+	}
+
+	public void removeWeapon(String name) {
+		for (ItemData e : mWeaponList) {
+			if (e.getName().equals(name)) {
+				mWeaponList.remove(e);
+				break;
+			}
+		}
+	}
+
+	public void removeMagicOrAccessory(ItemData[] magicAccessoryArr) {
+		for (ItemData e : magicAccessoryArr) {
+			removeMagicOrAccessory(e);
+		}
+	}
+
+	public void removeMagicOrAccessory(ItemData magicOrAccessory) {
+		removeMagicOrAccessory(magicOrAccessory.getName());
+	}
+
+	public void removeMagicOrAccessory(String name) {
+		for (ItemData e : mMagicAccessoryList) {
+			if (e.getName().equals(name)) {
+				mMagicAccessoryList.remove(e);
+				break;
+			}
+		}
+	}
+
 	public List<ItemData> makeAllItemDataList() {
 		List<ItemData> list = new ArrayList<ItemData>();
 		list.addAll(mWeaponList);

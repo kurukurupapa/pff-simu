@@ -4,20 +4,14 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 
 public class AccessoryRankingTest {
-
-	/** ロガー */
-	private static Logger mLogger = Logger
-			.getLogger(AccessoryRankingTest.class);
 
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
@@ -39,7 +33,7 @@ public class AccessoryRankingTest {
 	}
 
 	@Test
-	public void testCalc() {
+	public void testCalc_パーティなし() {
 		// 準備
 
 		// テスト実行
@@ -79,6 +73,61 @@ public class AccessoryRankingTest {
 				+ "111,タフネスリング,アーロン+烈風+タフネスリング\n" //
 				+ "100,バルキーコート,ユウナ(No.48)+ケアルバングル+バルキーコート\n" //
 				+ "90,赤兎馬のたてがみ(レア3),ユウナ(No.48)+ケアルバングル+赤兎馬のたてがみ(レア3)\n" //
+		, actualStr);
+	}
+
+	@Test
+	public void testCalc_評価条件とパーティあり() {
+		// 準備
+		Fitness fitness = new FitnessForBattle();
+
+		Party party = new Party();
+		Memoria memoria = new Memoria(mMemoriaDataSet.find("元帥シド"));
+		memoria.setWeapon(mItemDataSet.find("おろち"));
+		memoria.addAccessory(mItemDataSet.find("マーシャルネイ"));
+		memoria.addAccessory(mItemDataSet.find("マーシャルネイ"));
+		party.add(memoria);
+		memoria = new Memoria(mMemoriaDataSet.find("パンネロ"));
+		memoria.setWeapon(mItemDataSet.find("ダンシングダガー"));
+		memoria.addAccessory(mItemDataSet.find("ファイアRF+3"));
+		party.add(memoria);
+
+		// テスト実行
+		sut.setParams(mMemoriaDataSet, mItemDataSet, fitness, party, 1);
+		sut.run();
+		List<AccessoryFitness> actual = sut.getFitnesses();
+		String actualStr = toString(actual);
+
+		// 検証
+		assertEquals("" //
+				// 2015/07/01
+				+"659,クリスタルの小手,パンネロ+ダンシングダガー+ファイアRF+3+クリスタルの小手\n" //
+				+"633,エクサイヤリング+1,パンネロ+ダンシングダガー+ファイアRF+3+エクサイヤリング+1\n" //
+				+"623,赤兎馬のたてがみ(レア5),パンネロ+ダンシングダガー+ファイアRF+3+赤兎馬のたてがみ(レア5)\n" //
+				+"588,パワーリスト,パンネロ+ダンシングダガー+ファイアRF+3+パワーリスト\n" //
+				+"577,宿炎の指輪,パンネロ+ダンシングダガー+ファイアRF+3+宿炎の指輪\n" //
+				+"566,SPの腕輪,パンネロ+ダンシングダガー+ファイアRF+3+SPの腕輪\n" //
+				+"518,エクサバックラー+2,パンネロ+ダンシングダガー+ファイアRF+3+エクサバックラー+2\n" //
+				+"515,ルフェインブーツ,パンネロ+ダンシングダガー+ファイアRF+3+ルフェインブーツ\n" //
+				+"486,疾風のかんざし,パンネロ+ダンシングダガー+ファイアRF+3+疾風のかんざし\n" //
+				+"432,ルフェインローブ,パンネロ+ダンシングダガー+ファイアRF+3+ルフェインローブ\n" //
+				+"342,エスカッション(レア4),パンネロ+ダンシングダガー+ファイアRF+3+エスカッション(レア4)\n" //
+				+"342,プラチナアーマー,パンネロ+ダンシングダガー+ファイアRF+3+プラチナアーマー\n" //
+				+"316,司祭のローブ,パンネロ+ダンシングダガー+ファイアRF+3+司祭のローブ\n" //
+				+"300,クロスヘルム,パンネロ+ダンシングダガー+ファイアRF+3+クロスヘルム\n" //
+				+"231,EXコア100%,パンネロ+ダンシングダガー+ファイアRF+3+EXコア100%\n" //
+				+"183,巨人の小手,パンネロ+ダンシングダガー+ファイアRF+3+巨人の小手\n" //
+				+"162,リストバンド,パンネロ+ダンシングダガー+ファイアRF+3+リストバンド\n" //
+				+"140,チャクラバンド,パンネロ+ダンシングダガー+ファイアRF+3+チャクラバンド\n" //
+				+"135,ハチマキ,パンネロ+ダンシングダガー+ファイアRF+3+ハチマキ\n" //
+				+"100,バルキーコート,パンネロ+ダンシングダガー+ファイアRF+3+バルキーコート\n" //
+				+"90,赤兎馬のたてがみ(レア3),パンネロ+ダンシングダガー+ファイアRF+3+赤兎馬のたてがみ(レア3)\n" //
+				+"48,タフネスリング,パンネロ+ダンシングダガー+ファイアRF+3+タフネスリング\n" //
+				+"0,炎の指輪,パンネロ+ダンシングダガー+ファイアRF+3+炎の指輪\n" //
+				+"0,冷気の指輪,パンネロ+ダンシングダガー+ファイアRF+3+冷気の指輪\n" //
+				+"0,雷の指輪,パンネロ+ダンシングダガー+ファイアRF+3+雷の指輪\n" //
+				+"0,水の指輪,パンネロ+ダンシングダガー+ファイアRF+3+水の指輪\n" //
+				+"0,闇の指輪,パンネロ+ダンシングダガー+ファイアRF+3+闇の指輪\n" //
 		, actualStr);
 	}
 
