@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kurukurupapa.pff.domain.Attr;
+import com.kurukurupapa.pff.domain.AppException;
+import com.kurukurupapa.pff.domain.BattleType;
 
 /**
  * 適応度クラス（通常バトル用）
@@ -16,12 +18,16 @@ public class FitnessForBattle extends Fitness {
 	/** 1バトルあたりのチャージ */
 	protected static final int CHARGE_PER_BATTLE = CHARGE_PER_TURN * TURN;
 
+	/** バトル形式 */
+	protected BattleType mBattleType;
 	/** 敵の弱点属性 */
 	protected List<Attr> mWeakList;
 	/** 敵の耐性属性 */
 	protected List<Attr> mResistanceList;
 	/** 敵の物理防御 */
 	protected int mPhysicalResistance;
+	/** 敵の魔法防御 */
+	protected int mMagicResistance;
 
 	/** 敵の力 */
 	protected int mEnemyPower;
@@ -30,6 +36,7 @@ public class FitnessForBattle extends Fitness {
 	 * コンストラクタ
 	 */
 	public FitnessForBattle() {
+		mBattleType = BattleType.NORMAL;
 		mWeakList = new ArrayList<Attr>();
 		mResistanceList = new ArrayList<Attr>();
 	}
@@ -40,7 +47,10 @@ public class FitnessForBattle extends Fitness {
 		// 案１：とりあえず、パーティの力の平均を、敵の力とします。
 		// mEnemyPower = party.getAveragePower();
 		// 案２：敵1体、自メモリア4対での戦いを想定し、敵は自メモリアの4倍の力とします。
-		mEnemyPower = party.getAveragePower() * 4;
+		// →素早さの評価が上がりすぎる気がする。
+		// mEnemyPower = party.getAveragePower() * 4;
+		// 案３：案２の微調整
+		mEnemyPower = party.getAveragePower() * 2;
 
 		return super.calc(party);
 	}
@@ -54,7 +64,8 @@ public class FitnessForBattle extends Fitness {
 
 		// 物理/魔法与ダメージ
 		value.setAttackDamage(memoria.getAttackDamage(TURN, CHARGE_PER_BATTLE,
-				mWeakList, mResistanceList, mPhysicalResistance));
+				mWeakList, mResistanceList, mPhysicalResistance,
+				mMagicResistance));
 
 		// 物理被ダメージ
 		value.setPhysicalDefenceDamage(memoria.getPhysicalDefenceDamage(TURN,
@@ -67,11 +78,42 @@ public class FitnessForBattle extends Fitness {
 		value.setRecovery(memoria.getRecovery(TURN, CHARGE_PER_BATTLE));
 
 		// 評価
-		value.setValue(value.getHp() + value.getAttackDamage()
-				+ value.getPhysicalDefenceDamage()
-				+ value.getMagicDefenceDamage() + value.getRecovery());
+		switch (mBattleType) {
+		case NORMAL:
+			value.setValue(value.getHp() + value.getAttackDamage()
+					+ value.getDefenceDamage() + value.getRecovery());
+			break;
+		case ATTACK:
+			value.setValue(value.getHp() + value.getAttackDamage() * 2
+					+ value.getDefenceDamage() + value.getRecovery());
+			break;
+		case RECOVERY:
+			value.setValue(value.getHp() + value.getAttackDamage()
+					+ value.getDefenceDamage() + value.getRecovery() * 2);
+			break;
+		case HP_DEFENCE_RECOVERY:
+			value.setValue(value.getHp() * 2 + value.getAttackDamage()
+					+ value.getDefenceDamage() * 2 + value.getRecovery() * 2);
+			break;
+		case EXA_BATTLIA:
+			value.setValue(value.getAttackDamage());
+			break;
+		default:
+			throw new AppException("想定外のバトル形式です。mBattleType="
+					+ mBattleType.getText());
+		}
 
 		return value;
+	}
+
+	/**
+	 * バトル形式を設定します。
+	 * 
+	 * @param battleType
+	 *            バトル形式
+	 */
+	public void setBattleType(BattleType battleType) {
+		mBattleType = battleType;
 	}
 
 	/**
@@ -106,6 +148,10 @@ public class FitnessForBattle extends Fitness {
 	 */
 	public void setEnemyPhysicalResistance(int physicalResistance) {
 		mPhysicalResistance = physicalResistance;
+	}
+
+	public void setEnemyMagicResistance(int magicResistance) {
+		mMagicResistance = magicResistance;
 	}
 
 }

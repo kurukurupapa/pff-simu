@@ -14,7 +14,8 @@ public class FitnessForExaBattlia extends FitnessForBattle {
 
 		// 物理/魔法与ダメージ
 		value.setAttackDamage(memoria.getAttackDamage(TURN, CHARGE_PER_BATTLE,
-				mWeakList, mResistanceList, mPhysicalResistance));
+				mWeakList, mResistanceList, mPhysicalResistance,
+				mMagicResistance));
 
 		// 物理被ダメージ
 		value.setPhysicalDefenceDamage(memoria.getPhysicalDefenceDamage(TURN,

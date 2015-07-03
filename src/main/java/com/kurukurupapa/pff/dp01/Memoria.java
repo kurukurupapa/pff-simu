@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
 
 import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BlackMagicItemDataEx;
@@ -133,6 +134,7 @@ public class Memoria implements Cloneable {
 	}
 
 	public void setWeapon(ItemData weaponData) {
+		Validate.notNull(weaponData);
 		if (!validWeaponData(weaponData)) {
 			throw new RuntimeException("メモリア[" + getName() + "]に武器["
 					+ weaponData.getName() + "]を設定できません。");
@@ -157,6 +159,7 @@ public class Memoria implements Cloneable {
 	}
 
 	public void addAccessory(ItemData accessoryData) {
+		Validate.notNull(accessoryData);
 		if (!validAccessoryData(accessoryData)) {
 			throw new RuntimeException("メモリア[" + getName() + "]にアクセサリ["
 					+ accessoryData.getName() + "]を設定できません。");
@@ -277,7 +280,7 @@ public class Memoria implements Cloneable {
 	 */
 	public int getAttackDamage(int turn, int charge) {
 		return getAttackDamage(turn, charge, new ArrayList<Attr>(),
-				new ArrayList<Attr>(), 0);
+				new ArrayList<Attr>(), 0, 0);
 	}
 
 	/**
@@ -287,7 +290,7 @@ public class Memoria implements Cloneable {
 	 */
 	public int getAttackDamage(int turn, int charge, List<Attr> weakList,
 			List<Attr> resistanceList) {
-		return getAttackDamage(turn, charge, weakList, resistanceList, 0);
+		return getAttackDamage(turn, charge, weakList, resistanceList, 0, 0);
 	}
 
 	/**
@@ -306,7 +309,8 @@ public class Memoria implements Cloneable {
 	 * @return 与ダメージ
 	 */
 	public int getAttackDamage(int turn, int charge, List<Attr> weakList,
-			List<Attr> resistanceList, int physicalResistance) {
+			List<Attr> resistanceList, int physicalResistance,
+			int magicResistance) {
 		int damage = 0;
 		int tmp = 0;
 
@@ -321,7 +325,7 @@ public class Memoria implements Cloneable {
 			BlackMagicItemDataEx ex = e.getBlackMagicEx();
 			if (ex != null) {
 				int black = getAttackDamageForBlackMagic(e, weakList,
-						resistanceList);
+						resistanceList, magicResistance);
 				int magicTimes = (int) (charge / ex.getMagicCharge());
 				int physicalTimes = turn - magicTimes;
 				tmp = black * magicTimes + physical * physicalTimes;
@@ -410,14 +414,15 @@ public class Memoria implements Cloneable {
 	}
 
 	protected int getAttackDamageForBlackMagic(ItemData blackMagic,
-			List<Attr> weakList, List<Attr> resistanceList) {
+			List<Attr> weakList, List<Attr> resistanceList, int magicResistance) {
 		if (blackMagic == null) {
 			return 0;
 		}
 		return (int) (blackMagic.getBlackMagicEx().getAttackDamage(
 				getIntelligence(),
-				getMemoriaData().getMagicAttack(MagicType.BLACK)) * getAttrRateForBlackMagic(
-				blackMagic, weakList, resistanceList));
+				getMemoriaData().getMagicAttack(MagicType.BLACK),
+				magicResistance) * getAttrRateForBlackMagic(blackMagic,
+				weakList, resistanceList));
 	}
 
 	protected int getAttackDamageForSummonMagic(ItemData summonMagic,

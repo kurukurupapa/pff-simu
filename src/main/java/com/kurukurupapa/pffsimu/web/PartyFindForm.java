@@ -5,14 +5,12 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
+import com.kurukurupapa.pff.domain.BattleType;
+
 /**
  * パーティ検討フォームクラス
  */
 public class PartyFindForm {
-	/** バトル形式 通常バトル */
-	public static final String BATTLE_TYPE_NORMAL = "1";
-	/** バトル形式 エクサバトリア */
-	public static final String BATTLE_TYPE_EXA_BATTLIA = "2";
 
 	/** バトル形式 */
 	@NotEmpty
@@ -28,23 +26,23 @@ public class PartyFindForm {
 	@Range(min = 0, max = 1000)
 	private int physicalResistance;
 
+	/** 敵の魔法防御 */
+	@Range(min = 0, max = 1000)
+	private int magicResistance;
+
 	/**
 	 * コンストラクタ
 	 */
 	public PartyFindForm() {
-		battleType = BATTLE_TYPE_NORMAL;
+		battleType = BattleType.NORMAL.name();
 	}
 
 	public String getBattleType() {
 		return battleType;
 	}
 
-	public boolean isBattleTypeNormal() {
-		return BATTLE_TYPE_NORMAL.equals(battleType);
-	}
-
-	public boolean isBattleTypeExaBattlia() {
-		return BATTLE_TYPE_EXA_BATTLIA.equals(battleType);
+	public BattleType getBattleTypeObj() {
+		return BattleType.valueOf(battleType);
 	}
 
 	public void setBattleType(String battleType) {
@@ -73,6 +71,14 @@ public class PartyFindForm {
 
 	public void setPhysicalResistance(int physicalResistance) {
 		this.physicalResistance = physicalResistance;
+	}
+
+	public int getMagicResistance() {
+		return magicResistance;
+	}
+
+	public void setMagicResistance(int magicResistance) {
+		this.magicResistance = magicResistance;
 	}
 
 	@Override

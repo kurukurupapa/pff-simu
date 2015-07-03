@@ -7,7 +7,6 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="icon" href="./favicon.ico" />
 
     <title th:text="#{project_name}">Dashboard Template for Bootstrap</title>
 
@@ -75,11 +74,14 @@
             </div>
             <div class="form-group">
               <label>バトル形式</label><br/>
-              <label class="radio-inline">
+              <label class="radio-inline" th:if="${battleTypes}==null">
                 <input type="radio" name="battleType" value="1" th:checked="${#strings.equals(form.battleType,'1')}" />通常バトル
               </label>
-              <label class="radio-inline">
+              <label class="radio-inline" th:if="${battleTypes}==null">
                 <input type="radio" name="battleType" value="2" th:checked="${#strings.equals(form.battleType,'2')}" />エクサバトリア
+              </label>
+              <label class="radio-inline" th:each="e:${battleTypes}">
+                <input type="radio" name="battleType" th:value="${e.name}" th:checked="${#strings.equals(form.battleType,e.name)}" /><span th:text="${e.text}">通常バトル</span>
               </label>
             </div>
             <div class="form-group">
@@ -97,6 +99,10 @@
             <div class="form-group">
               <label for="physicalResistance">敵の物理防御</label>
               <input type="number" class="form-control" id="physicalResistance" name="physicalResistance" placeholder="数値を入力してください。" th:value="*{physicalResistance}" />
+            </div>
+            <div class="form-group">
+              <label for="magicResistance">敵の魔法防御</label>
+              <input type="number" class="form-control" id="magicResistance" name="magicResistance" placeholder="数値を入力してください。" th:value="*{magicResistance}" />
             </div>
           <!--
           <h2 class="sub-header">検討結果</h2>
@@ -120,9 +126,9 @@
               <table class="table table-striped">
                 <thead>
                   <tr>
-                    <th><span class="glyphicon glyphicon-user"></span>メモリア</th>
-                    <th><span class="glyphicon glyphicon-asterisk"></span>武器</th>
-                    <th><span class="glyphicon glyphicon-asterisk"></span>アクセサリ</th>
+                    <th><span class="glyphicon glyphicon-user"></span> メモリア</th>
+                    <th><span class="glyphicon glyphicon-asterisk"></span> 武器</th>
+                    <th><span class="glyphicon glyphicon-asterisk"></span> アクセサリ</th>
                     <!--
                     <th>メモリア+武器+アクセサリ+スキル</th>
                     -->
@@ -130,9 +136,9 @@
                 </thead>
                 <tbody>
                   <tr th:each="memoria : ${party.memoriaList}">
-                    <td><span class="glyphicon glyphicon-user" th:text="${memoria.name}">メモリア</span></td>
-                    <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-asterisk" th:text="${memoria.weapon.name}">武器</span></span></td>
-                    <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-asterisk" th:text="${e.name}">アクセサリ</span></span></td>
+                    <td><span class="glyphicon glyphicon-user"></span> <span th:text="${memoria.name}">メモリア</span></td>
+                    <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.weapon.name}">武器</span></span></td>
+                    <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${e.name}">アクセサリ</span> </span></td>
                     <!--
                     <td><span th:text="${memoria}">メモリア+武器+アクセサリ+スキル</span></td>
                     -->
@@ -157,7 +163,7 @@
                     <td>評価値</td>
                     <td><span th:text="${party.fitnessObj.value}">12345</span>ポイント</td>
                   </tr>
-                  <tr th:if="${form.battleTypeNormal}">
+                  <tr>
                     <td>HP</td>
                     <td><span th:text="${party.fitnessObj.hp}">1234</span></td>
                   </tr>
@@ -165,11 +171,11 @@
                     <td>物理/魔法与ダメージ</td>
                     <td><span th:text="${party.fitnessObj.attackDamage}">1234</span></td>
                   </tr>
-                  <tr th:if="${form.battleTypeNormal}">
+                  <tr>
                     <td>物理/魔法被ダメージ</td>
                     <td><span th:text="${party.fitnessObj.defenceDamage}">1234</span></td>
                   </tr>
-                  <tr th:if="${form.battleTypeNormal}">
+                  <tr>
                     <td>回復量</td>
                     <td><span th:text="${party.fitnessObj.recovery}">1234</span></td>
                   </tr>

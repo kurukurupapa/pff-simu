@@ -9,7 +9,6 @@ import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BattleType;
 import com.kurukurupapa.pff.dp01.Fitness;
 import com.kurukurupapa.pff.dp01.FitnessForBattle;
-import com.kurukurupapa.pff.dp01.FitnessForExaBattlia;
 
 /**
  * パーティメーカー機能 評価条件入力フォームクラス
@@ -18,7 +17,7 @@ public class ConditionForm {
 
 	/** バトル形式 */
 	@NotEmpty
-	private BattleType battleType;
+	private String battleType;
 
 	/** 敵の弱点属性 */
 	private String[] enemyWeakPoints = new String[] {};
@@ -30,19 +29,27 @@ public class ConditionForm {
 	@Range(min = 0, max = 1000)
 	private int physicalResistance;
 
+	/** 敵の魔法防御 */
+	@Range(min = 0, max = 1000)
+	private int magicResistance;
+
 	/**
 	 * コンストラクタ
 	 */
 	public ConditionForm() {
-		battleType = BattleType.NORMAL;
+		battleType = BattleType.NORMAL.name();
 	}
 
-	public BattleType getBattleType() {
+	public String getBattleType() {
 		return battleType;
 	}
 
+	public BattleType getBattleTypeObj() {
+		return BattleType.valueOf(battleType);
+	}
+
 	public void setBattleType(String battleType) {
-		this.battleType = BattleType.valueOf(battleType);
+		this.battleType = battleType;
 	}
 
 	public String[] getEnemyWeakPoints() {
@@ -69,21 +76,17 @@ public class ConditionForm {
 		this.physicalResistance = physicalResistance;
 	}
 
+	public int getMagicResistance() {
+		return magicResistance;
+	}
+
+	public void setMagicResistance(int magicResistance) {
+		this.magicResistance = magicResistance;
+	}
+
 	public Fitness getFitness() {
-		FitnessForBattle fitness;
-
-		switch (getBattleType()) {
-		case NORMAL:
-			fitness = new FitnessForBattle();
-			break;
-		case EXA_BATTLIA:
-			fitness = new FitnessForExaBattlia();
-			break;
-		default:
-			fitness = new FitnessForBattle();
-			break;
-		}
-
+		FitnessForBattle fitness = new FitnessForBattle();
+		fitness.setBattleType(getBattleTypeObj());
 		for (String e : enemyWeakPoints) {
 			fitness.addEnemyWeak(Attr.valueOf(e));
 		}
@@ -91,6 +94,7 @@ public class ConditionForm {
 			fitness.addEnemyResistance(Attr.valueOf(e));
 		}
 		fitness.setEnemyPhysicalResistance(physicalResistance);
+		fitness.setEnemyMagicResistance(magicResistance);
 
 		return fitness;
 	}
