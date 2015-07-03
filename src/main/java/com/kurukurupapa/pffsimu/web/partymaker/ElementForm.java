@@ -1,5 +1,7 @@
 package com.kurukurupapa.pffsimu.web.partymaker;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -12,8 +14,8 @@ public class ElementForm {
 	 * 
 	 * 要素リストのうち、ユーザが選択したインデックスが設定されます。負の値は未選択を表します。
 	 */
-	@NotEmpty
-	private int btn;
+	@NotNull
+	private Integer btn;
 
 	public int getBtn() {
 		return btn;

@@ -22,9 +22,9 @@ public class MagicRankingTest {
 	public static void setUpBeforeClass() throws Exception {
 		// データ読み込み
 		mItemDataSet = new ItemDataSet();
-		mItemDataSet.readUserFile();
+		mItemDataSet.readTestFile();
 		mMemoriaDataSet = new MemoriaDataSet(mItemDataSet);
-		mMemoriaDataSet.readUserFile();
+		mMemoriaDataSet.readTestFile();
 	}
 
 	@Before
@@ -44,8 +44,7 @@ public class MagicRankingTest {
 
 		// 検証
 		assertEquals("" //
-				// 2015/06/27
-				+ "1845,ファイアRF+3,パンネロ+ファイアRF+3\n" //
+				+ "1780,ファイアRF+3,パンネロ+ファイアRF+3\n" //
 				+ "1696,ファイラ,パンネロ+ファイラ\n" //
 				+ "1696,ブリザラ,パンネロ+ブリザラ\n" //
 				+ "1696,ウォタラ,パンネロ+ウォタラ\n" //
@@ -53,8 +52,8 @@ public class MagicRankingTest {
 				+ "1502,タイタン,ティナ+タイタン\n" //
 				+ "1502,ディアボロス,ティナ+ディアボロス\n" //
 				+ "732,ケアル,ヴァニラ+ケアル\n" //
-				+ "667,プロテアバングル,元帥シド+プロテアバングル\n" //
 				+ "658,ケアルラ,ヴァニラ+ケアルラ\n" //
+				+ "596,プロテアバングル,元帥シド+プロテアバングル\n" //
 				+ "542,シヴァ,ティナ+シヴァ\n" //
 				+ "382,シルフ,ティナ+シルフ\n" //
 				+ "263,ケアルバングル,ヴァニラ+ケアルバングル\n" //

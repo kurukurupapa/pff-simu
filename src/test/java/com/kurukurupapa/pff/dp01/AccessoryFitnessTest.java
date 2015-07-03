@@ -2,7 +2,6 @@ package com.kurukurupapa.pff.dp01;
 
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,10 +14,6 @@ public class AccessoryFitnessTest {
 	/** 1バトルあたりのターン数 */
 	private static final int TURN = 10;
 
-	/** ロガー */
-	private static Logger mLogger = Logger
-			.getLogger(AccessoryFitnessTest.class);
-
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
@@ -28,9 +23,9 @@ public class AccessoryFitnessTest {
 	public static void setUpBeforeClass() throws Exception {
 		// データ読み込み
 		mItemDataSet = new ItemDataSet();
-		mItemDataSet.readMasterFile();
+		mItemDataSet.readTestFile();
 		mMemoriaDataSet = new MemoriaDataSet(mItemDataSet);
-		mMemoriaDataSet.readMasterFile();
+		mMemoriaDataSet.readTestFile();
 	}
 
 	@Before
@@ -67,7 +62,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("361,ルフェインブーツ,アーロン+ルフェインブーツ", actual);
+		assertEquals("180,ルフェインブーツ,アーロン+ルフェインブーツ", actual);
 	}
 
 	@Test
@@ -97,7 +92,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("1520,風の指輪,アーロン+烈風+風の指輪", actual);
+		assertEquals("2270,風の指輪,アーロン+烈風+風の指輪", actual);
 	}
 
 	@Test
@@ -113,7 +108,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("520,炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪", actual);
+		assertEquals("550,炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪", actual);
 	}
 
 }

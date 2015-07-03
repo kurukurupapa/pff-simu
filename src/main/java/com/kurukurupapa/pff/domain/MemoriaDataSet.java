@@ -40,7 +40,8 @@ public class MemoriaDataSet implements Iterable<MemoriaData> {
 	}
 
 	public void readTestFile() {
-		readFile("/memoriaUser_201503.txt");
+		// readFile("/memoriaUser_201503.txt");
+		readFile("/memoriaTest.txt");
 	}
 
 	public void read() {

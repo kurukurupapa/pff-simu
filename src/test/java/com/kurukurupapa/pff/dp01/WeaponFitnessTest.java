@@ -19,9 +19,9 @@ public class WeaponFitnessTest {
 	public static void setUpBeforeClass() throws Exception {
 		// データ読み込み
 		mItemDataSet = new ItemDataSet();
-		mItemDataSet.readMasterFile();
+		mItemDataSet.readTestFile();
 		mMemoriaDataSet = new MemoriaDataSet(mItemDataSet);
-		mMemoriaDataSet.readMasterFile();
+		mMemoriaDataSet.readTestFile();
 	}
 
 	@Before
@@ -40,7 +40,7 @@ public class WeaponFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("4548,烈風,アーロン+烈風", actual);
+		assertEquals("6764,烈風,アーロン+烈風", actual);
 	}
 
 }

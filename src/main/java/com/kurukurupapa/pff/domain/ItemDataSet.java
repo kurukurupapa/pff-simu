@@ -204,6 +204,12 @@ public class ItemDataSet {
 				Attr.NONE, "元帥シド", 2));
 	}
 
+	public void readTestFile() {
+		// readWeapon();
+		// readAccessory();
+		readFile("/itemTest.txt");
+	}
+
 	public void readUserFile() {
 		readFile("/itemUser.txt");
 	}

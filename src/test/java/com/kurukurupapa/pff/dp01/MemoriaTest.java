@@ -231,7 +231,7 @@ public class MemoriaTest {
 
 		// テスト実行
 		int actual = sut.getAttackDamageForBlackMagic(null,
-				new ArrayList<Attr>(), new ArrayList<Attr>());
+				new ArrayList<Attr>(), new ArrayList<Attr>(), 0);
 
 		// 検証
 		assertThat(actual, is(0));
@@ -245,7 +245,7 @@ public class MemoriaTest {
 
 		// テスト実行
 		int actual = sut.getAttackDamageForBlackMagic(sut.mAccessoryDataArr[0],
-				new ArrayList<Attr>(), new ArrayList<Attr>());
+				new ArrayList<Attr>(), new ArrayList<Attr>(), 0);
 
 		// 検証
 		assertThat(actual, is((int) ((TINA_INTELLIGENCE + 50)

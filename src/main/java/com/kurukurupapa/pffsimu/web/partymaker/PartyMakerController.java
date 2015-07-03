@@ -1,12 +1,14 @@
 package com.kurukurupapa.pffsimu.web.partymaker;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kurukurupapa.pff.domain.Attr;
@@ -52,8 +54,9 @@ public class PartyMakerController {
 	}
 
 	@RequestMapping(value = "/condition", params = { "nextBtn" })
-	public String postCondition(HttpSession session, ConditionForm form,
-			BindingResult result, Model model) {
+	public String postCondition(HttpSession session,
+			@Valid @ModelAttribute ConditionForm form, BindingResult result,
+			Model model) {
 		logger.info("postCondition start");
 
 		SessionHelper sessionHelper = new SessionHelper(session);
@@ -86,7 +89,8 @@ public class PartyMakerController {
 	}
 
 	@RequestMapping(value = "/target", params = { "btn" })
-	public String postTarget(HttpSession session, TargetForm form, Model model) {
+	public String postTarget(HttpSession session,
+			@Valid @ModelAttribute TargetForm form, Model model) {
 		logger.info("postTarget start");
 
 		SessionHelper sessionHelper = new SessionHelper(session);
@@ -112,7 +116,8 @@ public class PartyMakerController {
 	}
 
 	@RequestMapping(value = "/element", params = { "btn" })
-	public String postElement(HttpSession session, ElementForm form, Model model) {
+	public String postElement(HttpSession session,
+			@Valid @ModelAttribute ElementForm form, Model model) {
 		logger.info("postElement start");
 
 		partyMakerService.postElement(session, form, model);
