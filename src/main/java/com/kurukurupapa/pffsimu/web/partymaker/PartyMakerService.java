@@ -165,11 +165,13 @@ public class PartyMakerService {
 			TargetForm.Operation operation, int memoriaIndex,
 			int magicAccessoryIndex, int rankingIndex, Party party) {
 		// 編集対象の削除
-		if (operation.equals(TargetForm.Operation.EDIT)) {
+		if (operation.equals(TargetForm.Operation.EDIT)
+				|| operation.equals(TargetForm.Operation.DELETE)) {
 			party.getMemoria(memoriaIndex).removeAccessory(magicAccessoryIndex);
 		}
 		// 選択されていたら追加
-		if (rankingIndex >= 0) {
+		if ((operation.equals(TargetForm.Operation.ADD) || operation
+				.equals(TargetForm.Operation.EDIT)) && rankingIndex >= 0) {
 			party.getMemoria(memoriaIndex).addAccessory(
 					sessionHelper.getMagicAccessoryRanking().get(rankingIndex)
 							.getItem());
@@ -181,7 +183,9 @@ public class PartyMakerService {
 	private Party getPartyForRanking(SessionHelper sessionHelper) {
 		Party party = sessionHelper.getParty().clone();
 		TargetForm targetForm = sessionHelper.getTarget();
-		if (targetForm.getOperation().equals(TargetForm.Operation.EDIT)) {
+		if (targetForm.getOperation().equals(TargetForm.Operation.EDIT)
+				|| targetForm.getOperation()
+						.equals(TargetForm.Operation.DELETE)) {
 			int memoriaIndex = targetForm.getIndex();
 			switch (targetForm.getKind()) {
 			case MEMORIA:

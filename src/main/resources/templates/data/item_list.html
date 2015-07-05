@@ -69,71 +69,52 @@
     <div class="container theme-showcase" role="main">
 
       <div class="page-header">
-        <h1>パーティメーカー</h1>
+        <h1>データ管理</h1>
       </div>
 
-      <h2>要素選択</h2>
-      <p>パーティに含めたい要素を選んでください。</p>
-      <form method="post" th:action="@{/partymaker/element}">
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>選択</th>
-                <th>
-                  <span th:if="${targetForm.kind.name}=='MEMORIA'"><span class="glyphicon glyphicon-user"></span> メモリア</span>
-                  <span th:if="${targetForm.kind.name}=='WEAPON'"><span class="glyphicon glyphicon-thumbs-up"></span> 武器</span>
-                  <span th:if="${targetForm.kind.name}=='ACCESSORY1' or ${targetForm.kind.name}=='ACCESSORY2'"><span class="glyphicon glyphicon-leaf"></span> 魔法/アクセサリ</span>
-                </th>
-                <th>
-                  <span th:if="${targetForm.kind.name}=='MEMORIA'">装備</span>
-                  <span th:if="${targetForm.kind.name}!='MEMORIA'">装備例</span>
-                </th>
-                <th class="number">評価値</th>
-                <th class="number">HP</th>
-                <th class="number">攻撃値</th>
-                <th class="number">物理防御値</th>
-                <th class="number">魔法防御値</th>
-                <th class="number">回復値</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr th:each="e : ${ranking}">
-                <td><button type="submit" name="btn" class="btn btn-primary" th:value="${eStat.index}">選択</button></td>
-                <td>
-                  <span th:if="${targetForm.kind.name}=='MEMORIA'" th:text="${e.memoria.name}">アーロン</span>
-                  <span th:if="${targetForm.kind.name}!='MEMORIA'" th:text="${e.item.name}">アイテム名</span>
-                </td>
-                <td>
-                  <span th:if="${targetForm.kind.name}=='MEMORIA'" th:text="${e.memoria}">アーロン+おろち+クリスタルの小手+エクサバックラー+2+アーロンLS</span>
-                  <span th:if="${targetForm.kind.name}!='MEMORIA'" th:text="${e.memoria}">装備例</span>
-                </td>
-                <td class="number">
-                  <span th:if="${targetForm.kind.name}=='MEMORIA'" th:text="${e.value}">12345</span>
-                  <span th:if="${targetForm.kind.name}!='MEMORIA'" th:text="${e.fitness}">12345</span>
-                </td>
-                <td class="number" th:text="${e.hp}">1234</td>
-                <td class="number" th:text="${e.attackDamage}">1234</td>
-                <td class="number" th:text="${e.physicalDefenceDamage}">1234</td>
-                <td class="number" th:text="${e.magicDefenceDamage}">1234</td>
-                <td class="number" th:text="${e.recovery}">1234</td>
-              </tr>
-              <tr>
-                <td><button type="submit" class="btn btn-primary" name="btn" th:value="'-1'">選択</button></td>
-                <td>なし</td>
-                <td></td>
-                <td class="number"></td>
-                <td class="number"></td>
-                <td class="number"></td>
-                <td class="number"></td>
-                <td class="number"></td>
-                <td class="number"></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <button type="submit" class="btn btn-default" name="backBtn">戻る</button>
-      </form>
+      <h2>アイテム一覧</h2>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>大分類</th>
+              <th>中分類</th>
+              <th>名前</th>
+              <th class="number">HP</th>
+              <th class="number">力</th>
+              <th class="number">素早さ</th>
+              <th class="number">知性</th>
+              <th class="number">幸運</th>
+              <th class="number">物理防御特性</th>
+              <th class="number">魔法防御特性</th>
+              <th class="number">魔法チャージ</th>
+              <th class="number">魔法効果値</th>
+              <th>属性</th>
+              <th>対象メモリア</th>
+              <th class="number">個数</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="e : ${items}">
+              <td th:text="${e.itemType.text}">大分類</td>
+              <td th:text="${e.itemType2.text}">中分類</td>
+              <td th:text="${e.name}">名前</td>
+              <td class="number" th:text="${e.hpStr}">HP</td>
+              <td class="number" th:text="${e.powerStr}">力</td>
+              <td class="number" th:text="${e.speedStr}">素早さ</td>
+              <td class="number" th:text="${e.intelligenceStr}">知性</td>
+              <td class="number" th:text="${e.luckStr}">幸運</td>
+              <td class="number" th:text="${e.physicalDefence}">物理防御特性</td>
+              <td class="number" th:text="${e.magicDefence}">魔法防御特性</td>
+              <td class="number"><span th:if="${e.magicEx}!=null" th:text="${e.magicEx.magicCharge}">魔法チャージ</span></td>
+              <td class="number"><span th:if="${e.magicEx}!=null" th:text="${e.magicEx.magicEffect}">魔法効果値</span></td>
+              <td th:text="${e.attr.shortText}">属性</td>
+              <td th:text="${e.memoriaName}">対象メモリア</td>
+              <td class="number" th:text="${e.number}">個数</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
 
       <hr/>

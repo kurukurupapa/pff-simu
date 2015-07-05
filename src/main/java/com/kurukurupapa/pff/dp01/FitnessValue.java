@@ -47,9 +47,20 @@ public class FitnessValue {
 	}
 
 	public int getDefenceDamage() {
+		return getPhysicalDefenceDamage() + getMagicDefenceDamage();
+	}
+
+	public int getPhysicalDefenceDamage() {
 		int value = 0;
 		for (MemoriaFitnessValue e : mMemoriaFitnessValues) {
 			value += e.getPhysicalDefenceDamage();
+		}
+		return value;
+	}
+
+	public int getMagicDefenceDamage() {
+		int value = 0;
+		for (MemoriaFitnessValue e : mMemoriaFitnessValues) {
 			value += e.getMagicDefenceDamage();
 		}
 		return value;

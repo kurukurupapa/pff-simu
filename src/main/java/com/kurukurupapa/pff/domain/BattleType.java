@@ -6,6 +6,9 @@ package com.kurukurupapa.pff.domain;
 public enum BattleType {
 	NORMAL("バランス"), //
 	ATTACK("攻撃重視"), //
+	DEFENCE("防御重視"), //
+	PHYSICAL_DEFENCE("物理防御重視"), //
+	MAGIC_DEFENCE("魔法防御重視"), //
 	RECOVERY("回復重視"), //
 	HP_DEFENCE_RECOVERY("HP・防御・回復重視"), //
 	EXA_BATTLIA("エクサバトリア"), //

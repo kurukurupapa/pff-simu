@@ -96,6 +96,14 @@ public abstract class ItemFitness {
 		return mAfterValue.getDefenceDamage() - mBeforeValue.getDefenceDamage();
 	}
 
+	public int getPhysicalDefenceDamage() {
+		return mAfterValue.getPhysicalDefenceDamage() - mBeforeValue.getPhysicalDefenceDamage();
+	}
+
+	public int getMagicDefenceDamage() {
+		return mAfterValue.getMagicDefenceDamage() - mBeforeValue.getMagicDefenceDamage();
+	}
+
 	public int getRecovery() {
 		return mAfterValue.getRecovery() - mBeforeValue.getRecovery();
 	}

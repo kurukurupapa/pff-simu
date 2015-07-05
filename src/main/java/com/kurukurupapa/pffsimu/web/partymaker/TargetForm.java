@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 public class TargetForm {
 	public enum Operation {
-		ADD, EDIT
+		ADD, EDIT, DELETE
 	}
 
 	public enum Kind {

@@ -76,6 +76,7 @@ public class PartyMakerController {
 		logger.info("getTargetForm start");
 
 		SessionHelper sessionHelper = new SessionHelper(session);
+		model.addAttribute("conditionForm", sessionHelper.getCondition());
 		model.addAttribute("form", sessionHelper.getTarget());
 		model.addAttribute("party", sessionHelper.getParty());
 
@@ -95,16 +96,27 @@ public class PartyMakerController {
 
 		SessionHelper sessionHelper = new SessionHelper(session);
 		form.parse();
-		sessionHelper.setTarget(form);
+		String view;
+		if (form.getOperation().equals(TargetForm.Operation.DELETE)) {
+			ElementForm elementForm = new ElementForm();
+			elementForm.setBtn(-1);
+			partyMakerService.postElement(session, elementForm, model);
+			view = getTargetForm(session, model);
+		} else {
+			sessionHelper.setTarget(form);
+			view = getElement(session, model);
+		}
 
 		logger.info("postTarget end");
-		return getElement(session, model);
+		return view;
 	}
 
 	public String getElement(HttpSession session, Model model) {
 		logger.info("getElement start");
 
+		SessionHelper sessionHelper = new SessionHelper(session);
 		partyMakerService.makeElement(session, model);
+		model.addAttribute("conditionForm", sessionHelper.getCondition());
 
 		logger.info("getElement end");
 		return "partymaker/element";

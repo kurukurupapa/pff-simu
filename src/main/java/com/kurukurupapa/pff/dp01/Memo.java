@@ -110,7 +110,7 @@ public class Memo {
                 maxWeapons, accessoryIndex, maxAccessories);
         Party party = mHashMap.get(memoKey);
         if (party != null) {
-            mLogger.debug("get(" + memoKey + "), Hit");
+            //mLogger.debug("get(" + memoKey + "), Hit");
             party = new Party(party);
         }
         return party;
@@ -145,7 +145,7 @@ public class Memo {
         Party newParty = new Party(party);
         MemoKey memoKey = new MemoKey(memoriaIndex, maxMemoria, weaponIndex,
                 maxWeapons, accessoryIndex, maxAccessories);
-        mLogger.debug("put(" + memoKey + ",[" + newParty + "])");
+        //mLogger.debug("put(" + memoKey + ",[" + newParty + "])");
         mHashMap.put(memoKey, newParty);
     }
 

@@ -147,6 +147,10 @@ public class MemoriaDataSet implements Iterable<MemoriaData> {
 		mMemoriaDataList.remove(index);
 	}
 
+	public List<MemoriaData> getMemoriaDataList() {
+		return mMemoriaDataList;
+	}
+
 	public List<MemoriaData> copyMemoriaDataList() {
 		return new ArrayList<MemoriaData>(mMemoriaDataList);
 	}

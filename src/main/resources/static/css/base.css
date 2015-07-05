@@ -1,7 +1,23 @@
 /*
  * 当アプリケーション用独自CSS
  */
-
 body {
 	font-family: "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+}
+
+.container table thead tr th {
+	white-space: nowrap;
+}
+
+.container table thead tr th.number {
+	text-align: right;
+}
+
+.container table tbody tr td {
+	vertical-align: baseline;
+}
+
+.container table tbody tr td.number {
+	text-align: right;
+	white-space: nowrap;
 }

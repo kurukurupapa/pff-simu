@@ -18,8 +18,6 @@ public class FitnessForBattle extends Fitness {
 	/** 1バトルあたりのチャージ */
 	protected static final int CHARGE_PER_BATTLE = CHARGE_PER_TURN * TURN;
 
-	/** バトル形式 */
-	protected BattleType mBattleType;
 	/** 敵の弱点属性 */
 	protected List<Attr> mWeakList;
 	/** 敵の耐性属性 */
@@ -32,11 +30,22 @@ public class FitnessForBattle extends Fitness {
 	/** 敵の力 */
 	protected int mEnemyPower;
 
+	/** HP評価の重み */
+	private int mHpWeight = 1;
+	/** 攻撃評価の重み */
+	private int mAttackWeight = 1;
+	/** 物理防御評価の重み */
+	private int mPhysicalDefenceWeight = 1;
+	/** 魔法防御評価の重み */
+	private int mMagicDefenceWeight = 1;
+	/** 回復評価の重み */
+	private int mRecoveryWeight = 1;
+
 	/**
 	 * コンストラクタ
 	 */
 	public FitnessForBattle() {
-		mBattleType = BattleType.NORMAL;
+		setBattleType(BattleType.NORMAL);
 		mWeakList = new ArrayList<Attr>();
 		mResistanceList = new ArrayList<Attr>();
 	}
@@ -78,31 +87,10 @@ public class FitnessForBattle extends Fitness {
 		value.setRecovery(memoria.getRecovery(TURN, CHARGE_PER_BATTLE));
 
 		// 評価
-		switch (mBattleType) {
-		case NORMAL:
-			value.setValue(value.getHp() + value.getAttackDamage()
-					+ value.getDefenceDamage() + value.getRecovery());
-			break;
-		case ATTACK:
-			value.setValue(value.getHp() + value.getAttackDamage() * 2
-					+ value.getDefenceDamage() + value.getRecovery());
-			break;
-		case RECOVERY:
-			value.setValue(value.getHp() + value.getAttackDamage()
-					+ value.getDefenceDamage() + value.getRecovery() * 2);
-			break;
-		case HP_DEFENCE_RECOVERY:
-			value.setValue(value.getHp() * 2 + value.getAttackDamage()
-					+ value.getDefenceDamage() * 2 + value.getRecovery() * 2);
-			break;
-		case EXA_BATTLIA:
-			value.setValue(value.getAttackDamage());
-			break;
-		default:
-			throw new AppException("想定外のバトル形式です。mBattleType="
-					+ mBattleType.getText());
-		}
-
+		value.setValue(value.getHp() * mHpWeight + value.getAttackDamage()
+				* mAttackWeight + value.getPhysicalDefenceDamage()
+				* mPhysicalDefenceWeight + value.getMagicDefenceDamage()
+				* mMagicDefenceWeight + value.getRecovery() * mRecoveryWeight);
 		return value;
 	}
 
@@ -113,7 +101,57 @@ public class FitnessForBattle extends Fitness {
 	 *            バトル形式
 	 */
 	public void setBattleType(BattleType battleType) {
-		mBattleType = battleType;
+		mHpWeight = 1;
+		mAttackWeight = 1;
+		mPhysicalDefenceWeight = 1;
+		mMagicDefenceWeight = 1;
+		mRecoveryWeight = 1;
+
+		switch (battleType) {
+		case NORMAL:
+			break;
+		case ATTACK:
+			mAttackWeight = 2;
+			break;
+		case DEFENCE:
+			mPhysicalDefenceWeight = 2;
+			mMagicDefenceWeight = 2;
+			break;
+		case PHYSICAL_DEFENCE:
+			mPhysicalDefenceWeight = 2;
+			break;
+		case MAGIC_DEFENCE:
+			mMagicDefenceWeight = 2;
+			break;
+		case RECOVERY:
+			mRecoveryWeight = 2;
+			break;
+		case HP_DEFENCE_RECOVERY:
+			mHpWeight = 2;
+			mPhysicalDefenceWeight = 2;
+			mMagicDefenceWeight = 2;
+			mRecoveryWeight = 2;
+			break;
+		case EXA_BATTLIA:
+			mHpWeight = 0;
+			mAttackWeight = 1;
+			mPhysicalDefenceWeight = 0;
+			mMagicDefenceWeight = 0;
+			mRecoveryWeight = 0;
+			break;
+		default:
+			throw new AppException("想定外のバトル形式です。mBattleType="
+					+ battleType.getText());
+		}
+	}
+
+	public void setWeight(int hp, int attack, int physicalDefence,
+			int magicDefence, int recovery) {
+		mHpWeight = hp;
+		mAttackWeight = attack;
+		mPhysicalDefenceWeight = physicalDefence;
+		mMagicDefenceWeight = magicDefence;
+		mRecoveryWeight = recovery;
 	}
 
 	/**

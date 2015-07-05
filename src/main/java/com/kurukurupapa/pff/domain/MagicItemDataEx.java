@@ -38,7 +38,7 @@ public abstract class MagicItemDataEx extends ItemDataEx {
      *
      * @return 魔法効果値
      */
-    protected int getMagicEffect() {
+    public int getMagicEffect() {
         return mMagicEffect;
     }
 

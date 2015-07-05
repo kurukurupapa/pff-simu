@@ -279,6 +279,10 @@ public class ItemData {
 		return mItemType;
 	}
 
+	public ItemType2 getItemType2() {
+		return mItemType2;
+	}
+
 	/**
 	 * アイテム名を取得します。
 	 *
@@ -286,6 +290,10 @@ public class ItemData {
 	 */
 	public String getName() {
 		return mName;
+	}
+
+	public String getHpStr() {
+		return mHpUnit.getText(mHp);
 	}
 
 	/**
@@ -299,17 +307,33 @@ public class ItemData {
 		return calc(mHpUnit, mHp, memoriaData.getHp());
 	}
 
+	public String getPowerStr() {
+		return mPowerUnit.getText(mPower);
+	}
+
 	public int getPower(MemoriaData memoriaData) {
 		return calc(mPowerUnit, mPower, memoriaData.getPower());
+	}
+
+	public String getSpeedStr() {
+		return mSpeedUnit.getText(mSpeed);
 	}
 
 	public int getSpeed(MemoriaData memoriaData) {
 		return calc(mSpeedUnit, mSpeed, memoriaData.getSpeed());
 	}
 
+	public String getIntelligenceStr() {
+		return mIntelligenceUnit.getText(mIntelligence);
+	}
+
 	public int getIntelligence(MemoriaData memoriaData) {
 		return calc(mIntelligenceUnit, mIntelligence,
 				memoriaData.getIntelligence());
+	}
+
+	public String getLuckStr() {
+		return mLuckUnit.getText(mLuck);
 	}
 
 	public int getLuck(MemoriaData memoriaData) {
@@ -372,6 +396,13 @@ public class ItemData {
 			return (AccessoryItemDataEx) mEx;
 		}
 		return null;
+	}
+
+	/**
+	 * 専用アイテムにおける対象メモリア名 を取得します。
+	 */
+	public String getMemoriaName() {
+		return mMemoriaName;
 	}
 
 	/**

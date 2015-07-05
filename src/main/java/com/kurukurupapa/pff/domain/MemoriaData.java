@@ -167,7 +167,7 @@ public class MemoriaData {
 		return mBlackMagicAttack;
 	}
 
-	public float getSummonAttack() {
+	public float getSummonMagicAttack() {
 		return mSummonMagicAttack;
 	}
 
