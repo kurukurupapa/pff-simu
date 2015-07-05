@@ -96,6 +96,7 @@ public class PartyMakerController {
 
 		SessionHelper sessionHelper = new SessionHelper(session);
 		form.parse();
+		sessionHelper.setTarget(form);
 		String view;
 		if (form.getOperation().equals(TargetForm.Operation.DELETE)) {
 			ElementForm elementForm = new ElementForm();
@@ -103,7 +104,6 @@ public class PartyMakerController {
 			partyMakerService.postElement(session, elementForm, model);
 			view = getTargetForm(session, model);
 		} else {
-			sessionHelper.setTarget(form);
 			view = getElement(session, model);
 		}
 

@@ -132,11 +132,13 @@ public class PartyMakerService {
 			TargetForm.Operation operation, int memoriaIndex, int rankingIndex,
 			Party party) {
 		// 編集対象の削除
-		if (operation.equals(TargetForm.Operation.EDIT)) {
+		if (operation.equals(TargetForm.Operation.EDIT)
+				|| operation.equals(TargetForm.Operation.DELETE)) {
 			party.remove(memoriaIndex);
 		}
 		// 選択されていたら追加
-		if (rankingIndex >= 0) {
+		if ((operation.equals(TargetForm.Operation.ADD) || operation
+				.equals(TargetForm.Operation.EDIT)) && rankingIndex >= 0) {
 			party.add(sessionHelper.getMemoriaRanking().get(rankingIndex)
 					.getMemoria());
 		}
@@ -148,11 +150,13 @@ public class PartyMakerService {
 			TargetForm.Operation operation, int memoriaIndex, int rankingIndex,
 			Party party) {
 		// 編集対象の削除
-		if (operation.equals(TargetForm.Operation.EDIT)) {
+		if (operation.equals(TargetForm.Operation.EDIT)
+				|| operation.equals(TargetForm.Operation.DELETE)) {
 			party.getMemoria(memoriaIndex).clearWeapon();
 		}
 		// 選択されていたら追加
-		if (rankingIndex >= 0) {
+		if ((operation.equals(TargetForm.Operation.ADD) || operation
+				.equals(TargetForm.Operation.EDIT)) && rankingIndex >= 0) {
 			party.getMemoria(memoriaIndex).setWeapon(
 					sessionHelper.getWeaponRanking().get(rankingIndex)
 							.getItem());
