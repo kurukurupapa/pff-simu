@@ -96,7 +96,12 @@
           </thead>
           <tbody>
             <tr th:each="e : ${items}">
-              <td th:text="${e.itemType.text}">大分類</td>
+              <td>
+                <span th:if="${#strings.equals(e.itemType,'WEAPON')}" class="glyphicon glyphicon-thumbs-up"></span>
+                <span th:if="${#strings.equals(e.itemType,'MAGIC')}" class="glyphicon glyphicon-leaf"></span>
+                <span th:if="${#strings.equals(e.itemType,'ACCESSORY')}" class="glyphicon glyphicon-leaf"></span>
+                <span th:text="${e.itemType.text}">大分類</span>
+              </td>
               <td th:text="${e.itemType2.text}">中分類</td>
               <td th:text="${e.name}">名前</td>
               <td class="number" th:text="${e.hpStr}">HP</td>

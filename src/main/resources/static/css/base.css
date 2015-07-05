@@ -5,10 +5,6 @@ body {
 	font-family: "ƒƒCƒŠƒI", Meiryo, "‚l‚r ‚oƒSƒVƒbƒN", "MS PGothic", sans-serif;
 }
 
-.container table thead tr th {
-	white-space: nowrap;
-}
-
 .container table thead tr th.number {
 	text-align: right;
 }

@@ -226,7 +226,7 @@ public class Dp01 {
 
     private void printParty(Party party) {
         if (party.size() >= Party.MAX_MEMORIAS) {
-            mLogger.debug(party);
+            //mLogger.debug(party);
         }
     }
 
