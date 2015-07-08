@@ -444,7 +444,8 @@ public class ItemData {
 		if (StringUtils.isEmpty(mMemoriaName)) {
 			return true;
 		} else {
-			return mMemoriaName.equals(name);
+			// return Pattern.matches(mMemoriaName + ".*", name);
+			return name.indexOf(mMemoriaName) >= 0;
 		}
 	}
 

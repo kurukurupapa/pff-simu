@@ -45,9 +45,18 @@ public class Party implements Cloneable {
 
 	@Override
 	public String toString() {
+		return toString(",");
+	}
+
+	public String toMultiLineString() {
+		return toString("\n") + "\n";
+	}
+
+	public String toString(String sep) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(mFitness == null ? "null" : mFitness.getValue());
-		sb.append("," + StringUtils.join(mMemoriaList, ","));
+		sb.append(sep);
+		sb.append(StringUtils.join(mMemoriaList, sep));
 		return sb.toString();
 	}
 
