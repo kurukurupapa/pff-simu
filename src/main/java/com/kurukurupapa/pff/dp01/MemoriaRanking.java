@@ -22,20 +22,21 @@ public class MemoriaRanking {
 
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
-	private Fitness mFitness;
+	private FitnessCalculator mFitnessCalculator;
 	private Party mParty;
-	private List<MemoriaFitnessValue> mFitnessList;
+	private List<MemoriaFitness> mFitnessList;
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, Fitness fitness) {
-		setParams(memoriaDataSet, itemDataSet, fitness, new Party());
+			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator) {
+		setParams(memoriaDataSet, itemDataSet, fitnessCalculator, new Party());
 	}
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, Fitness fitness, Party party) {
+			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
+			Party party) {
 		mMemoriaDataSet = memoriaDataSet;
 		mItemDataSet = itemDataSet;
-		mFitness = fitness;
+		mFitnessCalculator = fitnessCalculator;
 		mParty = party;
 	}
 
@@ -53,22 +54,22 @@ public class MemoriaRanking {
 		}
 
 		// 各メモリアの評価
-		mFitnessList = new ArrayList<MemoriaFitnessValue>();
+		mFitnessList = new ArrayList<MemoriaFitness>();
 		Dp01 dp;
 		for (MemoriaData e : memoriaDataSet) {
 			MemoriaDataSet tmpMemoriaDataSet = new MemoriaDataSet(itemDataSet);
 			tmpMemoriaDataSet.add(e);
-			dp = new Dp01(tmpMemoriaDataSet, itemDataSet, mFitness);
+			dp = new Dp01(tmpMemoriaDataSet, itemDataSet, mFitnessCalculator);
 			dp.run(1);
 			mFitnessList.add(dp.getParty().getFitnessObj()
 					.getMemoriaFitnesses().get(0));
 		}
 
 		// 評価値の降順でソート
-		Collections.sort(mFitnessList, new Comparator<MemoriaFitnessValue>() {
+		Collections.sort(mFitnessList, new Comparator<MemoriaFitness>() {
 			@Override
-			public int compare(MemoriaFitnessValue arg0,
-					MemoriaFitnessValue arg1) {
+			public int compare(MemoriaFitness arg0,
+					MemoriaFitness arg1) {
 				// 降順
 				return arg1.getValue() - arg0.getValue();
 			}
@@ -77,7 +78,7 @@ public class MemoriaRanking {
 		mLogger.trace("End");
 	}
 
-	public List<MemoriaFitnessValue> getFitnesses() {
+	public List<MemoriaFitness> getFitnesses() {
 		return mFitnessList;
 	}
 }

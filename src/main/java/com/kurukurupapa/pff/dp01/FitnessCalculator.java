@@ -8,15 +8,18 @@ import com.kurukurupapa.pff.domain.AppException;
 import com.kurukurupapa.pff.domain.BattleType;
 
 /**
- * 適応度クラス（通常バトル用）
+ * 適応度計算クラス
  */
-public class FitnessForBattle extends Fitness {
+public class FitnessCalculator {
 	/** 1バトルあたりのターン数 */
 	protected static final int TURN = 10;
 	/** 1ターンあたりのチャージ */
 	protected static final int CHARGE_PER_TURN = 5 * 5 / 2;
 	/** 1バトルあたりのチャージ */
 	protected static final int CHARGE_PER_BATTLE = CHARGE_PER_TURN * TURN;
+
+	/** 計算種類名 */
+	private String mName;
 
 	/** 敵の弱点属性 */
 	protected List<Attr> mWeakList;
@@ -44,13 +47,24 @@ public class FitnessForBattle extends Fitness {
 	/**
 	 * コンストラクタ
 	 */
-	public FitnessForBattle() {
+	public FitnessCalculator() {
+		this(FitnessCalculator.class.getSimpleName());
+	}
+
+	/**
+	 * コンストラクタ
+	 */
+	public FitnessCalculator(String name) {
+		mName = name;
 		setBattleType(BattleType.NORMAL);
 		mWeakList = new ArrayList<Attr>();
 		mResistanceList = new ArrayList<Attr>();
 	}
 
-	@Override
+	public String getName() {
+		return mName;
+	}
+
 	public FitnessValue calc(Party party) {
 		// 敵の力
 		// 案１：とりあえず、パーティの力の平均を、敵の力とします。
@@ -61,12 +75,15 @@ public class FitnessForBattle extends Fitness {
 		// 案３：案２の微調整
 		mEnemyPower = party.getAveragePower() * 2;
 
-		return super.calc(party);
+		FitnessValue fitnessValue = new FitnessValue();
+		for (Memoria e : party.getMemoriaList()) {
+			fitnessValue.add(calc(e));
+		}
+		return fitnessValue;
 	}
 
-	@Override
-	protected MemoriaFitnessValue calc(Memoria memoria) {
-		MemoriaFitnessValue value = new MemoriaFitnessValue(memoria);
+	protected MemoriaFitness calc(Memoria memoria) {
+		MemoriaFitness value = new MemoriaFitness(memoria);
 
 		// HP
 		value.setHp(memoria.getHp());

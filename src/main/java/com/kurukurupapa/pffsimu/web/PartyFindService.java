@@ -6,7 +6,7 @@ import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.Dp01;
-import com.kurukurupapa.pff.dp01.FitnessForBattle;
+import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.Party;
 
 @Service
@@ -15,7 +15,7 @@ public class PartyFindService {
 	private PartyFindForm form;
 	private ItemDataSet itemDataSet;
 	private MemoriaDataSet memoriaDataSet;
-	private FitnessForBattle fitness;
+	private FitnessCalculator fitness;
 	private Dp01 dp;
 
 	public void set(PartyFindForm form) {
@@ -30,7 +30,7 @@ public class PartyFindService {
 		memoriaDataSet.readUserFile();
 
 		// パーティ洗い出し
-		fitness = new FitnessForBattle();
+		fitness = new FitnessCalculator();
 		fitness.setBattleType(form.getBattleTypeObj());
 		for (String e : form.getEnemyWeakPoints()) {
 			fitness.addEnemyWeak(Attr.parse(e));

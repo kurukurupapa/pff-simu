@@ -1,8 +1,6 @@
 package com.kurukurupapa.pff.dp01;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
@@ -18,29 +16,15 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
  * 
  * 武器を評価し、順位をつけます。 これにより、不要な武器が判断しやすくなると思います。
  */
-public class WeaponRanking {
+public class WeaponRanking extends ItemRanking {
 	/** ロガー */
 	private Logger mLogger = Logger.getLogger(WeaponRanking.class);
 
-	private MemoriaDataSet mMemoriaDataSet;
-	private ItemDataSet mItemDataSet;
-	private Fitness mFitness;
-	private Party mParty;
-	private int mMemoriaIndex;
-	private List<WeaponFitness> mFitnessList;
-
-	public void setParams(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet) {
-		setParams(memoriaDataSet, itemDataSet, null, null, 0);
-	}
-
 	public void setParams(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, Fitness fitness, Party party,
-			int memoriaIndex) {
-		mMemoriaDataSet = memoriaDataSet;
-		mItemDataSet = itemDataSet;
-		mFitness = fitness;
-		mParty = party;
-		mMemoriaIndex = memoriaIndex;
+			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
+			Party party, int memoriaIndex) {
+		super.setParams(memoriaDataSet, itemDataSet, fitnessCalculator, party,
+				memoriaIndex);
 
 		// メモリアには、武器を設定できる空きが存在すること。
 		if (mParty != null) {
@@ -50,24 +34,8 @@ public class WeaponRanking {
 		}
 	}
 
-	public void run() {
-		if (mParty == null) {
-			runWithoutParty();
-		} else {
-			runWithParty();
-		}
-
-		// 評価値の降順でソート
-		Collections.sort(mFitnessList, new Comparator<WeaponFitness>() {
-			@Override
-			public int compare(WeaponFitness arg0, WeaponFitness arg1) {
-				// 降順
-				return arg1.getFitness() - arg0.getFitness();
-			}
-		});
-	}
-
-	private void runWithoutParty() {
+	@Override
+	protected void runWithoutParty() {
 		// 武器の一覧
 		List<ItemData> weapons = mItemDataSet.getWeaponList();
 
@@ -75,7 +43,7 @@ public class WeaponRanking {
 		mLogger.info("武器数=" + weapons.size() //
 				+ ",メモリア数=" + mMemoriaDataSet.size() //
 		);
-		mFitnessList = new ArrayList<WeaponFitness>();
+		mFitnessList = new ArrayList<ItemFitness>();
 		int count = 0;
 		for (ItemData weapon : weapons) {
 			WeaponFitness maxFitness = new WeaponFitness();
@@ -104,7 +72,8 @@ public class WeaponRanking {
 		}
 	}
 
-	private void runWithParty() {
+	@Override
+	protected void runWithParty() {
 		Validate.validState(mParty != null);
 
 		// 武器の一覧
@@ -123,7 +92,7 @@ public class WeaponRanking {
 
 		// アクセサリの評価
 		mLogger.info("武器数=" + weapons.size() + ",対象メモリア=" + memoria);
-		mFitnessList = new ArrayList<WeaponFitness>();
+		mFitnessList = new ArrayList<ItemFitness>();
 		for (ItemData weapon : weapons) {
 			// NGな組み合わせをスキップ
 			if (!memoria.validWeaponData(weapon)) {
@@ -139,12 +108,9 @@ public class WeaponRanking {
 
 	private WeaponFitness calcWeaponFitness(ItemData weapon, Memoria memoria) {
 		WeaponFitness fitness = new WeaponFitness();
-		fitness.setup(weapon, mFitness);
+		fitness.setup(weapon, mFitnessCalculator);
 		fitness.calc(memoria);
 		return fitness;
 	}
 
-	public List<WeaponFitness> getFitnesses() {
-		return mFitnessList;
-	}
 }

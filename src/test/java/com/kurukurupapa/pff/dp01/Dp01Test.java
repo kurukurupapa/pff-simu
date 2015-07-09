@@ -36,10 +36,12 @@ public class Dp01Test {
 	@Test
 	public void testRun1_HpItem0() {
 		// 準備
-		Fitness fitness = new FitnessForHp();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForHp();
 
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
+				fitnessCalculator);
 		dp.run(1);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -49,13 +51,14 @@ public class Dp01Test {
 	@Test
 	public void testRun1_Hp() {
 		// 準備
-		Fitness fitness = new FitnessForHp();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForHp();
 
 		// テスト実行
 		StringBuilder actual = new StringBuilder();
 		Dp01 dp;
 		for (int i = 0; i < 3; i++) {
-			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 			dp.run(1);
 			actual.append(dp.getParty().toString() + "\n");
 			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
@@ -83,10 +86,12 @@ public class Dp01Test {
 	@Test
 	public void testRun2_HpItem0() {
 		// 準備
-		Fitness fitness = new FitnessForHp();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForHp();
 
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
+				fitnessCalculator);
 		dp.run(2);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -96,10 +101,12 @@ public class Dp01Test {
 	@Test
 	public void testRun4_HpItem0() {
 		// 準備
-		Fitness fitness = new FitnessForHp();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForHp();
 
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
+				fitnessCalculator);
 		dp.run(4);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -110,12 +117,13 @@ public class Dp01Test {
 	@Test
 	public void testRun1_AttackItem0() {
 		// 準備
-		Fitness fitness = new FitnessForAttack();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForAttack();
 		// テスト実行
 		String actual = "";
 		Dp01 dp;
 		for (int i = 0; i < 3; i++) {
-			dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitness);
+			dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitnessCalculator);
 			dp.run(1);
 			if (i > 0) {
 				actual += ",";
@@ -138,13 +146,14 @@ public class Dp01Test {
 	@Test
 	public void testRun1_Attack() {
 		// 準備
-		Fitness fitness = new FitnessForAttack();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForAttack();
 
 		// テスト実行
 		String actual = "";
 		Dp01 dp;
 		for (int i = 0; i < 3; i++) {
-			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 			dp.run(1);
 			actual += dp.getParty() + "\n";
 			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
@@ -170,9 +179,11 @@ public class Dp01Test {
 	@Test
 	public void testRun1_RecoveryItem0() {
 		// 準備
-		Fitness fitness = new FitnessForRecovery();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForRecovery();
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
+				fitnessCalculator);
 		dp.run(1);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -187,13 +198,14 @@ public class Dp01Test {
 	@Test
 	public void testRun1_Recovery() {
 		// 準備
-		Fitness fitness = new FitnessForRecovery();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForRecovery();
 
 		// テスト実行
 		StringBuilder sb = new StringBuilder();
 		Dp01 dp;
 		for (int i = 0; i < 3; i++) {
-			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 			dp.run(1);
 			sb.append(dp.getParty().toString() + "\n");
 			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
@@ -215,9 +227,10 @@ public class Dp01Test {
 	@Test
 	public void testRun1_BattleItem0() {
 		// 準備
-		Fitness fitness = new FitnessForBattle();
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
+				fitnessCalculator);
 		dp.run(1);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -229,13 +242,13 @@ public class Dp01Test {
 	@Test
 	public void testRun1_Battle() {
 		// 準備
-		Fitness fitness = new FitnessForBattle();
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
 
 		// テスト実行
 		String actual = "";
 		Dp01 dp;
 		for (int i = 0; i < 8; i++) {
-			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 			dp.run(1);
 			actual += dp.getParty() + "\n";
 			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
@@ -257,14 +270,14 @@ public class Dp01Test {
 	@Test
 	public void testRun1_Battle_ThunderWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
-		fitness.addEnemyWeak(Attr.THUNDER);
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
+		fitnessCalculator.addEnemyWeak(Attr.THUNDER);
 
 		// テスト実行
 		String actual = "";
 		Dp01 dp;
 		for (int i = 0; i < 3; i++) {
-			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 			dp.run(1);
 			actual += dp.getParty() + "\n";
 			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
@@ -281,15 +294,15 @@ public class Dp01Test {
 	@Test
 	public void testRun1_Battle_ThunderWeakPhysicalResistance() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
-		fitness.addEnemyWeak(Attr.THUNDER);
-		fitness.setEnemyPhysicalResistance(200);
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
+		fitnessCalculator.addEnemyWeak(Attr.THUNDER);
+		fitnessCalculator.setEnemyPhysicalResistance(200);
 
 		// テスト実行
 		String actual = "";
 		Dp01 dp;
 		for (int i = 0; i < 3; i++) {
-			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+			dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 			dp.run(1);
 			actual += dp.getParty() + "\n";
 			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
@@ -305,13 +318,14 @@ public class Dp01Test {
 	@Test
 	public void testRun_武器装備() {
 		// 準備
-		Fitness fitness = new FitnessForAttack();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForAttack();
 		MemoriaDataSet memoriaDataSet = new MemoriaDataSet(mItemDataSet);
 		memoriaDataSet.add(mMemoriaDataSet.find("元帥シド"));
 		ItemDataSet itemDataSet = new ItemDataSet();
 		itemDataSet.addWeaponData(mItemDataSet.find("烈風"));
 		// テスト実行
-		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitness);
+		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(1);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -321,13 +335,14 @@ public class Dp01Test {
 	@Test
 	public void testRun_魔法装備() {
 		// 準備
-		Fitness fitness = new FitnessForAttack();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForAttack();
 		MemoriaDataSet memoriaDataSet = new MemoriaDataSet(mItemDataSet);
 		memoriaDataSet.add(mMemoriaDataSet.find("元帥シド"));
 		ItemDataSet itemDataSet = new ItemDataSet();
 		itemDataSet.addMagicData(mItemDataSet.find("ファイラ"));
 		// テスト実行
-		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitness);
+		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(1);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -337,13 +352,14 @@ public class Dp01Test {
 	@Test
 	public void testRun_アクセサリ装備() {
 		// 準備
-		Fitness fitness = new FitnessForAttack();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForAttack();
 		MemoriaDataSet memoriaDataSet = new MemoriaDataSet(mItemDataSet);
 		memoriaDataSet.add(mMemoriaDataSet.find("元帥シド"));
 		ItemDataSet itemDataSet = new ItemDataSet();
 		itemDataSet.addAccessoryData(mItemDataSet.find("リストバンド"));
 		// テスト実行
-		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitness);
+		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(1);
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -359,9 +375,10 @@ public class Dp01Test {
 		itemDataSet.addAccessoryData(mItemDataSet.find("EXコア100%"));
 		MemoriaDataSet memoriaDataSet = new MemoriaDataSet(itemDataSet);
 		memoriaDataSet.add(mMemoriaDataSet.find("アーロン"));
-		Fitness fitness = new FitnessForHp();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForHp();
 		// テスト実行
-		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitness);
+		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -377,9 +394,10 @@ public class Dp01Test {
 		MemoriaDataSet memoriaDataSet = new MemoriaDataSet(itemDataSet);
 		memoriaDataSet.add(mMemoriaDataSet.find("元帥シド"));
 		memoriaDataSet.add(mMemoriaDataSet.find("アーロン"));
-		Fitness fitness = new FitnessForHp();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForHp();
 		// テスト実行
-		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitness);
+		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(2);
 		mLogger.debug(dp.getParty());
 		// 検証

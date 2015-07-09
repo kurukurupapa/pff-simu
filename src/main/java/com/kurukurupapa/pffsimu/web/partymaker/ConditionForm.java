@@ -7,8 +7,7 @@ import org.hibernate.validator.constraints.Range;
 
 import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BattleType;
-import com.kurukurupapa.pff.dp01.Fitness;
-import com.kurukurupapa.pff.dp01.FitnessForBattle;
+import com.kurukurupapa.pff.dp01.FitnessCalculator;
 
 /**
  * パーティメーカー機能 評価条件入力フォームクラス
@@ -84,8 +83,8 @@ public class ConditionForm {
 		this.magicResistance = magicResistance;
 	}
 
-	public Fitness getFitness() {
-		FitnessForBattle fitness = new FitnessForBattle();
+	public FitnessCalculator getFitnessCalculator() {
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.setBattleType(getBattleTypeObj());
 		for (String e : enemyWeakPoints) {
 			fitness.addEnemyWeak(Attr.valueOf(e));

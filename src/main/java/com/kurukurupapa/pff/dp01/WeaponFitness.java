@@ -22,8 +22,8 @@ public class WeaponFitness extends ItemFitness {
 		mMemoria.setWeapon(mItem);
 
 		// 当該武器の適応度
-		Fitness fitness = createFitness();
-		calcDifference(fitness, memoria, mMemoria);
+		FitnessCalculator fitnessCalculator = createFitnessCalculator();
+		calcDifference(fitnessCalculator, memoria, mMemoria);
 	}
 
 }

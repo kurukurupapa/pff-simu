@@ -3,7 +3,7 @@ package com.kurukurupapa.pff.dp01;
 /**
  * メモリア適応度結果クラス
  */
-public class MemoriaFitnessValue {
+public class MemoriaFitness {
 	/** メモリア */
 	private Memoria mMemoria;
 	/** HP */
@@ -19,7 +19,7 @@ public class MemoriaFitnessValue {
 	/** 評価値 */
 	private int mValue;
 
-	public MemoriaFitnessValue(Memoria memoria) {
+	public MemoriaFitness(Memoria memoria) {
 		this.mMemoria = memoria;
 	}
 

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
-import com.kurukurupapa.pff.dp01.Fitness;
-import com.kurukurupapa.pff.dp01.MemoriaFitnessValue;
+import com.kurukurupapa.pff.dp01.FitnessCalculator;
+import com.kurukurupapa.pff.dp01.MemoriaFitness;
 import com.kurukurupapa.pff.dp01.MemoriaRanking;
 import com.kurukurupapa.pff.dp01.Party;
 
@@ -18,7 +18,7 @@ import com.kurukurupapa.pff.dp01.Party;
 public class MemoriaRankingService {
 	private ItemDataSet itemDataSet;
 	private MemoriaDataSet memoriaDataSet;
-	private Fitness fitness;
+	private FitnessCalculator fitnessCalculator;
 	private Party party;
 	private MemoriaRanking memoriaRanking;
 
@@ -30,22 +30,23 @@ public class MemoriaRankingService {
 		memoriaDataSet.readUserFile();
 	}
 
-	public void setup(Fitness fitness) {
-		setup(fitness, new Party());
+	public void setup(FitnessCalculator fitnessCalculator) {
+		setup(fitnessCalculator, new Party());
 	}
 
-	public void setup(Fitness fitness, Party party) {
-		this.fitness = fitness;
+	public void setup(FitnessCalculator fitnessCalculator, Party party) {
+		this.fitnessCalculator = fitnessCalculator;
 		this.party = party;
 	}
 
 	public void run() {
 		memoriaRanking = new MemoriaRanking();
-		memoriaRanking.setParams(memoriaDataSet, itemDataSet, fitness, party);
+		memoriaRanking.setParams(memoriaDataSet, itemDataSet,
+				fitnessCalculator, party);
 		memoriaRanking.run();
 	}
 
-	public List<MemoriaFitnessValue> getRanking() {
+	public List<MemoriaFitness> getRanking() {
 		return memoriaRanking.getFitnesses();
 	}
 

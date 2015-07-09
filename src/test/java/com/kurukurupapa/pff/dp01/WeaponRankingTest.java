@@ -39,7 +39,7 @@ public class WeaponRankingTest {
 		// テスト実行
 		sut.setParams(mMemoriaDataSet, mItemDataSet);
 		sut.run();
-		List<WeaponFitness> actual = sut.getFitnesses();
+		List<ItemFitness> actual = sut.getFitnesses();
 		String actualStr = toString(actual);
 
 		// 検証
@@ -68,7 +68,7 @@ public class WeaponRankingTest {
 	@Test
 	public void testCalc_パーティあり() {
 		// 準備
-		Fitness fitness = new FitnessForBattle();
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
 
 		Party party = new Party();
 		Memoria memoria = new Memoria(mMemoriaDataSet.find("元帥シド"));
@@ -81,9 +81,10 @@ public class WeaponRankingTest {
 		party.add(memoria);
 
 		// テスト実行
-		sut.setParams(mMemoriaDataSet, mItemDataSet, fitness, party, 0);
+		sut.setParams(mMemoriaDataSet, mItemDataSet, fitnessCalculator, party,
+				0);
 		sut.run();
-		List<WeaponFitness> actual = sut.getFitnesses();
+		List<ItemFitness> actual = sut.getFitnesses();
 		String actualStr = toString(actual);
 
 		// 検証
@@ -94,9 +95,9 @@ public class WeaponRankingTest {
 		, actualStr);
 	}
 
-	private String toString(List<WeaponFitness> weaponFitnessList) {
+	private String toString(List<ItemFitness> weaponFitnessList) {
 		StringBuilder sb = new StringBuilder();
-		for (WeaponFitness e : weaponFitnessList) {
+		for (ItemFitness e : weaponFitnessList) {
 			sb.append(e + "\n");
 		}
 		return sb.toString();

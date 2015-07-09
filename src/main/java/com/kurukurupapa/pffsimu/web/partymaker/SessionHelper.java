@@ -4,9 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.kurukurupapa.pff.dp01.AccessoryFitness;
 import com.kurukurupapa.pff.dp01.ItemFitness;
-import com.kurukurupapa.pff.dp01.MemoriaFitnessValue;
+import com.kurukurupapa.pff.dp01.MemoriaFitness;
 import com.kurukurupapa.pff.dp01.Party;
 import com.kurukurupapa.pff.dp01.WeaponFitness;
 
@@ -17,7 +16,7 @@ public class SessionHelper {
 	private static final String KEY_PARTY = Party.class.getName();
 	private static final String KEY_CONDITION = ConditionForm.class.getName();
 	private static final String KEY_TARGET = TargetForm.class.getName();
-	private static final String KEY_MEMORIA_RANKING = MemoriaFitnessValue.class
+	private static final String KEY_MEMORIA_RANKING = MemoriaFitness.class
 			.getName();
 	private static final String KEY_WEAPON_RANKING = WeaponFitness.class
 			.getName();
@@ -54,12 +53,11 @@ public class SessionHelper {
 		session.setAttribute(KEY_TARGET, form);
 	}
 
-	public List<MemoriaFitnessValue> getMemoriaRanking() {
-		return (List<MemoriaFitnessValue>) session
-				.getAttribute(KEY_MEMORIA_RANKING);
+	public List<MemoriaFitness> getMemoriaRanking() {
+		return (List<MemoriaFitness>) session.getAttribute(KEY_MEMORIA_RANKING);
 	}
 
-	public void setMemoriaRanking(List<MemoriaFitnessValue> ranking) {
+	public void setMemoriaRanking(List<MemoriaFitness> ranking) {
 		session.setAttribute(KEY_MEMORIA_RANKING, ranking);
 	}
 
@@ -67,7 +65,7 @@ public class SessionHelper {
 		return (List<WeaponFitness>) session.getAttribute(KEY_WEAPON_RANKING);
 	}
 
-	public void setWeaponRanking(List<WeaponFitness> ranking) {
+	public void setWeaponRanking(List<ItemFitness> ranking) {
 		session.setAttribute(KEY_WEAPON_RANKING, ranking);
 	}
 
