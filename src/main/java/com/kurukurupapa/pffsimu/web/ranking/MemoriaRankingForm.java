@@ -9,7 +9,6 @@ import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BattleType;
 import com.kurukurupapa.pff.dp01.Fitness;
 import com.kurukurupapa.pff.dp01.FitnessForBattle;
-import com.kurukurupapa.pff.dp01.FitnessForExaBattlia;
 
 /**
  * ランキング機能 メモリアランキングフォームクラス
@@ -74,20 +73,8 @@ public class MemoriaRankingForm {
 	}
 
 	public Fitness getFitness() {
-		FitnessForBattle fitness;
-
-		switch (getBattleTypeObj()) {
-		case NORMAL:
-			fitness = new FitnessForBattle();
-			break;
-		case EXA_BATTLIA:
-			fitness = new FitnessForExaBattlia();
-			break;
-		default:
-			fitness = new FitnessForBattle();
-			break;
-		}
-
+		FitnessForBattle fitness = new FitnessForBattle();
+		fitness.setBattleType(getBattleTypeObj());
 		for (String e : enemyWeakPoints) {
 			fitness.addEnemyWeak(Attr.valueOf(e));
 		}
