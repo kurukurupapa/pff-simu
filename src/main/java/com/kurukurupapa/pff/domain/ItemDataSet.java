@@ -269,7 +269,7 @@ public class ItemDataSet {
 		int magicCharge = 0;
 		int magicEffect = 0;
 		if (itemType == ItemType.MAGIC) {
-			magicType = MagicTypeFactory.create(columns[1]);
+			magicType = MagicType.parse(columns[1]);
 			magicCharge = toInt(columns[10]);
 			magicEffect = toInt(columns[11]);
 		}
@@ -288,7 +288,7 @@ public class ItemDataSet {
 		case MAGIC:
 			addMagicData(itemData);
 			break;
-		default:
+		case ACCESSORY:
 			addAccessoryData(itemData);
 			break;
 		}

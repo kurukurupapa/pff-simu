@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
-import com.kurukurupapa.pff.dp01.Fitness;
+import com.kurukurupapa.pff.dp01.FitnessCalculator;
+import com.kurukurupapa.pff.dp01.ItemFitness;
 import com.kurukurupapa.pff.dp01.Party;
-import com.kurukurupapa.pff.dp01.WeaponFitness;
 import com.kurukurupapa.pff.dp01.WeaponRanking;
 
 /**
@@ -18,7 +18,7 @@ import com.kurukurupapa.pff.dp01.WeaponRanking;
 public class WeaponRankingService {
 	private ItemDataSet itemDataSet;
 	private MemoriaDataSet memoriaDataSet;
-	private Fitness fitness;
+	private FitnessCalculator fitnessCalculator;
 	private Party party;
 	private int memoriaIndex;
 	private WeaponRanking weaponRanking;
@@ -35,20 +35,21 @@ public class WeaponRankingService {
 		setup(null, null, 0);
 	}
 
-	public void setup(Fitness fitness, Party party, int memoriaIndex) {
-		this.fitness = fitness;
+	public void setup(FitnessCalculator fitnessCalculator, Party party,
+			int memoriaIndex) {
+		this.fitnessCalculator = fitnessCalculator;
 		this.party = party;
 		this.memoriaIndex = memoriaIndex;
 	}
 
 	public void run() {
 		weaponRanking = new WeaponRanking();
-		weaponRanking.setParams(memoriaDataSet, itemDataSet, fitness, party,
-				memoriaIndex);
+		weaponRanking.setParams(memoriaDataSet, itemDataSet, fitnessCalculator,
+				party, memoriaIndex);
 		weaponRanking.run();
 	}
 
-	public List<WeaponFitness> getRanking() {
+	public List<ItemFitness> getRanking() {
 		return weaponRanking.getFitnesses();
 	}
 

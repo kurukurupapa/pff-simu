@@ -24,7 +24,7 @@ public class MagicRanking {
 
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
-	private Fitness mFitness;
+	private FitnessCalculator mFitnessCalculator;
 	private Party mParty;
 	private int mMemoriaIndex;
 	private List<MagicFitness> mFitnessList;
@@ -34,11 +34,11 @@ public class MagicRanking {
 	}
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, Fitness fitness, Party party,
-			int memoriaIndex) {
+			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
+			Party party, int memoriaIndex) {
 		mMemoriaDataSet = memoriaDataSet;
 		mItemDataSet = itemDataSet;
-		mFitness = fitness;
+		mFitnessCalculator = fitnessCalculator;
 		mParty = party;
 		mMemoriaIndex = memoriaIndex;
 
@@ -79,7 +79,7 @@ public class MagicRanking {
 		int count = 0;
 		for (ItemData magic : magics) {
 			MagicFitness maxFitness = new MagicFitness();
-			maxFitness.setup(magic, mFitness);
+			maxFitness.setup(magic, mFitnessCalculator);
 
 			// 全てのメモリアに対して、当該魔法を評価し、
 			// 最大評価値を当該魔法の評価とします。
@@ -136,7 +136,7 @@ public class MagicRanking {
 
 	private MagicFitness calcMagicFitness(ItemData magic, Memoria memoria) {
 		MagicFitness fitness = new MagicFitness();
-		fitness.setup(magic, mFitness);
+		fitness.setup(magic, mFitnessCalculator);
 		fitness.calc(memoria);
 		return fitness;
 	}

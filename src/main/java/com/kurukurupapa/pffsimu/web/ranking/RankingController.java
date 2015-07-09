@@ -54,7 +54,7 @@ public class RankingController {
 			// 入力チェックエラー
 		} else {
 			// 入力チェックOK
-			memoriaRankingService.setup(form.getFitness());
+			memoriaRankingService.setup(form.getFitnessCalculator());
 			memoriaRankingService.run();
 			model.addAttribute("ranking", memoriaRankingService.getRanking());
 		}

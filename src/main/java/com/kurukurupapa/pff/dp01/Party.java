@@ -14,7 +14,7 @@ public class Party implements Cloneable {
 	public static final int MAX_MEMORIAS = 4;
 
 	private List<Memoria> mMemoriaList;
-	private FitnessValue mFitness;
+	private FitnessValue mFitnessValue;
 
 	public Party() {
 		mMemoriaList = new ArrayList<Memoria>();
@@ -35,7 +35,7 @@ public class Party implements Cloneable {
 			Memoria memoria = party.mMemoriaList.get(i);
 			add(memoria.clone());
 		}
-		mFitness = party.mFitness;
+		mFitnessValue = party.mFitnessValue;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class Party implements Cloneable {
 
 	public String toString(String sep) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(mFitness == null ? "null" : mFitness.getValue());
+		sb.append(mFitnessValue == null ? "null" : mFitnessValue.getValue());
 		sb.append(sep);
 		sb.append(StringUtils.join(mMemoriaList, sep));
 		return sb.toString();
@@ -130,16 +130,16 @@ public class Party implements Cloneable {
 	}
 
 	public int getFitness() {
-		return mFitness != null ? mFitness.getValue() : 0;
+		return mFitnessValue != null ? mFitnessValue.getValue() : 0;
 	}
 
 	public FitnessValue getFitnessObj() {
-		return mFitness;
+		return mFitnessValue;
 	}
 
-	public void calcFitness(Fitness fitness) {
+	public void calcFitness(FitnessCalculator fitnessCalculator) {
 		calcLeaderSkill();
-		mFitness = fitness.calc(this);
+		mFitnessValue = fitnessCalculator.calc(this);
 	}
 
 	protected void calcLeaderSkill() {

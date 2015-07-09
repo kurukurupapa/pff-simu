@@ -8,7 +8,7 @@ import com.kurukurupapa.pff.domain.ItemData;
 public abstract class ItemFitness {
 	protected ItemData mItem;
 	protected Memoria mMemoria;
-	protected Fitness mFitness;
+	protected FitnessCalculator mFitnessCalculator;
 	protected FitnessValue mBeforeValue;
 	protected FitnessValue mAfterValue;
 
@@ -33,12 +33,12 @@ public abstract class ItemFitness {
 	 * 
 	 * @param item
 	 *            対象アイテム
-	 * @param fitness
-	 *            適応度条件。nullの場合、対象アイテムの評価が最大となる適応度条件を設定します。
+	 * @param fitnessCalculator
+	 *            適応度計算。nullの場合、対象アイテムの評価が最大となる適応度条件を設定します。
 	 */
-	public void setup(ItemData item, Fitness fitness) {
+	public void setup(ItemData item, FitnessCalculator fitnessCalculator) {
 		mItem = item;
-		mFitness = fitness;
+		mFitnessCalculator = fitnessCalculator;
 	}
 
 	/**
@@ -49,23 +49,24 @@ public abstract class ItemFitness {
 	 */
 	public abstract void calc(Memoria memoria);
 
-	protected Fitness createFitness() {
-		if (mFitness != null) {
-			return mFitness;
+	protected FitnessCalculator createFitnessCalculator() {
+		if (mFitnessCalculator != null) {
+			return mFitnessCalculator;
 		} else {
 			// 当クラスにおける適応度としては、さまざまな敵に対する最大の適応度のみを調べたい。
 			// そのため、属性付きのアイテムの場合、その属性を弱点とする敵を想定して、適応度を評価します。
-			FitnessForBattle fitness = new FitnessForBattle();
+			FitnessCalculator fitnessCalculator = new FitnessCalculator();
 			if (!mItem.getAttr().isNone()) {
-				fitness.addEnemyWeak(mItem.getAttr());
+				fitnessCalculator.addEnemyWeak(mItem.getAttr());
 			}
-			return fitness;
+			return fitnessCalculator;
 		}
 	}
 
-	protected void calcDifference(Fitness fitness, Memoria before, Memoria after) {
-		mBeforeValue = fitness.calc(new Party(before));
-		mAfterValue = fitness.calc(new Party(after));
+	protected void calcDifference(FitnessCalculator fitnessCalculator,
+			Memoria before, Memoria after) {
+		mBeforeValue = fitnessCalculator.calc(new Party(before));
+		mAfterValue = fitnessCalculator.calc(new Party(after));
 	}
 
 	public int getFitness() {
@@ -97,11 +98,13 @@ public abstract class ItemFitness {
 	}
 
 	public int getPhysicalDefenceDamage() {
-		return mAfterValue.getPhysicalDefenceDamage() - mBeforeValue.getPhysicalDefenceDamage();
+		return mAfterValue.getPhysicalDefenceDamage()
+				- mBeforeValue.getPhysicalDefenceDamage();
 	}
 
 	public int getMagicDefenceDamage() {
-		return mAfterValue.getMagicDefenceDamage() - mBeforeValue.getMagicDefenceDamage();
+		return mAfterValue.getMagicDefenceDamage()
+				- mBeforeValue.getMagicDefenceDamage();
 	}
 
 	public int getRecovery() {

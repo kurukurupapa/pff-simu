@@ -1,5 +1,8 @@
 package com.kurukurupapa.pff.domain;
 
+/**
+ * 当アプリケーション用例外クラス
+ */
 public class AppException extends RuntimeException {
 
 	/**

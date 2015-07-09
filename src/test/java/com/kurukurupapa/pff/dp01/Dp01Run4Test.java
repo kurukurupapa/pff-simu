@@ -38,9 +38,10 @@ public class Dp01Run4Test {
 	@Ignore
 	public void testRun_Hp() {
 		// 準備
-		Fitness fitness = new FitnessForHp();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForHp();
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 		dp.run();
 		for (Party e : dp.getTopParty(10)) {
 			mLogger.debug(e);
@@ -60,9 +61,10 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Attack() {
 		// 準備
-		Fitness fitness = new FitnessForAttack();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForAttack();
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -124,9 +126,10 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Recovery() {
 		// 準備
-		Fitness fitness = new FitnessForRecovery();
+		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
+				.createForRecovery();
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
@@ -175,9 +178,9 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_Default() {
 		// 準備
-		Fitness fitness = new FitnessForBattle();
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
 		// テスト実行
-		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
+		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 		dp.run();
 		// 検証
 		assertEquals("" //
@@ -246,7 +249,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_ColdWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.COLD);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -288,7 +291,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_EarthWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.EARTH);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -330,7 +333,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_FireWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.FIRE);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -399,7 +402,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_HolinessWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.HOLINESS);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -480,7 +483,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_IceWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.ICE);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -522,7 +525,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_ThunderWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.THUNDER);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -570,7 +573,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_WaterWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.WATER);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -618,7 +621,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_WindWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.WIND);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -666,7 +669,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_DarknessWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.DARKNESS);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -686,7 +689,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_FlightWeak() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.addEnemyWeak(Attr.FLIGHT);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -755,7 +758,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_PhysicalResistance() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.setEnemyPhysicalResistance(200);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -797,7 +800,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_MagicResistance() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.setEnemyMagicResistance(200);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -824,7 +827,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_物理防御重視() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.setWeight(1, 1, 2, 1, 1);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
@@ -851,7 +854,7 @@ public class Dp01Run4Test {
 	@Test
 	public void testRun_Battle_魔法防御重視() {
 		// 準備
-		FitnessForBattle fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.setWeight(1, 1, 1, 2, 1);
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);

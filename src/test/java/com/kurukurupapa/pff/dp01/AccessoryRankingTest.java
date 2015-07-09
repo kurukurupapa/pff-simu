@@ -76,7 +76,7 @@ public class AccessoryRankingTest {
 	@Test
 	public void testCalc_パーティあり() {
 		// 準備
-		Fitness fitness = new FitnessForBattle();
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
 
 		Party party = new Party();
 		Memoria memoria = new Memoria(mMemoriaDataSet.find("元帥シド"));
@@ -90,7 +90,8 @@ public class AccessoryRankingTest {
 		party.add(memoria);
 
 		// テスト実行
-		sut.setParams(mMemoriaDataSet, mItemDataSet, fitness, party, 1);
+		sut.setParams(mMemoriaDataSet, mItemDataSet, fitnessCalculator, party,
+				1);
 		sut.run();
 		List<AccessoryFitness> actual = sut.getFitnesses();
 		String actualStr = toString(actual);

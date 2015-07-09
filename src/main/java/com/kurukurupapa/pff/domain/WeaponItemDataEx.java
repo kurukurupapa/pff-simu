@@ -3,7 +3,7 @@ package com.kurukurupapa.pff.domain;
 import java.util.List;
 
 /**
- * 武器アイテムデータ
+ * 武器アイテムデータ拡張クラス
  */
 public class WeaponItemDataEx extends ItemDataEx {
     /** 武器種別 */

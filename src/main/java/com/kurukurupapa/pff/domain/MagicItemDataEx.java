@@ -19,7 +19,7 @@ public abstract class MagicItemDataEx extends ItemDataEx {
     protected MagicItemDataEx(ItemData itemData, ItemType itemType,
             ItemType2 itemType2, Attr attr, int magicCharge, int magicEffect) {
         super(itemData, itemType, itemType2, attr);
-        mMagicType = MagicTypeFactory.create(itemType2.toString());
+        mMagicType = MagicType.parse(itemType2.toString());
         mMagicCharge = magicCharge;
         mMagicEffect = magicEffect;
     }

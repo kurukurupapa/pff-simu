@@ -24,7 +24,7 @@ public class AccessoryRanking {
 
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
-	private Fitness mFitness;
+	private FitnessCalculator mFitnessCalculator;
 	private Party mParty;
 	private int mMemoriaIndex;
 	private List<AccessoryFitness> mFitnessList;
@@ -34,11 +34,11 @@ public class AccessoryRanking {
 	}
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, Fitness fitness, Party party,
-			int memoriaIndex) {
+			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
+			Party party, int memoriaIndex) {
 		mMemoriaDataSet = memoriaDataSet;
 		mItemDataSet = itemDataSet;
-		mFitness = fitness;
+		mFitnessCalculator = fitnessCalculator;
 		mParty = party;
 		mMemoriaIndex = memoriaIndex;
 
@@ -86,7 +86,7 @@ public class AccessoryRanking {
 		int count = 0;
 		for (ItemData accessory : accessories) {
 			AccessoryFitness maxFitness = new AccessoryFitness();
-			maxFitness.setup(accessory, mFitness);
+			maxFitness.setup(accessory, mFitnessCalculator);
 
 			// 全てのメモリア、武器の組み合わせで当該アクセサリを評価し、
 			// 最大評価値を当該アクセサリの評価とします。
@@ -167,7 +167,7 @@ public class AccessoryRanking {
 	private AccessoryFitness calcAccessoryFitness(ItemData accessory,
 			Memoria memoria) {
 		AccessoryFitness fitness = new AccessoryFitness();
-		fitness.setup(accessory, mFitness);
+		fitness.setup(accessory, mFitnessCalculator);
 		fitness.calc(memoria);
 		return fitness;
 	}

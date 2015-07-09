@@ -22,8 +22,8 @@ public class AccessoryFitness extends ItemFitness {
 		mMemoria.addAccessory(mItem);
 
 		// 当該アイテムの適応度
-		Fitness fitness = createFitness();
-		calcDifference(fitness, memoria, mMemoria);
+		FitnessCalculator fitnessCalculator = createFitnessCalculator();
+		calcDifference(fitnessCalculator, memoria, mMemoria);
 	}
 
 }

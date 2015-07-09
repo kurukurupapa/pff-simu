@@ -35,12 +35,12 @@ public class MemoriaRankingTest {
 	@Test
 	public void testCalc_Battle() {
 		// 準備
-		Fitness fitness = new FitnessForBattle();
-		sut.setParams(mMemoriaDataSet, mItemDataSet, fitness);
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
+		sut.setParams(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 
 		// テスト実行
 		sut.run();
-		List<MemoriaFitnessValue> actual = sut.getFitnesses();
+		List<MemoriaFitness> actual = sut.getFitnesses();
 		String actualStr = toString(actual);
 
 		// 検証
@@ -63,7 +63,7 @@ public class MemoriaRankingTest {
 	@Test
 	public void testCalc_Battle_パーティあり() {
 		// 準備
-		Fitness fitness = new FitnessForBattle();
+		FitnessCalculator fitness = new FitnessCalculator();
 
 		Party party = new Party();
 		Memoria memoria = new Memoria(mMemoriaDataSet.find("元帥シド"));
@@ -81,7 +81,7 @@ public class MemoriaRankingTest {
 
 		// テスト実行
 		sut.run();
-		List<MemoriaFitnessValue> actual = sut.getFitnesses();
+		List<MemoriaFitness> actual = sut.getFitnesses();
 		String actualStr = toString(actual);
 
 		// 検証
@@ -93,9 +93,9 @@ public class MemoriaRankingTest {
 		assertTrue(actualStr.indexOf("ファイアRF+3") < 0);
 	}
 
-	private String toString(List<MemoriaFitnessValue> memoriaFitnessList) {
+	private String toString(List<MemoriaFitness> memoriaFitnessList) {
 		StringBuilder sb = new StringBuilder();
-		for (MemoriaFitnessValue e : memoriaFitnessList) {
+		for (MemoriaFitness e : memoriaFitnessList) {
 			sb.append(e + "\n");
 		}
 		return sb.toString();

@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.kurukurupapa.pff.dp01.AccessoryFitness;
 import com.kurukurupapa.pff.dp01.ItemFitness;
 import com.kurukurupapa.pff.dp01.Party;
 import com.kurukurupapa.pffsimu.web.ranking.AccessoryRankingService;
@@ -53,17 +52,17 @@ public class PartyMakerService {
 	}
 
 	private void makeMemoriaElement(SessionHelper sessionHelper, Model model) {
-		memoriaRankingService.setup(sessionHelper.getCondition().getFitness(),
-				getPartyForRanking(sessionHelper));
+		memoriaRankingService.setup(sessionHelper.getCondition()
+				.getFitnessCalculator(), getPartyForRanking(sessionHelper));
 		memoriaRankingService.run();
 		model.addAttribute("ranking", memoriaRankingService.getRanking());
 		sessionHelper.setMemoriaRanking(memoriaRankingService.getRanking());
 	}
 
 	private void makeWeaponElement(SessionHelper sessionHelper, Model model) {
-		weaponRankingService.setup(sessionHelper.getCondition().getFitness(),
-				getPartyForRanking(sessionHelper), sessionHelper.getTarget()
-						.getIndex());
+		weaponRankingService.setup(sessionHelper.getCondition()
+				.getFitnessCalculator(), getPartyForRanking(sessionHelper),
+				sessionHelper.getTarget().getIndex());
 		weaponRankingService.run();
 		model.addAttribute("ranking", weaponRankingService.getRanking());
 		sessionHelper.setWeaponRanking(weaponRankingService.getRanking());
@@ -71,16 +70,15 @@ public class PartyMakerService {
 
 	private void makeAccessoryElement(SessionHelper sessionHelper, Model model) {
 		// 魔法ランキング
-		magicRankingService.setup(sessionHelper.getCondition().getFitness(),
-				getPartyForRanking(sessionHelper), sessionHelper.getTarget()
-						.getIndex());
+		magicRankingService.setup(sessionHelper.getCondition()
+				.getFitnessCalculator(), getPartyForRanking(sessionHelper),
+				sessionHelper.getTarget().getIndex());
 		magicRankingService.run();
 
 		// アクセサリランキング
-		accessoryRankingService.setup(
-				sessionHelper.getCondition().getFitness(),
-				getPartyForRanking(sessionHelper), sessionHelper.getTarget()
-						.getIndex());
+		accessoryRankingService.setup(sessionHelper.getCondition()
+				.getFitnessCalculator(), getPartyForRanking(sessionHelper),
+				sessionHelper.getTarget().getIndex());
 		accessoryRankingService.run();
 
 		// マージ
