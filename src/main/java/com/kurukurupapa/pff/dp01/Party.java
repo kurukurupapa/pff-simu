@@ -7,14 +7,15 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.ItemData;
+import com.kurukurupapa.pff.domain.LeaderSkill;
 import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.Unit;
 
 public class Party implements Cloneable {
 	public static final int MAX_MEMORIAS = 4;
 
-	private List<Memoria> mMemoriaList;
-	private FitnessValue mFitnessValue;
+	protected List<Memoria> mMemoriaList;
+	protected FitnessValue mFitnessValue;
 
 	public Party() {
 		mMemoriaList = new ArrayList<Memoria>();
@@ -93,10 +94,33 @@ public class Party implements Cloneable {
 		return mMemoriaList;
 	}
 
+	public boolean contains(MemoriaData memoriaData) {
+		for (Memoria e : mMemoriaList) {
+			if (e.getMemoriaData().isSame(memoriaData)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean contains(Memoria memoria) {
 		for (Memoria e : mMemoriaList) {
 			if (e.isSame(memoria)) {
 				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean contains(ItemData itemData) {
+		for (Memoria e : mMemoriaList) {
+			if (e.isWeapon() && e.getWeapon() == itemData) {
+				return true;
+			}
+			for (ItemData e2 : e.getAccessories()) {
+				if (e2 == itemData) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -119,7 +143,11 @@ public class Party implements Cloneable {
 	}
 
 	public int getAveragePower() {
-		return getTotalPower() / mMemoriaList.size();
+		int power = 0;
+		if (mMemoriaList.size() > 0) {
+			power = getTotalPower() / mMemoriaList.size();
+		}
+		return power;
 	}
 
 	public void clearWeaponAccessories() {
@@ -147,42 +175,46 @@ public class Party implements Cloneable {
 		clearLeaderSkill();
 		for (Memoria e : mMemoriaList) {
 			// イベントメモリア
-			if (e.getName().equals("ヴァニラ")) {
+			if (e.getName().indexOf("ヴァニラ") >= 0) {
 				// TODO ピクトロジカで【13マス】以下を塗ったときパーティーの「知性」が【微小】アップ
-			} else if (e.getName().equals("アーシェ")) {
+			} else if (e.getName().indexOf("アーシェ") >= 0) {
 				// 編成時に自身の物理防御が【30pt】以上のときパーティーの「知性」が【微小】アップ
 				if (e.getPhysicalDefence() >= 30) {
 					list.add(new ItemData("", "アーシェLS", 0, Unit.PERCENT, 0,
 							Unit.PERCENT, 0, Unit.PERCENT, 6, Unit.PERCENT, 0,
 							Unit.PERCENT, 0, 0, Attr.NONE, null, 1));
 				}
-			} else if (e.getName().equals("セシル")) {
+			} else if (e.getName().indexOf("セシル") >= 0) {
 				// TODO パーティーに【騎士剣】装備が【3人】以上のときパーティーの「物理防御」が【微小】アップ
 			}
 			// 限定プレミアムメモリア
-			if (e.getName().equals("元帥シド")) {
-				// TODO パーティーの「無属性武器攻撃」が【大】アップ
+			if (e.getName().indexOf("元帥シド") >= 0) {
+				// パーティーの「無属性武器攻撃」が【大】アップ
+				// 無属性（武器系） 37%
+				list.add(new ItemData("", "元帥シドLS", 0, Unit.PERCENT, 37,
+						Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
+						Unit.PERCENT, 0, 0, Attr.NONE, null, 1));
 			}
 			// プレミアムメモリア
-			if (e.getName().equals("アーロン")) {
+			if (e.getName().indexOf("アーロン") >= 0) {
 				// 編成時に自身の物理防御が【30pt】以上のときパーティーの「HP」が【小】アップ
 				if (e.getPhysicalDefence() >= 30) {
 					list.add(new ItemData("", "アーロンLS", 18, Unit.PERCENT, 0,
 							Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
 							Unit.PERCENT, 0, 0, Attr.NONE, null, 1));
 				}
-			} else if (e.getName().equals("トレイ")) {
+			} else if (e.getName().indexOf("トレイ") >= 0) {
 				// 攻撃人数が【4人】以上のときパーティーの「力」が【小】アップ
 				if (mMemoriaList.size() >= 4) {
 					list.add(new ItemData("", "トレイLS", 0, Unit.PERCENT, 10,
 							Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
 							Unit.PERCENT, 0, 0, Attr.NONE, null, 1));
 				}
-			} else if (e.getName().equals("ティナ")) {
+			} else if (e.getName().indexOf("ティナ") >= 0) {
 				// TODO ブレイクゲージが【200%】以上のときパーティーの「氷属性効果」が【中】アップ
-			} else if (e.getName().equals("ライトニング(No.119)")) {
+			} else if (e.getName().indexOf("ライトニング(No.119)") >= 0) {
 				// TODO ピクトロジカで【13マス】以上を塗ったときパーティーの「雷属性効果」が【中】アップ
-			} else if (e.getName().equals("マキナ")) {
+			} else if (e.getName().indexOf("マキナ") >= 0) {
 				if (mMemoriaList.size() <= 4) {
 					// TODO 攻撃人数が【4人】以下のときパーティーの「クリティカル率」が【小】アップ
 				}
@@ -195,6 +227,10 @@ public class Party implements Cloneable {
 		for (ItemData e : leaderSkillList) {
 			addLeaderSkill(e);
 		}
+	}
+
+	protected void addLeaderSkill(LeaderSkill leaderSkill) {
+		addLeaderSkill(leaderSkill.getItemData());
 	}
 
 	protected void addLeaderSkill(ItemData leaderSkill) {
