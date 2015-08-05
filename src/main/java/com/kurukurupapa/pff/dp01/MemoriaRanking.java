@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
+import com.kurukurupapa.pff.domain.LeaderSkill;
 import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 
@@ -57,19 +58,31 @@ public class MemoriaRanking {
 		mFitnessList = new ArrayList<MemoriaFitness>();
 		Dp01 dp;
 		for (MemoriaData e : memoriaDataSet) {
+			// 当該メモリアの最大評価を計算
 			MemoriaDataSet tmpMemoriaDataSet = new MemoriaDataSet(itemDataSet);
 			tmpMemoriaDataSet.add(e);
 			dp = new Dp01(tmpMemoriaDataSet, itemDataSet, mFitnessCalculator);
 			dp.run(1);
-			mFitnessList.add(dp.getParty().getFitnessObj()
-					.getMemoriaFitnesses().get(0));
+			FitnessValue max = dp.getParty().getFitnessObj();
+
+			// リーダースキルを考慮する
+			for (LeaderSkill e2 : LeaderSkill.values()) {
+				// TODO 自分自身のリーダースキルは省いた方が良いかも。
+				Party party = dp.getParty().clone();
+				party.getMemoria(0).addLeaderSkill(e2.getItemData());
+				party.calcFitness(mFitnessCalculator);
+				if (max.getValue() < party.getFitness()) {
+					max = party.getFitnessObj();
+				}
+			}
+
+			mFitnessList.add(max.getMemoriaFitnesses().get(0));
 		}
 
 		// 評価値の降順でソート
 		Collections.sort(mFitnessList, new Comparator<MemoriaFitness>() {
 			@Override
-			public int compare(MemoriaFitness arg0,
-					MemoriaFitness arg1) {
+			public int compare(MemoriaFitness arg0, MemoriaFitness arg1) {
 				// 降順
 				return arg1.getValue() - arg0.getValue();
 			}
@@ -81,4 +94,5 @@ public class MemoriaRanking {
 	public List<MemoriaFitness> getFitnesses() {
 		return mFitnessList;
 	}
+
 }

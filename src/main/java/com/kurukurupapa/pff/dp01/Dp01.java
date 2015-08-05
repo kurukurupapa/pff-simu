@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
+import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 
 /**
@@ -25,6 +26,10 @@ public class Dp01 {
 	private Memo mMemo;
 	private Memo mWeaponMemo;
 	private Memo mAccessoryMemo;
+
+	private int mMemoriaCount;
+
+	private List<MemoriaFitness> mMemoriaFitnesses;
 
 	public Dp01(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet,
 			FitnessCalculator fitnessCalculator) {
@@ -52,7 +57,23 @@ public class Dp01 {
 		mLogger.trace("run(" + maxMemorias + ")");
 		Validate.validState(maxMemorias <= Party.MAX_MEMORIAS);
 
+		// 準備
+		if (maxMemorias == 1) {
+			mMemoriaFitnesses = null;
+		} else {
+			MemoriaRanking memoriaRanking = new MemoriaRanking();
+			memoriaRanking.setParams(mMemoriaDataSet, mItemDataSet,
+					mFitnessCalculator);
+			memoriaRanking.run();
+			mMemoriaFitnesses = memoriaRanking.getFitnesses();
+		}
+
+		// 計算開始
+		mMemoriaCount = 0;
 		mParty = calcMemoria(0, maxMemorias);
+		mLogger.debug("メモリア数=" + mMemoriaDataSet.size() + ",maxMemorias="
+				+ maxMemorias + ",メモリア計算回数=" + mMemoriaCount + ",パーティ="
+				+ mParty);
 	}
 
 	private Party calcAccessory(Party party) {
@@ -207,14 +228,21 @@ public class Dp01 {
 		// 当該インデックスのメモリアが参加する場合
 		// 武器・アクセサリ類を一旦クリアして計算しなおします。
 		Party tmp = calcMemoria(memoriaIndex + 1, maxMemoria - 1);
-		tmp = tmp.clone();
-		tmp.add(mMemoriaDataSet.get(memoriaIndex));
-		tmp.clearWeaponAccessories();
-		tmp.calcFitness(mFitnessCalculator);
-		tmp = calcWeapon(tmp);
-		tmp = calcAccessory(tmp);
-		printParty(tmp);
-		party = getFitnessParty(party, tmp);
+		MemoriaData memoriaData = getMemoria(memoriaIndex);
+		MemoriaFitness memoriaFitness = getMemoriaFitness(memoriaIndex);
+
+		// 当該メモリアを参加させて、評価が上がる可能性があるか確認します。
+		if (isNeedMemoria(party, tmp, maxMemoria, memoriaData, memoriaFitness)) {
+			tmp = tmp.clone();
+			tmp.add(memoriaData);
+			tmp.clearWeaponAccessories();
+			tmp.calcFitness(mFitnessCalculator);
+			tmp = calcWeapon(tmp);
+			tmp = calcAccessory(tmp);
+			printParty(tmp);
+			party = getFitnessParty(party, tmp);
+			mMemoriaCount++;
+		}
 
 		mMemo.put(memoriaIndex, maxMemoria, party);
 		// mLogger.info("calcMemoria(memoriaIndex=" + memoriaIndex
@@ -227,6 +255,49 @@ public class Dp01 {
 			return party2;
 		}
 		return party1.getFitness() < party2.getFitness() ? party2 : party1;
+	}
+
+	private boolean isNeedMemoria(Party maxParty, Party subParty,
+			int maxMemoria, MemoriaData memoriaData,
+			MemoriaFitness memoriaFitness) {
+		// 当該メモリアの事前情報がない場合、パーティが最大になっていない場合は、
+		// 当該メモリアが必要となる可能性がある。
+		if (memoriaFitness == null || subParty.size() < maxMemoria - 1) {
+			return true;
+		}
+
+		// 当該メモリアを参加させた場合の最大適応度を計算します。
+		FakeParty fakeParty = new FakeParty(subParty, memoriaFitness);
+		fakeParty.calcFitness(mFitnessCalculator);
+
+		boolean needFlag = false;
+		if (maxParty.getFitness() < fakeParty.getFitness()) {
+			needFlag = true;
+		}
+
+		if (!needFlag) {
+			mLogger.info("当該メモリアの計算を一部省略可能です。\n\tメモリア=" + memoriaData
+					+ ",\n\t当該メモリア不参加パーティ=" + maxParty + ",\n\t当該メモリア参加パーティ="
+					+ fakeParty);
+		}
+
+		return needFlag;
+	}
+
+	private MemoriaData getMemoria(int index) {
+		if (mMemoriaFitnesses == null) {
+			return mMemoriaDataSet.get(index);
+		} else {
+			return getMemoriaFitness(index).getMemoria().getMemoriaData();
+		}
+	}
+
+	private MemoriaFitness getMemoriaFitness(int index) {
+		if (mMemoriaFitnesses == null) {
+			return null;
+		} else {
+			return mMemoriaFitnesses.get(mMemoriaFitnesses.size() - index - 1);
+		}
 	}
 
 	private void printParty(Party party) {
