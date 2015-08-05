@@ -27,6 +27,11 @@ public abstract class ItemRanking {
 	}
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
+			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator) {
+		setParams(memoriaDataSet, itemDataSet, fitnessCalculator, null, 0);
+	}
+
+	public void setParams(MemoriaDataSet memoriaDataSet,
 			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
 			Party party, int memoriaIndex) {
 		mMemoriaDataSet = memoriaDataSet;

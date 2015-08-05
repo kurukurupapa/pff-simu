@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
-import com.kurukurupapa.pff.dp01.AccessoryFitness;
 import com.kurukurupapa.pff.dp01.AccessoryRanking;
 import com.kurukurupapa.pff.dp01.FitnessCalculator;
+import com.kurukurupapa.pff.dp01.ItemFitness;
 import com.kurukurupapa.pff.dp01.Party;
 
 /**
@@ -49,7 +49,7 @@ public class AccessoryRankingService {
 		accessoryRanking.run();
 	}
 
-	public List<AccessoryFitness> getFitnesses() {
+	public List<ItemFitness> getFitnesses() {
 		return accessoryRanking.getFitnesses();
 	}
 

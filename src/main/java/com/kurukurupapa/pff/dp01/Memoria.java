@@ -10,6 +10,7 @@ import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BlackMagicItemDataEx;
 import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.MagicType;
+import com.kurukurupapa.pff.domain.Mement;
 import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.SummonMagicItemDataEx;
 import com.kurukurupapa.pff.domain.WhiteMagicItemDataEx;
@@ -19,20 +20,6 @@ public class Memoria implements Cloneable {
 	public static final int MAX_WEAPON = 1;
 	/** アクセサリスロット数 */
 	public static final int MAX_ACCESSORIES = 2;
-	/** 力メメントの物理倍率 */
-	public static final float MEMENT_CHIKARA_PHYSICAL_RATE = 1.2f;
-	/** 知恵メメントの黒魔法倍率 */
-	public static final float MEMENT_CHIE_BLACK_RATE = 1.2f;
-	/** 祈りメメントの白魔法倍率 */
-	public static final float MEMENT_INORI_WHITE_RATE = 1.25f;
-	/** 力メメントのリメントゲージ上昇率（メモリアの攻撃1回あたりの増加比率）（%） */
-	public static final float MEMENT_CHIKARA_REMENT_RATE = 4.4f;
-	/** 知恵メメントのリメントゲージ上昇率（メモリアの攻撃1回あたりの増加比率）（%） */
-	public static final float MEMENT_CHIE_REMENT_RATE = 11.0f;
-	/** 力メメントのブレイクゲージ上昇率（パズル1マスあたりのブレイクゲージの上昇率）（%） */
-	public static final float MEMENT_CHIKARA_BREAK_RATE = 0.40f;
-	/** 知恵メメントのブレイクゲージ上昇率（パズル1マスあたりのブレイクゲージの上昇率）（%） */
-	public static final float MEMENT_CHIE_BREAK_RATE = 4.65f;
 
 	protected MemoriaData mMemoriaData;
 	protected ItemData mWeaponData;
@@ -43,6 +30,20 @@ public class Memoria implements Cloneable {
 		mMemoriaData = memoriaData;
 		mAccessoryDataArr = new ItemData[] {};
 		mLeaderSkillArr = new ItemData[] {};
+	}
+
+	public Memoria(MemoriaData memoriaData, ItemData weapon,
+			ItemData magicAccessory1, ItemData magicAccessory2) {
+		this(memoriaData);
+		if (weapon != null) {
+			setWeapon(weapon);
+		}
+		if (magicAccessory1 != null) {
+			addAccessory(magicAccessory1);
+		}
+		if (magicAccessory2 != null) {
+			addAccessory(magicAccessory2);
+		}
 	}
 
 	public Memoria(Memoria memoria) {
@@ -154,6 +155,10 @@ public class Memoria implements Cloneable {
 		return mMemoriaData.validAccessoryData(accessoryData);
 	}
 
+	public int getNumAccessories() {
+		return mAccessoryDataArr.length;
+	}
+
 	public int getRemainAccessorySlot() {
 		return MAX_ACCESSORIES - mAccessoryDataArr.length;
 	}
@@ -187,7 +192,7 @@ public class Memoria implements Cloneable {
 		mLeaderSkillArr = new ItemData[] {};
 	}
 
-	private MemoriaData getMemoriaData() {
+	public MemoriaData getMemoriaData() {
 		return mMemoriaData;
 	}
 
@@ -389,7 +394,7 @@ public class Memoria implements Cloneable {
 		// ※力メメントで物理倍率 1.20を前提とします。
 		damage = (getPower() * getMemoriaData().getPhysicalAttack()
 				* (1.0f + criticalRate) - physicalResistance)
-				* MEMENT_CHIKARA_PHYSICAL_RATE;
+				* Mement.CHIKARA_PHYSICAL_RATE;
 		if (damage < 1f) {
 			damage = 1f;
 		}
@@ -678,7 +683,7 @@ public class Memoria implements Cloneable {
 	 */
 	protected float getRementTurn(int chikaraTurn, int chieTurn) {
 		// 1ターンあたりのリメントゲージ上昇率（%）
-		float rementRate = (MEMENT_CHIKARA_REMENT_RATE * chikaraTurn + MEMENT_CHIE_REMENT_RATE
+		float rementRate = (Mement.CHIKARA_REMENT_RATE * chikaraTurn + Mement.CHIE_REMENT_RATE
 				* chieTurn)
 				/ (chikaraTurn + chieTurn);
 		// 100%までのターン数

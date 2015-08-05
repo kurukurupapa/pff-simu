@@ -1,8 +1,6 @@
 package com.kurukurupapa.pff.dp01;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
@@ -18,29 +16,15 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
  * 
  * 魔法を評価し、順位をつけます。 これにより、不要な魔法が判断しやすくなると思います。
  */
-public class MagicRanking {
+public class MagicRanking extends ItemRanking {
 	/** ロガー */
-	private Logger mLogger = Logger.getLogger(MagicRanking.class);
-
-	private MemoriaDataSet mMemoriaDataSet;
-	private ItemDataSet mItemDataSet;
-	private FitnessCalculator mFitnessCalculator;
-	private Party mParty;
-	private int mMemoriaIndex;
-	private List<MagicFitness> mFitnessList;
-
-	public void setParams(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet) {
-		setParams(memoriaDataSet, itemDataSet, null, null, 0);
-	}
+	public Logger mLogger = Logger.getLogger(MagicRanking.class);
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
 			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
 			Party party, int memoriaIndex) {
-		mMemoriaDataSet = memoriaDataSet;
-		mItemDataSet = itemDataSet;
-		mFitnessCalculator = fitnessCalculator;
-		mParty = party;
-		mMemoriaIndex = memoriaIndex;
+		super.setParams(memoriaDataSet, itemDataSet, fitnessCalculator, party,
+				memoriaIndex);
 
 		// メモリアには、魔法を設定できる空きスロットが存在すること。
 		if (mParty != null) {
@@ -50,24 +34,7 @@ public class MagicRanking {
 		}
 	}
 
-	public void run() {
-		if (mParty == null) {
-			runWithoutParty();
-		} else {
-			runWithParty();
-		}
-
-		// 評価値の降順でソート
-		Collections.sort(mFitnessList, new Comparator<MagicFitness>() {
-			@Override
-			public int compare(MagicFitness arg0, MagicFitness arg1) {
-				// 降順
-				return arg1.getFitness() - arg0.getFitness();
-			}
-		});
-	}
-
-	private void runWithoutParty() {
+	protected void runWithoutParty() {
 		// 魔法の一覧
 		List<ItemData> magics = mItemDataSet.makeMagicList();
 
@@ -75,8 +42,8 @@ public class MagicRanking {
 		mLogger.info("魔法数=" + magics.size() //
 				+ ",メモリア数=" + mMemoriaDataSet.size() //
 		);
-		mFitnessList = new ArrayList<MagicFitness>();
-		int count = 0;
+		mFitnessList = new ArrayList<ItemFitness>();
+		// int count = 0;
 		for (ItemData magic : magics) {
 			MagicFitness maxFitness = new MagicFitness();
 			maxFitness.setup(magic, mFitnessCalculator);
@@ -86,7 +53,7 @@ public class MagicRanking {
 			for (MemoriaData memoriaData : mMemoriaDataSet) {
 				// NGな組み合わせをスキップ
 				if (!magic.isValid(memoriaData)) {
-					mLogger.debug("NG組み合わせ=" + magic + "+" + memoriaData);
+					// mLogger.debug("NG組み合わせ=" + magic + "+" + memoriaData);
 					continue;
 				}
 
@@ -95,16 +62,16 @@ public class MagicRanking {
 				if (fitness.getFitness() > maxFitness.getFitness()) {
 					maxFitness = fitness;
 				}
-				mLogger.debug(fitness);
+				// mLogger.debug(fitness);
 			}
 
 			mFitnessList.add(maxFitness);
-			count++;
-			mLogger.debug("魔法ループカウント=" + count + "/" + magics.size());
+			// count++;
+			// mLogger.debug("魔法ループカウント=" + count + "/" + magics.size());
 		}
 	}
 
-	private void runWithParty() {
+	protected void runWithParty() {
 		Validate.validState(mParty != null);
 
 		// 魔法の一覧
@@ -121,11 +88,11 @@ public class MagicRanking {
 
 		// 魔法の評価
 		mLogger.info("魔法数=" + magics.size() + ",対象メモリア=" + memoria);
-		mFitnessList = new ArrayList<MagicFitness>();
+		mFitnessList = new ArrayList<ItemFitness>();
 		for (ItemData magic : magics) {
 			// NGな組み合わせをスキップ
 			if (!memoria.validAccessoryData(magic)) {
-				mLogger.debug("NG組み合わせ=" + magic + "+" + memoria.getName());
+				// mLogger.debug("NG組み合わせ=" + magic + "+" + memoria.getName());
 				continue;
 			}
 
@@ -141,7 +108,4 @@ public class MagicRanking {
 		return fitness;
 	}
 
-	public List<MagicFitness> getFitnesses() {
-		return mFitnessList;
-	}
 }

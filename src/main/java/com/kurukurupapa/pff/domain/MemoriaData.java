@@ -3,6 +3,8 @@ package com.kurukurupapa.pff.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kurukurupapa.pff.dp01.Memoria;
+
 /**
  * メモリアデータ
  */
@@ -110,6 +112,10 @@ public class MemoriaData {
 	@Override
 	public String toString() {
 		return getName();
+	}
+
+	public boolean isSame(MemoriaData memoria) {
+		return getName().equals(memoria.getName());
 	}
 
 	public String getName() {

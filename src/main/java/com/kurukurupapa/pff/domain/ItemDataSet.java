@@ -207,18 +207,36 @@ public class ItemDataSet {
 	public void readTestFile() {
 		// readWeapon();
 		// readAccessory();
-		readFile("/itemTest.txt");
+		readTestFile(false);
+	}
+
+	/**
+	 * テスト用アイテムファイルを読み込みます。
+	 * 
+	 * @param flatNumber
+	 *            アイテム個数分アイテムオブジェクトを生成する場合true
+	 */
+	public void readTestFile(boolean flatNumber) {
+		readFile("/itemTest.txt", flatNumber);
 	}
 
 	public void readUserFile() {
-		readFile("/itemUser.txt");
+		readFile("/itemUser.txt", false);
 	}
 
 	public void readMasterFile() {
-		readFile("/itemMaster.txt");
+		readFile("/itemMaster.txt", false);
 	}
 
-	private void readFile(String path) {
+	/**
+	 * アイテムファイルを読み込みます。
+	 * 
+	 * @param path
+	 *            ファイルパス
+	 * @param flatNumber
+	 *            アイテム個数分アイテムオブジェクトを生成する場合true
+	 */
+	private void readFile(String path, boolean flatNumber) {
 		mWeaponList.clear();
 		mMagicAccessoryList.clear();
 		BufferedReader r = new BufferedReader(new InputStreamReader(getClass()
@@ -232,7 +250,7 @@ public class ItemDataSet {
 					break;
 				}
 				count++;
-				parseLine(line);
+				parseLine(line, flatNumber);
 			}
 		} catch (RuntimeException e) {
 			throw new AppException("アイテムファイルの読み込みに失敗しました。ファイル=" + path + ",行="
@@ -249,7 +267,15 @@ public class ItemDataSet {
 		}
 	}
 
-	private void parseLine(String line) {
+	/**
+	 * アイテムファイル1行分を解析し、アイテムオブジェクトを作成します。
+	 * 
+	 * @param line
+	 *            アイテムファイルの1行
+	 * @param flatNumber
+	 *            アイテム個数分アイテムオブジェクトを生成する場合true
+	 */
+	private void parseLine(String line, boolean flatNumber) {
 		// コメント行や空行の扱い
 		line = line.replaceFirst("#.*", "").trim();
 		if (line.replaceAll(SEP, "").trim().length() <= 0) {
@@ -273,24 +299,32 @@ public class ItemDataSet {
 			magicCharge = toInt(columns[10]);
 			magicEffect = toInt(columns[11]);
 		}
-		ItemData itemData = new ItemData(itemType, itemType2,
-				toName(columns[2]), toInt(columns[3]), toUnit(columns[3]),
-				toInt(columns[4]), toUnit(columns[4]), toInt(columns[5]),
-				toUnit(columns[5]), toInt(columns[6]), toUnit(columns[6]),
-				toInt(columns[7]), toUnit(columns[7]),
-				toDefenceInt(columns[8]), toDefenceInt(columns[9]), magicType,
-				magicCharge, magicEffect, Attr.parse(columns[12]),
-				toStr(columns[13]), toInt(columns[14]));
-		switch (itemType) {
-		case WEAPON:
-			addWeaponData(itemData);
-			break;
-		case MAGIC:
-			addMagicData(itemData);
-			break;
-		case ACCESSORY:
-			addAccessoryData(itemData);
-			break;
+		int number = toInt(columns[14]);
+		int numAddition = 1;
+		if (flatNumber) {
+			numAddition = number;
+			number = 1;
+		}
+		for (int i = 0; i < numAddition; i++) {
+			ItemData itemData = new ItemData(itemType, itemType2,
+					toName(columns[2]), toInt(columns[3]), toUnit(columns[3]),
+					toInt(columns[4]), toUnit(columns[4]), toInt(columns[5]),
+					toUnit(columns[5]), toInt(columns[6]), toUnit(columns[6]),
+					toInt(columns[7]), toUnit(columns[7]),
+					toDefenceInt(columns[8]), toDefenceInt(columns[9]),
+					magicType, magicCharge, magicEffect,
+					Attr.parse(columns[12]), toStr(columns[13]), number);
+			switch (itemType) {
+			case WEAPON:
+				addWeaponData(itemData);
+				break;
+			case MAGIC:
+				addMagicData(itemData);
+				break;
+			case ACCESSORY:
+				addAccessoryData(itemData);
+				break;
+			}
 		}
 	}
 

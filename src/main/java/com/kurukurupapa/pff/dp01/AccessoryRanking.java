@@ -1,8 +1,6 @@
 package com.kurukurupapa.pff.dp01;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.lang3.Validate;
@@ -18,29 +16,15 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
  * 
  * アクセサリを評価し、順位をつけます。 これにより、不要なアクセサリが判断しやすくなると思います。
  */
-public class AccessoryRanking {
+public class AccessoryRanking extends ItemRanking {
 	/** ロガー */
-	private Logger mLogger = Logger.getLogger(AccessoryRanking.class);
-
-	private MemoriaDataSet mMemoriaDataSet;
-	private ItemDataSet mItemDataSet;
-	private FitnessCalculator mFitnessCalculator;
-	private Party mParty;
-	private int mMemoriaIndex;
-	private List<AccessoryFitness> mFitnessList;
-
-	public void setParams(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet) {
-		setParams(memoriaDataSet, itemDataSet, null, null, 0);
-	}
+	public Logger mLogger = Logger.getLogger(AccessoryRanking.class);
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
 			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
 			Party party, int memoriaIndex) {
-		mMemoriaDataSet = memoriaDataSet;
-		mItemDataSet = itemDataSet;
-		mFitnessCalculator = fitnessCalculator;
-		mParty = party;
-		mMemoriaIndex = memoriaIndex;
+		super.setParams(memoriaDataSet, itemDataSet, fitnessCalculator, party,
+				memoriaIndex);
 
 		// メモリアには、アクセサリを設定できる空きスロットが存在すること。
 		if (mParty != null) {
@@ -50,24 +34,7 @@ public class AccessoryRanking {
 		}
 	}
 
-	public void run() {
-		if (mParty == null) {
-			runWithoutParty();
-		} else {
-			runWithParty();
-		}
-
-		// 評価値の降順でソート
-		Collections.sort(mFitnessList, new Comparator<AccessoryFitness>() {
-			@Override
-			public int compare(AccessoryFitness arg0, AccessoryFitness arg1) {
-				// 降順
-				return arg1.getFitness() - arg0.getFitness();
-			}
-		});
-	}
-
-	private void runWithoutParty() {
+	protected void runWithoutParty() {
 		// 武器の一覧
 		List<ItemData> weapons = mItemDataSet.getWeaponList();
 		// 魔法の一覧
@@ -76,14 +43,16 @@ public class AccessoryRanking {
 		List<ItemData> accessories = mItemDataSet.makeAccessoryList();
 
 		// アクセサリの評価
-		mLogger.info("アクセサリ数=" + accessories.size() //
-				+ ",メモリア数=" + mMemoriaDataSet.size() //
-				+ ",武器数+魔法数=" + (weapons.size() + magics.size()));
-		mLogger.info("計算回数="
+		mLogger.info("アクセサリ数="
+				+ accessories.size() //
+				+ ",メモリア数="
+				+ mMemoriaDataSet.size() //
+				+ ",武器数+魔法数="
+				+ (weapons.size() + magics.size())
+				+ ",計算回数="
 				+ (accessories.size() * mMemoriaDataSet.size() * (weapons
 						.size() + magics.size())));
-		mFitnessList = new ArrayList<AccessoryFitness>();
-		int count = 0;
+		mFitnessList = new ArrayList<ItemFitness>();
 		for (ItemData accessory : accessories) {
 			AccessoryFitness maxFitness = new AccessoryFitness();
 			maxFitness.setup(accessory, mFitnessCalculator);
@@ -93,13 +62,15 @@ public class AccessoryRanking {
 			for (MemoriaData memoriaData : mMemoriaDataSet) {
 				// NGな組み合わせをスキップ
 				if (!accessory.isValid(memoriaData)) {
-					mLogger.debug("NG組み合わせ=" + accessory + "+" + memoriaData);
+					// mLogger.debug("NG組み合わせ=" + accessory + "+" +
+					// memoriaData);
 					continue;
 				}
 				for (ItemData weapon : weapons) {
 					// NGな組み合わせをスキップ
 					if (!weapon.isValid(memoriaData)) {
-						mLogger.debug("NG組み合わせ=" + memoriaData + "+" + weapon);
+						// mLogger.debug("NG組み合わせ=" + memoriaData + "+" +
+						// weapon);
 						continue;
 					}
 
@@ -109,12 +80,13 @@ public class AccessoryRanking {
 					AccessoryFitness fitness = calcAccessoryFitness(accessory,
 							memoria);
 					maxFitness = getMaxAccessoryFitness(fitness, maxFitness);
-					mLogger.debug(fitness);
+					// mLogger.debug(fitness);
 				}
 				for (ItemData magic : magics) {
 					// NGな組み合わせをスキップ
 					if (!magic.isValid(memoriaData)) {
-						mLogger.debug("NG組み合わせ=" + memoriaData + "+" + magic);
+						// mLogger.debug("NG組み合わせ=" + memoriaData + "+" +
+						// magic);
 						continue;
 					}
 
@@ -124,17 +96,15 @@ public class AccessoryRanking {
 					AccessoryFitness fitness = calcAccessoryFitness(accessory,
 							memoria);
 					maxFitness = getMaxAccessoryFitness(fitness, maxFitness);
-					mLogger.debug(fitness);
+					// mLogger.debug(fitness);
 				}
 			}
 
 			mFitnessList.add(maxFitness);
-			count++;
-			mLogger.debug("アクセサリループカウント=" + count + "/" + accessories.size());
 		}
 	}
 
-	private void runWithParty() {
+	protected void runWithParty() {
 		Validate.validState(mParty != null);
 
 		// アクセサリの一覧
@@ -151,11 +121,12 @@ public class AccessoryRanking {
 
 		// アクセサリの評価
 		mLogger.info("アクセサリ数=" + accessories.size() + ",対象メモリア=" + memoria);
-		mFitnessList = new ArrayList<AccessoryFitness>();
+		mFitnessList = new ArrayList<ItemFitness>();
 		for (ItemData accessory : accessories) {
 			// NGな組み合わせをスキップ
 			if (!memoria.validAccessoryData(accessory)) {
-				mLogger.debug("NG組み合わせ=" + accessory + "+" + memoria.getName());
+				// mLogger.debug("NG組み合わせ=" + accessory + "+" +
+				// memoria.getName());
 				continue;
 			}
 
@@ -181,7 +152,4 @@ public class AccessoryRanking {
 		}
 	}
 
-	public List<AccessoryFitness> getFitnesses() {
-		return mFitnessList;
-	}
 }

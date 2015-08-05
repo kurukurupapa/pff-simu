@@ -18,7 +18,7 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
  */
 public class WeaponRanking extends ItemRanking {
 	/** ロガー */
-	private Logger mLogger = Logger.getLogger(WeaponRanking.class);
+	public Logger mLogger = Logger.getLogger(WeaponRanking.class);
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
 			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
@@ -44,7 +44,7 @@ public class WeaponRanking extends ItemRanking {
 				+ ",メモリア数=" + mMemoriaDataSet.size() //
 		);
 		mFitnessList = new ArrayList<ItemFitness>();
-		int count = 0;
+		// int count = 0;
 		for (ItemData weapon : weapons) {
 			WeaponFitness maxFitness = new WeaponFitness();
 			maxFitness.setup(weapon);
@@ -54,7 +54,7 @@ public class WeaponRanking extends ItemRanking {
 			for (MemoriaData memoriaData : mMemoriaDataSet) {
 				// NGな組み合わせをスキップ
 				if (!weapon.isValid(memoriaData)) {
-					mLogger.debug("NG組み合わせ=" + weapon + "+" + memoriaData);
+					// mLogger.debug("NG組み合わせ=" + weapon + "+" + memoriaData);
 					continue;
 				}
 
@@ -63,12 +63,12 @@ public class WeaponRanking extends ItemRanking {
 				if (fitness.getFitness() > maxFitness.getFitness()) {
 					maxFitness = fitness;
 				}
-				mLogger.debug(fitness);
+				// mLogger.debug(fitness);
 			}
 
 			mFitnessList.add(maxFitness);
-			count++;
-			mLogger.debug("武器ループカウント=" + count + "/" + weapons.size());
+			// count++;
+			// mLogger.debug("武器ループカウント=" + count + "/" + weapons.size());
 		}
 	}
 
@@ -96,7 +96,7 @@ public class WeaponRanking extends ItemRanking {
 		for (ItemData weapon : weapons) {
 			// NGな組み合わせをスキップ
 			if (!memoria.validWeaponData(weapon)) {
-				mLogger.debug("NG組み合わせ=" + weapon + "+" + memoria.getName());
+				// mLogger.debug("NG組み合わせ=" + weapon + "+" + memoria.getName());
 				continue;
 			}
 

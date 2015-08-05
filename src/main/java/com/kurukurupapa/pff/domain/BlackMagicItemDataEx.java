@@ -2,8 +2,6 @@ package com.kurukurupapa.pff.domain;
 
 import java.util.List;
 
-import com.kurukurupapa.pff.dp01.Memoria;
-
 /**
  * 黒魔法アイテムデータ拡張クラス
  */
@@ -32,7 +30,7 @@ public class BlackMagicItemDataEx extends MagicItemDataEx {
 		// http://wikiwiki.jp/pictlogicaff/?%C0%EF%C6%AE%BE%F0%CA%F3#measure
 		// ※知恵メメントで黒魔法 1.20を前提とします。
 		return (intelligence + mMagicEffect) * magicAttack
-				* Memoria.MEMENT_CHIE_BLACK_RATE - magicResistance;
+				* Mement.CHIE_BLACK_RATE - magicResistance;
 	}
 
 	public float getWeakAttrValue(List<Attr> weakList) {

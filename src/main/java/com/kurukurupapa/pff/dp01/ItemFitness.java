@@ -113,6 +113,10 @@ public abstract class ItemFitness {
 
 	@Override
 	public String toString() {
+		return "[" + getFitness() + "," + mItem + "," + mMemoria + "]";
+	}
+
+	public String toSimpeString() {
 		return getFitness() + "," + mItem + "," + mMemoria;
 	}
 }
