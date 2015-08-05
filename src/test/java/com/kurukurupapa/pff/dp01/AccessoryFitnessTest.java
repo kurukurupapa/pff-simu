@@ -9,8 +9,9 @@ import org.junit.Test;
 import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.test.BaseTestCase;
 
-public class AccessoryFitnessTest {
+public class AccessoryFitnessTest extends BaseTestCase {
 	/** 1バトルあたりのターン数 */
 	private static final int TURN = 10;
 
@@ -30,6 +31,7 @@ public class AccessoryFitnessTest {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		sut = new AccessoryFitness();
 	}
 
@@ -48,7 +50,8 @@ public class AccessoryFitnessTest {
 		int afterHp = (int) (911 * 1.1);
 		int upHp = afterHp - beforeHp;
 		int upRecovery = ((int) (afterHp / 50) - (int) (beforeHp / 50)) * TURN;
-		assertEquals((upHp + upRecovery) + ",タフネスリング,アーロン+タフネスリング", actual);
+		assertEquals("[" + (upHp + upRecovery) + ",タフネスリング,アーロン+タフネスリング]",
+				actual);
 	}
 
 	@Test
@@ -62,7 +65,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("180,ルフェインブーツ,アーロン+ルフェインブーツ", actual);
+		assertEquals("[180,ルフェインブーツ,アーロン+ルフェインブーツ]", actual);
 	}
 
 	@Test
@@ -76,7 +79,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("0,風の指輪,アーロン+風の指輪", actual);
+		assertEquals("[0,風の指輪,アーロン+風の指輪]", actual);
 	}
 
 	@Test
@@ -92,7 +95,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("2270,風の指輪,アーロン+烈風+風の指輪", actual);
+		assertEquals("[2270,風の指輪,アーロン+烈風+風の指輪]", actual);
 	}
 
 	@Test
@@ -108,7 +111,7 @@ public class AccessoryFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("550,炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪", actual);
+		assertEquals("[550,炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪]", actual);
 	}
 
 }

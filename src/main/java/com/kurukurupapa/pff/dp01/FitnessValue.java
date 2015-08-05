@@ -21,7 +21,8 @@ public class FitnessValue {
 
 	@Override
 	public String toString() {
-		return mValue + ",[" + StringUtils.join(mMemoriaFitnesses, ",") + "]";
+		return "[" + mValue + "," + StringUtils.join(mMemoriaFitnesses, ",")
+				+ "]";
 	}
 
 	public void add(MemoriaFitness MemoriaFitness) {

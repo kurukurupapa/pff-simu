@@ -5,14 +5,16 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.test.BaseTestCase;
 
-public class MemoriaRankingTest {
+public class MemoriaRankingTest extends BaseTestCase {
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
@@ -29,6 +31,7 @@ public class MemoriaRankingTest {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		sut = new MemoriaRanking();
 	}
 
@@ -44,20 +47,7 @@ public class MemoriaRankingTest {
 		String actualStr = toString(actual);
 
 		// 検証
-		assertEquals("" //
-				+ "9136,パンネロ+ダンシングダガー+ファイアRF+3+ケアル\n" //
-				+ "8574,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n" //
-				+ "8403,ライトニング(No.119)+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+クリスタルの小手\n" //
-				+ "8123,元帥シド+おろち+マーシャルネイ+マーシャルネイ\n" //
-				+ "7317,アーロン+おろち+赤兎馬のたてがみ(レア5)+エクサバックラー+2+アーロンLS\n" //
-				+ "5940,アーシェ+ネクロフォリア+エクサバックラー+2+ケアル+アーシェLS\n" //
-				+ "5855,マキナ+青紅の剣(レア5)+クリスタルの小手+エクサバックラー+2\n" //
-				+ "5804,ティナ+青紅の剣(レア5)+エクサバックラー+2+ディアボロス\n" //
-				+ "5230,セシル+ネクロフォリア+赤兎馬のたてがみ(レア5)+エクサバックラー+2\n" //
-				+ "4873,ヴァニラ+イノセントロッド+ファイアRF+3+ケアル\n" //
-				+ "3910,デシ+鉄壁のグリモア(レア3)+赤兎馬のたてがみ(レア5)+パワーリスト\n" //
-				+ "3824,ユウナ(No.48)+燃える戦杖+ディアボロス+ケアルラ\n" //
-		, actualStr);
+		assertEquals(readExpectedFile(), actualStr);
 	}
 
 	@Test
@@ -93,11 +83,8 @@ public class MemoriaRankingTest {
 		assertTrue(actualStr.indexOf("ファイアRF+3") < 0);
 	}
 
-	private String toString(List<MemoriaFitness> memoriaFitnessList) {
-		StringBuilder sb = new StringBuilder();
-		for (MemoriaFitness e : memoriaFitnessList) {
-			sb.append(e + "\n");
-		}
-		return sb.toString();
+	private String toString(List<MemoriaFitness> memoriaFitnesses) {
+		return StringUtils.join(memoriaFitnesses, "\n") + "\n";
 	}
+
 }

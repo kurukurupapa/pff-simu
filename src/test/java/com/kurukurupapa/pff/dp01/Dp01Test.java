@@ -3,7 +3,6 @@ package com.kurukurupapa.pff.dp01;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,21 +10,20 @@ import org.junit.Test;
 import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.test.BaseTestCase;
 
-public class Dp01Test {
-	/** ロガー */
-	private static Logger mLogger;
-
+public class Dp01Test extends BaseTestCase {
 	private ItemDataSet mItemDataSet;
 	private MemoriaDataSet mMemoriaDataSet;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		mLogger = Logger.getLogger(Dp01Test.class);
 	}
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
+
 		// データ読み込み
 		mItemDataSet = new ItemDataSet();
 		mItemDataSet.readTestFile();
@@ -43,7 +41,6 @@ public class Dp01Test {
 		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
 				fitnessCalculator);
 		dp.run(1);
-		mLogger.debug(dp.getParty());
 		// 検証
 		assertThat(dp.getParty().toString(), is("911,アーロン"));
 	}
@@ -65,21 +62,10 @@ public class Dp01Test {
 		}
 
 		// 検証
-		// assertThat(dp.getParty().toString(),
-		// is("1052,アーロン+EXコア100%+タフネスリング"));
-		// assertThat(dp2.getParty().toString(),
-		// is("886,元帥シド+EXコア100%+タフネスリング"));
-		// assertThat(dp3.getParty().toString(),
-		// is("824,マキナ+EXコア100%+タフネスリング"));
 		assertThat(actual.toString(), is("" //
-				+ "1174,アーロン+赤兎馬のたてがみ(レア5)+SPの腕輪+アーロンLS\n"
-				// + "1165,アーロン+SPの腕輪+タフネスリング+アーロンLS\n"
-				+ "960,元帥シド+赤兎馬のたてがみ(レア5)+バルキーコート\n"
-				// + "925,元帥シド+赤兎馬のたてがみ(レア4)+バルキーコート\n"
-				// + "916,元帥シド+バルキーコート+タフネスリング\n"
-				+ "889,マキナ+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+バルキーコート\n"
-				// + "874,マキナ+青紅の剣(レア3)+赤兎馬のたてがみ(レア4)+バルキーコート\n"
-				// + "854,マキナ+バルキーコート+タフネスリング\n")
+				+ "1174,アーロン+赤兎馬のたてがみ(レア5)+SPの腕輪+アーロンLS\n" //
+				+ "960,元帥シド+赤兎馬のたてがみ(レア5)+バルキーコート+元帥シドLS\n" //
+				+ "889,マキナ+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+バルキーコート\n" //
 				+ ""));
 	}
 
@@ -93,9 +79,10 @@ public class Dp01Test {
 		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
 				fitnessCalculator);
 		dp.run(2);
-		mLogger.debug(dp.getParty());
 		// 検証
-		assertThat(dp.getParty().toString(), is("1691,アーロン,元帥シド"));
+		assertEquals("" //
+				+ "1691,アーロン+元帥シドLS,元帥シド+元帥シドLS" //
+		, dp.getParty().toString());
 	}
 
 	@Test
@@ -108,10 +95,11 @@ public class Dp01Test {
 		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
 				fitnessCalculator);
 		dp.run(4);
-		mLogger.debug(dp.getParty());
 		// 検証
-		assertThat(dp.getParty().toString(),
-				is("2925,マキナ,ライトニング(No.119),アーロン,元帥シド"));
+		assertEquals(
+				"" //
+						+ "2925,アーロン+元帥シドLS,元帥シド+元帥シドLS,マキナ+元帥シドLS,ライトニング(No.119)+元帥シドLS" //
+				, dp.getParty().toString());
 	}
 
 	@Test
@@ -185,7 +173,6 @@ public class Dp01Test {
 		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
 				fitnessCalculator);
 		dp.run(1);
-		mLogger.debug(dp.getParty());
 		// 検証
 		assertThat(dp.getParty().toString(), is("" //
 				// +"720,元帥シド"
@@ -232,7 +219,6 @@ public class Dp01Test {
 		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
 				fitnessCalculator);
 		dp.run(1);
-		mLogger.debug(dp.getParty());
 		// 検証
 		assertEquals("" //
 				+ "6300,パンネロ" //
@@ -255,16 +241,8 @@ public class Dp01Test {
 		}
 
 		// 検証
-		assertEquals("" //
-				+ "9136,パンネロ+ダンシングダガー+ファイアRF+3+ケアル\n" //
-				+ "8574,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n" //
-				+ "8403,ライトニング(No.119)+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+クリスタルの小手\n" //
-				+ "8123,元帥シド+おろち+マーシャルネイ+マーシャルネイ\n" //
-				+ "7317,アーロン+おろち+赤兎馬のたてがみ(レア5)+エクサバックラー+2+アーロンLS\n" //
-				+ "5940,アーシェ+ネクロフォリア+エクサバックラー+2+ケアル+アーシェLS\n" //
-				+ "5855,マキナ+青紅の剣(レア5)+クリスタルの小手+エクサバックラー+2\n" //
-				+ "5804,ティナ+青紅の剣(レア5)+エクサバックラー+2+ディアボロス\n" //
-		, actual);
+		String expected = readExpectedFile();
+		assertEquals(expected, actual.toString());
 	}
 
 	@Test
@@ -312,7 +290,22 @@ public class Dp01Test {
 		assertEquals("" //
 				+ "7220,ライトニング(No.119)+閃光のウォーソード+赤兎馬のたてがみ(レア5)+パワーリスト\n"
 				+ "7216,パンネロ+ダンシングダガー+ファイアRF+3+ケアル\n"
-				+ "5723,元帥シド+おろち+マーシャルネイ+マーシャルネイ\n", actual);
+				+ "6713,元帥シド+おろち+マーシャルネイ+マーシャルネイ+元帥シドLS\n", actual);
+	}
+
+	@Test
+	public void testRun2_Battle() {
+		// 準備
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
+
+		// テスト実行
+		Dp01 dp;
+		dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
+		dp.run(2);
+		Party actual = dp.getParty();
+
+		// 検証
+		assertParty(readExpectedFile(), actual);
 	}
 
 	@Test
@@ -327,26 +320,27 @@ public class Dp01Test {
 		// テスト実行
 		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(1);
-		mLogger.debug(dp.getParty());
 		// 検証
-		assertThat(dp.getParty().toString(), is("3480,元帥シド+烈風"));
+		assertTrue(dp.getParty().toString().indexOf("元帥シド+烈風") >= 0);
 	}
 
 	@Test
 	public void testRun_魔法装備() {
 		// 準備
 		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
-				.createForAttack();
+				.createForBattle();
 		MemoriaDataSet memoriaDataSet = new MemoriaDataSet(mItemDataSet);
-		memoriaDataSet.add(mMemoriaDataSet.find("元帥シド"));
+		memoriaDataSet.add(mMemoriaDataSet.find("アーシェ"));
 		ItemDataSet itemDataSet = new ItemDataSet();
 		itemDataSet.addMagicData(mItemDataSet.find("ファイラ"));
+
 		// テスト実行
 		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(1);
-		mLogger.debug(dp.getParty());
+		String actual = dp.getParty().toString();
+
 		// 検証
-		assertThat(dp.getParty().toString(), is("1992,元帥シド+ファイラ"));
+		assertTrue(actual, actual.indexOf("アーシェ+ファイラ") >= 0);
 	}
 
 	@Test
@@ -361,9 +355,8 @@ public class Dp01Test {
 		// テスト実行
 		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(1);
-		mLogger.debug(dp.getParty());
 		// 検証
-		assertThat(dp.getParty().toString(), is("2230,元帥シド+リストバンド"));
+		assertTrue(dp.getParty().toString().indexOf("元帥シド+リストバンド") >= 0);
 	}
 
 	@Test
@@ -380,7 +373,6 @@ public class Dp01Test {
 		// テスト実行
 		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run();
-		mLogger.debug(dp.getParty());
 		// 検証
 		assertThat(dp.getParty().toString(),
 				is("1174,アーロン+EXコア100%+EXコア100%+アーロンLS"));
@@ -399,9 +391,10 @@ public class Dp01Test {
 		// テスト実行
 		Dp01 dp = new Dp01(memoriaDataSet, itemDataSet, fitnessCalculator);
 		dp.run(2);
-		mLogger.debug(dp.getParty());
 		// 検証
-		assertThat(dp.getParty().toString(), is("1782,アーロン+タフネスリング,元帥シド"));
+		// アイテムが一方のメモリアのみに使用されること。
+		assertTrue(dp.getParty().toString().indexOf("アーロン+タフネスリング") >= 0);
+		assertTrue(dp.getParty().toString().indexOf("元帥シド+タフネスリング") < 0);
 	}
 
 }

@@ -8,10 +8,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.test.BaseTestCase;
 
-public class WeaponRankingTest {
+public class WeaponRankingTest extends BaseTestCase {
 
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
@@ -29,11 +31,12 @@ public class WeaponRankingTest {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		sut = new WeaponRanking();
 	}
 
 	@Test
-	public void testCalc_パーティなし() {
+	public void testCalc_デフォルト設定() {
 		// 準備
 
 		// テスト実行
@@ -43,26 +46,23 @@ public class WeaponRankingTest {
 		String actualStr = toString(actual);
 
 		// 検証
-		assertEquals("" //
-				+ "8028,ブリザードロングボウ,トレイ+ブリザードロングボウ\n" //
-				+ "7694,ディバインアロー,トレイ+ディバインアロー\n" //
-				+ "6764,烈風,アーロン+烈風\n" //
-				+ "6764,五月雨,アーロン+五月雨\n" //
-				+ "6764,おろち,アーロン+おろち\n" //
-				+ "5120,閃光のウォーソード,ライトニング(No.119)+閃光のウォーソード\n" //
-				+ "4998,オブリージュ,セシル+オブリージュ\n" //
-				+ "4998,ネクロフォリア,セシル+ネクロフォリア\n" //
-				+ "4782,ディバインソード,ライトニング(No.119)+ディバインソード\n" //
-				+ "3122,黄忠の長弓(レア5),トレイ+黄忠の長弓(レア5)\n" //
-				+ "2854,セレーネボウ,トレイ+セレーネボウ\n" //
-				+ "2278,青紅の剣(レア5),ライトニング(No.119)+青紅の剣(レア5)\n" //
-				+ "2175,燃える戦杖,ユウナ(No.48)+燃える戦杖\n" //
-				+ "1718,イノセントロッド,ヴァニラ+イノセントロッド\n" //
-				+ "1627,ダンシングダガー,パンネロ+ダンシングダガー\n" //
-				+ "1440,フォースイーター,アーシェ+フォースイーター\n" //
-				+ "1047,鉄壁のグリモア(レア3),デシ+鉄壁のグリモア(レア3)\n" //
-				+ "961,チャームステッキ,ユウナ(No.48)+チャームステッキ\n" //
-		, actualStr);
+		assertEquals(readExpectedFile(), actualStr);
+	}
+
+	@Test
+	public void testCalc_適応度計算オブジェクトあり() {
+		// 準備
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
+		fitnessCalculator.addEnemyWeak(Attr.THUNDER);
+
+		// テスト実行
+		sut.setParams(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
+		sut.run();
+		List<ItemFitness> actual = sut.getFitnesses();
+		String actualStr = toString(actual);
+
+		// 検証
+		assertEquals(readExpectedFile(), actualStr);
 	}
 
 	@Test
@@ -88,11 +88,7 @@ public class WeaponRankingTest {
 		String actualStr = toString(actual);
 
 		// 検証
-		assertEquals("" //
-				+ "2022,烈風,元帥シド+烈風+マーシャルネイ+マーシャルネイ\n" //
-				+ "2022,五月雨,元帥シド+五月雨+マーシャルネイ+マーシャルネイ\n" //
-				+ "2022,おろち,元帥シド+おろち+マーシャルネイ+マーシャルネイ\n" //
-		, actualStr);
+		assertEquals(readExpectedFile(), actualStr);
 	}
 
 	private String toString(List<ItemFitness> weaponFitnessList) {

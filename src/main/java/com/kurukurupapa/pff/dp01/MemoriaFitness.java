@@ -25,7 +25,7 @@ public class MemoriaFitness {
 
 	@Override
 	public String toString() {
-		return mValue + "," + mMemoria;
+		return "[" + mValue + "," + mMemoria + "]";
 	}
 
 	public Memoria getMemoria() {

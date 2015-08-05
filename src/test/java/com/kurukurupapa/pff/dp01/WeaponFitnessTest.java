@@ -8,8 +8,9 @@ import org.junit.Test;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.test.BaseTestCase;
 
-public class WeaponFitnessTest {
+public class WeaponFitnessTest extends BaseTestCase {
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
@@ -26,6 +27,7 @@ public class WeaponFitnessTest {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 		sut = new WeaponFitness();
 	}
 
@@ -40,7 +42,7 @@ public class WeaponFitnessTest {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("6764,烈風,アーロン+烈風", actual);
+		assertEquals("[6764,烈風,アーロン+烈風]", actual);
 	}
 
 }

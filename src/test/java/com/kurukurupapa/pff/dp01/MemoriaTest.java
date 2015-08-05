@@ -19,8 +19,9 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.domain.PremiumSkill;
 import com.kurukurupapa.pff.domain.WeaponType;
 import com.kurukurupapa.pff.domain.WeaponTypeFactory;
+import com.kurukurupapa.pff.test.BaseTestCase;
 
-public class MemoriaTest {
+public class MemoriaTest extends BaseTestCase {
 	/** 1バトルあたりのターン数 */
 	private static final int TURN = 10;
 	/** 1ターンあたりのチャージ */
@@ -114,6 +115,7 @@ public class MemoriaTest {
 
 	@Before
 	public void setUp() throws Exception {
+		super.setUp();
 	}
 
 	@Test
