@@ -43,7 +43,7 @@ public class MemoTest extends BaseTestCase {
 		Party actual = sut.get(0, 0);
 
 		// 検証
-		assertThat(actual.toString(), is("null,ヴァニラ"));
+		assertThat(actual.toString(), is("0,ヴァニラ"));
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class MemoTest extends BaseTestCase {
 		Party actual = sut.get(0, 0);
 
 		// 検証
-		assertThat(actual.toString(), is("null,アーロン"));
+		assertThat(actual.toString(), is("0,アーロン"));
 	}
 
 }
