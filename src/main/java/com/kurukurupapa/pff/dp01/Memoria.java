@@ -652,6 +652,13 @@ public class Memoria implements Cloneable {
 			if (ex != null) {
 				int recovery = ex.getRecovery(getIntelligence(),
 						getMemoriaData().getMagicAttack(MagicType.WHITE));
+
+				// ジョブスキル
+				if (getMemoriaData().getJobSkill().isRecoveryMagic()) {
+					recovery = getMemoriaData().getJobSkill()
+							.calcRecoveryMagicDamage(recovery);
+				}
+
 				int magicTimes = (int) (charge / ex.getMagicCharge());
 				int tmp = recovery * magicTimes;
 				white = Math.max(white, tmp);

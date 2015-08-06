@@ -92,16 +92,15 @@ public class NextMagicAccessoryTest extends BaseTestCase {
 
 		sut = new NextMagicAccessory(0, 0, mMagicAccessoryFitnesses,
 				mFitnessCalculator);
-		assertEquals("パワーリスト", sut.next(currentParty, maxParty).getName());
-		assertEquals("赤兎馬のたてがみ(レア5)", sut.next(currentParty, maxParty)
-				.getName());
+		assertEquals("ケアル", sut.next(currentParty, maxParty).getName());
+		assertEquals("ケアルラ", sut.next(currentParty, maxParty).getName());
 
 		// テスト実行
 		sut.reset();
 		ItemData actual = sut.next(currentParty, maxParty);
 
 		// 検証
-		assertEquals("パワーリスト", actual.getName());
+		assertEquals("ケアル", actual.getName());
 	}
 
 	@Test
@@ -116,6 +115,8 @@ public class NextMagicAccessoryTest extends BaseTestCase {
 
 		sut = new NextMagicAccessory(0, 0, mMagicAccessoryFitnesses,
 				mFitnessCalculator);
+		assertEquals("ケアル", sut.next(currentParty, maxParty).getName());
+		assertEquals("ケアルラ", sut.next(currentParty, maxParty).getName());
 
 		// テスト実行
 		ItemData actual = sut.next(currentParty, maxParty);
@@ -140,6 +141,8 @@ public class NextMagicAccessoryTest extends BaseTestCase {
 
 		sut = new NextMagicAccessory(0, 0, mMagicAccessoryFitnesses,
 				mFitnessCalculator);
+		assertEquals("ケアル", sut.next(currentParty, maxParty).getName());
+		assertEquals("ケアルラ", sut.next(currentParty, maxParty).getName());
 
 		// テスト実行
 		ItemData actual = sut.next(currentParty, maxParty);
@@ -160,6 +163,8 @@ public class NextMagicAccessoryTest extends BaseTestCase {
 
 		sut = new NextMagicAccessory(0, 0, mMagicAccessoryFitnesses,
 				mFitnessCalculator);
+		assertEquals("ケアル", sut.next(currentParty, maxParty).getName());
+		assertEquals("ケアルラ", sut.next(currentParty, maxParty).getName());
 
 		// テスト実行
 		ItemData actual = sut.next(currentParty, maxParty);
@@ -203,10 +208,12 @@ public class NextMagicAccessoryTest extends BaseTestCase {
 
 		sut = new NextMagicAccessory(0, 1, mMagicAccessoryFitnesses,
 				mFitnessCalculator);
+		assertEquals("ケアル", sut.next(currentParty, maxParty).getName());
+		assertEquals("ケアルラ", sut.next(currentParty, maxParty).getName());
 		assertEquals("パワーリスト", sut.next(currentParty, maxParty).getName());
 
 		// テスト実行
-		// ※xxxがスキップされる想定
+		// ※赤兎馬のたてがみ(レア5)がスキップされる想定
 		ItemData actual = sut.next(currentParty, maxParty);
 
 		// 検証
