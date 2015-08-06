@@ -2,6 +2,7 @@ package com.kurukurupapa.pffsimu.web.ranking;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
@@ -16,6 +17,8 @@ import com.kurukurupapa.pff.dp01.WeaponRanking;
  */
 @Service
 public class WeaponRankingService {
+	private Logger mLogger = Logger.getLogger(WeaponRankingService.class);
+
 	private ItemDataSet itemDataSet;
 	private MemoriaDataSet memoriaDataSet;
 	private FitnessCalculator fitnessCalculator;
@@ -47,6 +50,8 @@ public class WeaponRankingService {
 		weaponRanking.setParams(memoriaDataSet, itemDataSet, fitnessCalculator,
 				party, memoriaIndex);
 		weaponRanking.run();
+
+		mLogger.info("武器ランキング=" + weaponRanking.getFitnesses());
 	}
 
 	public List<ItemFitness> getRanking() {

@@ -18,7 +18,7 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
  */
 public class AccessoryRanking extends ItemRanking {
 	/** ロガー */
-	public Logger mLogger = Logger.getLogger(AccessoryRanking.class);
+	private Logger mLogger = Logger.getLogger(AccessoryRanking.class);
 
 	public void setParams(MemoriaDataSet memoriaDataSet,
 			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,

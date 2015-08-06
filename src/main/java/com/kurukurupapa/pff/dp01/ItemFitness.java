@@ -16,6 +16,8 @@ public abstract class ItemFitness {
 	 * コンストラクタ
 	 */
 	public ItemFitness() {
+		mBeforeValue = new FitnessValue();
+		mAfterValue = new FitnessValue();
 	}
 
 	/**
@@ -70,11 +72,7 @@ public abstract class ItemFitness {
 	}
 
 	public int getFitness() {
-		if (mBeforeValue != null && mAfterValue != null) {
-			return mAfterValue.getValue() - mBeforeValue.getValue();
-		} else {
-			return 0;
-		}
+		return mAfterValue.getValue() - mBeforeValue.getValue();
 	}
 
 	public ItemData getItem() {
