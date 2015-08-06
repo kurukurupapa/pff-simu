@@ -124,6 +124,7 @@ public class PartyMakerService {
 					rankingIndex, party);
 			break;
 		}
+		party.calcFitness(sessionHelper.getCondition().getFitnessCalculator());
 	}
 
 	public void postMemoria(SessionHelper sessionHelper,

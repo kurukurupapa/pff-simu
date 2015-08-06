@@ -72,84 +72,118 @@
         <h1>パーティメーカー</h1>
       </div>
 
-      <h2>パーティ検討対象選択</h2>
-      <p>パーティ構成から、検討したい要素を選んでください。</p>
       <form method="post" th:action="@{/partymaker/target}" th:object="${form}">
+        <h2>パーティ検討対象選択</h2>
+        <p>パーティ構成から、検討したい要素を選んでください。</p>
         <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
           <p th:errors="*">ErrorMessage</p>
         </div>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th><span class="glyphicon glyphicon-user"></span> メモリア</th>
-                  <th><span class="glyphicon glyphicon-thumbs-up"></span> 武器</th>
-                  <th><span class="glyphicon glyphicon-leaf"></span> スロット1</th>
-                  <th><span class="glyphicon glyphicon-leaf"></span> スロット2</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:if="${party}==null">
-                  <td>アーロン <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                  <td>烈風 <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                  <td>タフネスリング <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                  <td>リストバンド <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                </tr>
-                <tr th:if="${party}==null">
-                  <td>元帥シド <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                  <td><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 追加</button></td>
-                  <td><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 追加</button></td>
-                  <td><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 追加</button></td>
-                </tr>
-                <tr th:each="e:${party.memoriaList}">
-                  <td>
-                    <span th:text="${e.name}">メモリア名</span>
-                    <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,MEMORIA,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
-                      <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,MEMORIA,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
-                  </td>
-                  <td>
-                    <span th:if="${e.weapon}==null">
-                      <button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,WEAPON,'+${eStat.index}"><span class="glyphicon glyphicon-plus"></span> 追加</button>
-                    </span>
-                    <span th:if="${e.weapon}!=null">
-                      <span th:text="${e.weapon.name}">武器</span>
-                      <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,WEAPON,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
-                      <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,WEAPON,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
-                    </span>
-                  </td>
-                  <td>
-                    <span th:if="${#arrays.length(e.accessories)} &lt; 1">
-                      <button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,ACCESSORY1,'+${eStat.index}"><span class="glyphicon glyphicon-plus"></span> 追加</button>
-                    </span>
-                    <span th:if="${#arrays.length(e.accessories)} &gt; 0">
-                      <span th:text="${e.accessories[0]}">魔法/アクセサリ1</span>
-                      <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,ACCESSORY1,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
-                      <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,ACCESSORY1,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
-                    </span>
-                  </td>
-                  <td>
-                    <span th:if="${#arrays.length(e.accessories)} &lt; 2">
-                      <button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,ACCESSORY2,'+${eStat.index}"><span class="glyphicon glyphicon-plus"></span> 追加</button>
-                    </span>
-                    <span th:if="${#arrays.length(e.accessories)} &gt; 1">
-                      <span th:text="${e.accessories[1]}">魔法/アクセサリ2</span>
-                      <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,ACCESSORY2,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
-                      <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,ACCESSORY2,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
-                    </span>
-                  </td>
-                </tr>
-                <tr>
-                  <td><button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,MEMORIA,0'" th:if="${#lists.size(party.memoriaList) lt 4}"><span class="glyphicon glyphicon-plus"></span> メモリア追加</button></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button type="submit" class="btn btn-default" name="backBtn">戻る</button>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th><span class="glyphicon glyphicon-user"></span> メモリア</th>
+                <th><span class="glyphicon glyphicon-thumbs-up"></span> 武器</th>
+                <th><span class="glyphicon glyphicon-leaf"></span> スロット1</th>
+                <th><span class="glyphicon glyphicon-leaf"></span> スロット2</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:if="${party}==null">
+                <td>アーロン <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td>烈風 <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td>タフネスリング <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td>リストバンド <button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
+              </tr>
+              <tr th:if="${party}==null">
+                <td>元帥シド <button type="button" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                <td><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 追加</button></td>
+                <td><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 追加</button></td>
+                <td><button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> 追加</button></td>
+              </tr>
+              <tr th:each="e:${party.memoriaList}">
+                <td>
+                  <span th:text="${e.name}">メモリア名</span>
+                  <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,MEMORIA,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
+                  <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,MEMORIA,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
+                </td>
+                <td>
+                  <span th:if="${e.weapon}==null">
+                    <button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,WEAPON,'+${eStat.index}"><span class="glyphicon glyphicon-plus"></span> 追加</button>
+                  </span>
+                  <span th:if="${e.weapon}!=null">
+                    <span th:text="${e.weapon.name}">武器</span>
+                    <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,WEAPON,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,WEAPON,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
+                  </span>
+                </td>
+                <td>
+                  <span th:if="${#arrays.length(e.accessories)} &lt; 1">
+                    <button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,ACCESSORY1,'+${eStat.index}"><span class="glyphicon glyphicon-plus"></span> 追加</button>
+                  </span>
+                  <span th:if="${#arrays.length(e.accessories)} &gt; 0">
+                    <span th:text="${e.accessories[0]}">魔法/アクセサリ1</span>
+                    <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,ACCESSORY1,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,ACCESSORY1,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
+                  </span>
+                </td>
+                <td>
+                  <span th:if="${#arrays.length(e.accessories)} &lt; 2">
+                    <button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,ACCESSORY2,'+${eStat.index}"><span class="glyphicon glyphicon-plus"></span> 追加</button>
+                  </span>
+                  <span th:if="${#arrays.length(e.accessories)} &gt; 1">
+                    <span th:text="${e.accessories[1]}">魔法/アクセサリ2</span>
+                    <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'EDIT,ACCESSORY2,'+${eStat.index}"><span class="glyphicon glyphicon-pencil"></span></button>
+                    <button type="submit" class="btn btn-default btn-xs" name="btn" th:value="'DELETE,ACCESSORY2,'+${eStat.index}"><span class="glyphicon glyphicon-remove"></span></button>
+                  </span>
+                </td>
+              </tr>
+              <tr th:if="${#lists.size(party.memoriaList) lt 4}">
+                <td><button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,MEMORIA,0'"><span class="glyphicon glyphicon-plus"></span> メモリア追加</button></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <h2>評価内容</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>値</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>評価値</td>
+                <td><span th:text="${party.fitnessObj.value}">12345</span>ポイント</td>
+              </tr>
+              <tr>
+                <td>HP</td>
+                <td><span th:text="${party.fitnessObj.hp}">1234</span></td>
+              </tr>
+              <tr>
+                <td>攻撃</td>
+                <td><span th:text="${party.fitnessObj.attackDamage}">1234</span></td>
+              </tr>
+              <tr>
+                <td>防御</td>
+                <td><span th:text="${party.fitnessObj.defenceDamage}">1234</span></td>
+              </tr>
+              <tr>
+                <td>回復</td>
+                <td><span th:text="${party.fitnessObj.recovery}">1234</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        
+        <button type="submit" class="btn btn-default" name="backBtn">戻る</button>
       </form>
-
 
       <hr/>
       <footer>

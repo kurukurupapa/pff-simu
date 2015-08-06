@@ -14,7 +14,7 @@ public class Party implements Cloneable {
 	public static final int MAX_MEMORIAS = 4;
 
 	protected List<Memoria> mMemoriaList;
-	protected FitnessValue mFitnessValue;
+	protected FitnessValue mFitnessValue = new FitnessValue();
 
 	public Party() {
 		mMemoriaList = new ArrayList<Memoria>();

@@ -48,10 +48,12 @@ public class MemoriaRanking {
 		// メモリアとアイテムの一覧
 		MemoriaDataSet memoriaDataSet = mMemoriaDataSet.clone();
 		ItemDataSet itemDataSet = mItemDataSet.clone();
-		for (Memoria e : mParty.getMemoriaList()) {
-			memoriaDataSet.remove(e.getName());
-			itemDataSet.removeWeapon(e.getWeapon());
-			itemDataSet.removeMagicOrAccessory(e.getAccessories());
+		if (mParty != null) {
+			for (Memoria e : mParty.getMemoriaList()) {
+				memoriaDataSet.remove(e.getName());
+				itemDataSet.removeWeapon(e.getWeapon());
+				itemDataSet.removeMagicOrAccessory(e.getAccessories());
+			}
 		}
 
 		// 各メモリアの評価
