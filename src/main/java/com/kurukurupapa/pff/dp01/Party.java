@@ -165,11 +165,32 @@ public class Party implements Cloneable {
 	}
 
 	public void calcFitness(FitnessCalculator fitnessCalculator) {
-		calcLeaderSkill();
-		mFitnessValue = fitnessCalculator.calc(this);
+		// パーティ内メモリアで適用可能なリーダースキルを取得
+		List<ItemData> leaderSkills = getLeaderSkills();
+
+		// 全リーダースキルを各々適用してみて最大適応度のリーダースキルを求めます。
+		ItemData maxLeaderSkill = null;
+		FitnessValue maxFitnessValue = fitnessCalculator.calc(this);
+		for (ItemData e : leaderSkills) {
+			clearLeaderSkill();
+			addLeaderSkill(e);
+			FitnessValue fitnessValue = fitnessCalculator.calc(this);
+			if (maxFitnessValue == null
+					|| maxFitnessValue.getValue() < fitnessValue.getValue()) {
+				maxFitnessValue = fitnessValue;
+				maxLeaderSkill = e;
+			}
+		}
+
+		// 最大適応度のリーダースキルを反映します。
+		clearLeaderSkill();
+		if (maxLeaderSkill != null) {
+			addLeaderSkill(maxLeaderSkill);
+		}
+		mFitnessValue = maxFitnessValue;
 	}
 
-	protected void calcLeaderSkill() {
+	protected List<ItemData> getLeaderSkills() {
 		List<ItemData> list = new ArrayList<ItemData>();
 		clearLeaderSkill();
 		for (Memoria e : mMemoriaList) {
@@ -211,7 +232,7 @@ public class Party implements Cloneable {
 				}
 			}
 		}
-		addLeaderSkill(list);
+		return list;
 	}
 
 	protected void addLeaderSkill(List<ItemData> leaderSkillList) {

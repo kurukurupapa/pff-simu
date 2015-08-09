@@ -62,11 +62,11 @@ public class Dp01Test extends BaseTestCase {
 		}
 
 		// 検証
-		assertThat(actual.toString(), is("" //
+		assertEquals("" //
 				+ "1174,アーロン+赤兎馬のたてがみ(レア5)+SPの腕輪+アーロンLS\n" //
-				+ "960,元帥シド+赤兎馬のたてがみ(レア5)+バルキーコート+元帥シドLS\n" //
+				+ "960,元帥シド+赤兎馬のたてがみ(レア5)+バルキーコート\n" //
 				+ "889,マキナ+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+バルキーコート\n" //
-				+ ""));
+		, actual.toString());
 	}
 
 	@Test
@@ -81,7 +81,7 @@ public class Dp01Test extends BaseTestCase {
 		dp.run(2);
 		// 検証
 		assertEquals("" //
-				+ "1691,アーロン+元帥シドLS,元帥シド+元帥シドLS" //
+				+ "1691,アーロン,元帥シド" //
 		, dp.getParty().toString());
 	}
 
@@ -96,10 +96,9 @@ public class Dp01Test extends BaseTestCase {
 				fitnessCalculator);
 		dp.run(4);
 		// 検証
-		assertEquals(
-				"" //
-						+ "2925,アーロン+元帥シドLS,元帥シド+元帥シドLS,マキナ+元帥シドLS,ライトニング(No.119)+元帥シドLS" //
-				, dp.getParty().toString());
+		assertEquals("" //
+				+ "2925,アーロン,元帥シド,マキナ,ライトニング(No.119)" //
+		, dp.getParty().toString());
 	}
 
 	@Test
