@@ -44,7 +44,11 @@ public class PartyFinder2b {
 	private List<ItemFitness> mMagicFitnesses;
 	private List<ItemFitness> mAccessoryFitnesses;
 	private List<ItemFitness> mMagicAccessoryFitnesses;
-	private int mCalcCount;
+	private long mCalcCount;
+	private long mMCount;
+	private long mWCount;
+	private long mMaCount1;
+	private long mMaCount2;
 
 	public PartyFinder2b(MemoriaDataSet memoriaDataSet,
 			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator) {
@@ -110,6 +114,10 @@ public class PartyFinder2b {
 				+ StringUtils.join(mMagicAccessoryFitnesses, ","));
 
 		mCalcCount = 0;
+		mMCount = 0;
+		mWCount = 0;
+		mMaCount1 = 0;
+		mMaCount2 = 0;
 		if (maxMemorias == 1) {
 			run1();
 		} else if (maxMemorias == 2) {
@@ -117,7 +125,8 @@ public class PartyFinder2b {
 		} else {
 			throw new AppException("未実装");
 		}
-		mLogger.debug("計算カウント=" + mCalcCount);
+		mLogger.debug("計算カウント=" + mCalcCount + "(" + mMCount + "," + mWCount
+				+ "," + mMaCount1 + "," + mMaCount2 + ")");
 	}
 
 	/**
@@ -130,11 +139,12 @@ public class PartyFinder2b {
 		int wcount = mItemDataSet.getWeaponList().size();
 		int macount = mItemDataSet.getMagicAccessoryList().size();
 		mLogger.debug("メモリア数=" + mcount + ",武器数=" + wcount + ",魔法/アクセサリ数="
-				+ macount + "想定計算量="
+				+ macount + ",想定計算量="
 				+ ((long) mcount * wcount * macount * (macount - 1)));
 
 		Party currentParty = new Party();
-		mBestParty = calcMemoriaWeaponMagicAccessory(1, 0, currentParty);
+		mBestParty = calcMemoriaWeaponMagicAccessory(1, 0,
+				NextMemoria.INIT_INDEX, currentParty);
 	}
 
 	/**
@@ -152,22 +162,23 @@ public class PartyFinder2b {
 				+ wcount
 				+ ",魔法/アクセサリ数="
 				+ macount
-				+ "想定計算量="
+				+ ",想定計算量="
 				+ ((long) mcount * (mcount - 1) * wcount * (wcount - 1)
 						* macount * (macount - 1) * (macount - 2) * (macount - 3)));
 
 		Party currentParty = new Party();
-		mBestParty = calcMemoriaWeaponMagicAccessory(2, 0, currentParty);
+		mBestParty = calcMemoriaWeaponMagicAccessory(2, 0,
+				NextMemoria.INIT_INDEX, currentParty);
 	}
 
 	private Party calcMemoriaWeaponMagicAccessory(int maxMemorias,
-			int memoriaPosition, Party currentParty) {
+			int memoriaPosition, int prevMemoriaIndex, Party currentParty) {
 		Validate.validState(currentParty.size() == memoriaPosition);
 
 		Party maxParty = currentParty.clone();
 
 		NextMemoria nextMemoria = new NextMemoria(mFitnessCalculator,
-				memoriaPosition, mMemoriaFitnesses);
+				memoriaPosition, prevMemoriaIndex, mMemoriaFitnesses);
 		while (true) {
 			MemoriaData mdata = nextMemoria.next(currentParty, maxParty);
 			if (mdata == null) {
@@ -181,20 +192,22 @@ public class PartyFinder2b {
 
 			// 当該メモリアに対して、最大適応度の武器/魔法/アクセサリを計算します。
 			Party tmpParty = calcWeaponMagicAccessory(maxMemorias,
-					memoriaPosition, currentParty);
+					memoriaPosition, nextMemoria.getIndex(), currentParty);
 
 			// 最大適応度のパーティを残す
 			maxParty = max(maxParty, tmpParty);
 
 			// 後片付け
 			currentParty.remove(memoriaPosition);
+
+			mMCount++;
 		}
 
 		return maxParty;
 	}
 
 	private Party calcWeaponMagicAccessory(int maxMemorias,
-			int memoriaPosition, Party currentParty) {
+			int memoriaPosition, int prevMemoriaIndex, Party currentParty) {
 		Validate.validState(currentParty.size() == memoriaPosition + 1);
 		Validate.validState(currentParty.getMemoria(memoriaPosition).isWeapon() == false);
 		Validate.validState(currentParty.getMemoria(memoriaPosition)
@@ -216,11 +229,13 @@ public class PartyFinder2b {
 
 			// 魔法/アクセサリの計算
 			Party tmpParty = calcMagicAccessory(maxMemorias, memoriaPosition,
-					0, currentParty);
+					prevMemoriaIndex, currentParty);
 			maxParty = max(maxParty, tmpParty);
 
 			// 後片付け
 			currentParty.getMemoria(memoriaPosition).clearWeapon();
+
+			mWCount++;
 		}
 		// mLogger.debug("武器ループ End");
 
@@ -235,7 +250,22 @@ public class PartyFinder2b {
 	 * @return 現在パーティに対して、魔法/アクセサリを追加したパーティを返却します。
 	 */
 	private Party calcMagicAccessory(int maxMemorias, int memoriaPosition,
-			int magicAccessoryPosition, Party currentParty) {
+			int prevMemoriaIndex, Party currentParty) {
+		return calcMagicAccessory(maxMemorias, memoriaPosition,
+				prevMemoriaIndex, 0, NextMagicAccessory.INIT_INDEX,
+				currentParty);
+	}
+
+	/**
+	 * 現在パーティに対して、最も適応度の高い魔法/アクセサリを計算します。
+	 * 
+	 * @param currentParty
+	 *            現在パーティ
+	 * @return 現在パーティに対して、魔法/アクセサリを追加したパーティを返却します。
+	 */
+	private Party calcMagicAccessory(int maxMemorias, int memoriaPosition,
+			int prevMemoriaIndex, int magicAccessoryPosition,
+			int prevMagicAccessoryIndex, Party currentParty) {
 		Validate.validState(currentParty.size() == memoriaPosition + 1);
 		Validate.validState(currentParty.getMemoria(memoriaPosition).isWeapon());
 		Validate.validState(currentParty.getMemoria(memoriaPosition)
@@ -244,7 +274,8 @@ public class PartyFinder2b {
 		Party maxParty = currentParty.clone();
 		NextMagicAccessory nextMagicAccessory = new NextMagicAccessory(
 				memoriaPosition, magicAccessoryPosition,
-				mMagicAccessoryFitnesses, mFitnessCalculator);
+				prevMagicAccessoryIndex, mMagicAccessoryFitnesses,
+				mFitnessCalculator);
 
 		// mLogger.debug("スロット" + (magicAccessoryPosition + 1) + "ループ Start");
 		while (true) {
@@ -261,15 +292,16 @@ public class PartyFinder2b {
 			if (magicAccessoryPosition + 1 < Memoria.MAX_ACCESSORIES) {
 				// 後続の魔法/アクセサリの計算
 				Party tmpParty = calcMagicAccessory(maxMemorias,
-						memoriaPosition, magicAccessoryPosition + 1,
-						currentParty);
+						memoriaPosition, prevMemoriaIndex,
+						magicAccessoryPosition + 1,
+						nextMagicAccessory.getIndex(), currentParty);
 				// 最大適応度のパーティを残す
 				maxParty = max(maxParty, tmpParty);
 
 			} else if (memoriaPosition + 1 < maxMemorias) {
 				// 後続のメモリアの計算
 				Party tmpParty = calcMemoriaWeaponMagicAccessory(maxMemorias,
-						memoriaPosition + 1, currentParty);
+						memoriaPosition + 1, prevMemoriaIndex, currentParty);
 				// 最大適応度のパーティを残す
 				maxParty = max(maxParty, tmpParty);
 
@@ -285,6 +317,12 @@ public class PartyFinder2b {
 			// 後片付け
 			currentParty.getMemoria(memoriaPosition).removeAccessory(
 					magicAccessoryPosition);
+
+			if (magicAccessoryPosition == 0) {
+				mMaCount1++;
+			} else {
+				mMaCount2++;
+			}
 		}
 		// mLogger.debug("スロット" + (magicAccessoryPosition + 1) + "ループ結果="
 		// + maxParty);

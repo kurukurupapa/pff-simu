@@ -10,11 +10,13 @@ import com.kurukurupapa.pff.dp01.Memoria;
 import com.kurukurupapa.pff.dp01.Party;
 
 public class NextMagicAccessory {
+	public static final int INIT_INDEX = -1;
+
 	private int mMemoriaPosition;
 	private int mSlotPosition;
 	private List<ItemFitness> mMagicAccessoryFitnesses;
-	private int mIndex = -1;
 	private FitnessCalculator mFitnessCalculator;
+	private int mIndex = INIT_INDEX;
 
 	public NextMagicAccessory(int memoriaPosition, int slotPosition,
 			List<ItemFitness> magicAccessoryFitnesses,
@@ -25,8 +27,16 @@ public class NextMagicAccessory {
 		mFitnessCalculator = fitnessCalculator;
 	}
 
+	public NextMagicAccessory(int memoriaPosition, int slotPosition, int index,
+			List<ItemFitness> magicAccessoryFitnesses,
+			FitnessCalculator fitnessCalculator) {
+		this(memoriaPosition, slotPosition, magicAccessoryFitnesses,
+				fitnessCalculator);
+		mIndex = index;
+	}
+
 	public void reset() {
-		mIndex = -1;
+		mIndex = INIT_INDEX;
 	}
 
 	public ItemData next(Party currentParty, Party maxParty) {
@@ -97,5 +107,9 @@ public class NextMagicAccessory {
 		}
 
 		return item;
+	}
+
+	public int getIndex() {
+		return mIndex;
 	}
 }

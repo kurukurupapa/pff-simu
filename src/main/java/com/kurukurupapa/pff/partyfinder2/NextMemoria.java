@@ -11,6 +11,7 @@ import com.kurukurupapa.pff.dp01.Party;
  * 次メモリアクラス
  */
 public class NextMemoria {
+	public static final int INIT_INDEX = -1;
 
 	private FitnessCalculator mFitnessCalculator;
 
@@ -28,7 +29,7 @@ public class NextMemoria {
 	/**
 	 * メモリアリスト内の現在探索インデックス
 	 */
-	private int mIndex = -1;
+	private int mIndex = INIT_INDEX;
 
 	public NextMemoria(FitnessCalculator fitnessCalculator, int position,
 			List<MemoriaFitness> memoriaFitnesses) {
@@ -37,8 +38,14 @@ public class NextMemoria {
 		mMemoriaFitnesses = memoriaFitnesses;
 	}
 
+	public NextMemoria(FitnessCalculator fitnessCalculator, int position,
+			int index, List<MemoriaFitness> memoriaFitnesses) {
+		this(fitnessCalculator, position, memoriaFitnesses);
+		mIndex = index;
+	}
+
 	public void reset() {
-		mIndex = -1;
+		mIndex = INIT_INDEX;
 	}
 
 	public MemoriaData next(Party currentParty, Party maxParty) {
@@ -98,6 +105,10 @@ public class NextMemoria {
 		}
 
 		return memoria;
+	}
+
+	public int getIndex() {
+		return mIndex;
 	}
 
 }
