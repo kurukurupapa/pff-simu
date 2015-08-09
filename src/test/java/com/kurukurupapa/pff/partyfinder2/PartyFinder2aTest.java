@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -159,7 +158,7 @@ public class PartyFinder2aTest extends BaseTestCase {
 
 		// 検証
 		String expected = readExpectedFile();
-		assertEquals(expected, actual);
+		assertEquals(expected, actual + "\n");
 	}
 
 }

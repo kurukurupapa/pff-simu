@@ -5,14 +5,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.test.BaseTestCase;
+import com.kurukurupapa.pff.test.SlowTests;
 
 /**
  * ユーザデータでメモリアのランキングを確認します。
  */
+@Category(SlowTests.class)
 public class MemoriaRankingTest2 extends BaseTestCase {
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;

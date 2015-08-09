@@ -24,9 +24,9 @@ public class FitnessCalculatorTest extends BaseTestCase {
 	public static void setUpBeforeClass() throws Exception {
 		// ユーザデータ読み込み
 		mItemDataSet = new ItemDataSet();
-		mItemDataSet.readUserFile();
+		mItemDataSet.readTestFile();
 		mMemoriaDataSet = new MemoriaDataSet(mItemDataSet);
-		mMemoriaDataSet.readUserFile();
+		mMemoriaDataSet.readTestFile();
 	}
 
 	@Before

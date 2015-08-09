@@ -58,7 +58,11 @@ public class PartyFinder2a {
 
 	public void run1() {
 		Party maxParty = null;
-		long partyCount = 0;
+		long calcCount = 0;
+		long mCount = 0;
+		long wCount = 0;
+		long maCount1 = 0;
+		long maCount2 = 0;
 
 		// メモリアループ
 		for (MemoriaData mdata : mMemoriaDataSet.getMemoriaDataList()) {
@@ -81,17 +85,23 @@ public class PartyFinder2a {
 						memoria.addAccessory(malist.get(j));
 						Party party = new Party(memoria);
 						party.calcFitness(mFitnessCalculator);
-						partyCount++;
+						calcCount++;
 
 						// 最大適応度のパーティを残す
 						maxParty = max(maxParty, party);
+
+						maCount2++;
 					}
+					maCount1++;
 				}
+				wCount++;
 			}
+			mCount++;
 		}
 
 		mBestParty = maxParty;
-		mLogger.debug("計算カウント=" + partyCount);
+		mLogger.debug("計算カウント=" + calcCount + "(" + mCount + "," + wCount + ","
+				+ maCount1 + "," + maCount2 + ")");
 	}
 
 	/**
@@ -112,20 +122,22 @@ public class PartyFinder2a {
 		// 準備
 		List<MemoriaData> memorias = mMemoriaDataSet.getMemoriaDataList();
 		Party maxParty = null;
-		int m1Count = 0;
-		long partyCount = 0;
+		long calcCount = 0;
+		long mCount = 0;
+		long wCount = 0;
+		long maCount1 = 0;
+		long maCount2 = 0;
 
 		// メモリアループ1
-		for (MemoriaData mdata1 : memorias) {
-			mLogger.debug("ループカウント=" + m1Count + "/" + mcount);
+		for (int m1 = 0; m1 < memorias.size(); m1++) {
+			MemoriaData mdata1 = memorias.get(m1);
+			mLogger.debug("ループカウント=" + m1 + "/" + mcount);
 			// 当該メモリアで装備可能なアイテム
 			List<ItemData> wlist1 = getWeapons(mdata1);
 			List<ItemData> malist1 = getMagicsAccessories(mdata1);
 			// メモリアループ2
-			for (MemoriaData mdata2 : memorias) {
-				if (mdata1 == mdata2) {
-					continue;
-				}
+			for (int m2 = m1 + 1; m2 < memorias.size(); m2++) {
+				MemoriaData mdata2 = memorias.get(m2);
 				// 当該メモリアで装備可能なアイテム
 				List<ItemData> wlist2 = getWeapons(mdata2);
 				List<ItemData> malist2 = getMagicsAccessories(mdata2);
@@ -171,23 +183,31 @@ public class PartyFinder2a {
 										party.add(memoria1);
 										party.add(memoria2);
 										party.calcFitness(mFitnessCalculator);
+										calcCount++;
 
 										// 最大適応度のパーティを残す
 										maxParty = max(maxParty, party);
 
-										partyCount++;
+										maCount2++;
 									}
+									maCount1++;
 								}
+								maCount2++;
 							}
+							maCount1++;
 						}
+						wCount++;
 					}
+					wCount++;
 				}
+				mCount++;
 			}
-			m1Count++;
+			mCount++;
 		}
 		mBestParty = maxParty;
 
-		mLogger.debug("計算カウント=" + partyCount);
+		mLogger.debug("計算カウント=" + calcCount + "(" + mCount + "," + wCount + ","
+				+ maCount1 + "," + maCount2 + ")");
 	}
 
 	private List<ItemData> getWeapons(MemoriaData memoria) {

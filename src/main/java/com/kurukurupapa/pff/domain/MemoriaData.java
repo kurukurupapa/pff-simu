@@ -3,8 +3,6 @@ package com.kurukurupapa.pff.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kurukurupapa.pff.dp01.Memoria;
-
 /**
  * メモリアデータ
  */
