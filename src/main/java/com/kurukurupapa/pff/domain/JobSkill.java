@@ -12,6 +12,9 @@ public class JobSkill {
 
 	@Override
 	public boolean equals(Object obj) {
+		if (obj == null || !(obj instanceof JobSkill)) {
+			return false;
+		}
 		JobSkill other = (JobSkill) obj;
 		return mName.equals(other.mName);
 	}

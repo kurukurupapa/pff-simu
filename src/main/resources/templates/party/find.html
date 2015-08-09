@@ -127,8 +127,9 @@
                 <thead>
                   <tr>
                     <th><span class="glyphicon glyphicon-user"></span> メモリア</th>
-                    <th><span class="glyphicon glyphicon-asterisk"></span> 武器</th>
-                    <th><span class="glyphicon glyphicon-asterisk"></span> アクセサリ</th>
+                    <th><span class="glyphicon glyphicon-thumbs-up"></span> 武器</th>
+                    <th><span class="glyphicon glyphicon-leaf"></span> アクセサリ</th>
+                    <th><span class="glyphicon glyphicon-asterisk"></span> 他</th>
                     <!--
                     <th>メモリア+武器+アクセサリ+スキル</th>
                     -->
@@ -137,8 +138,12 @@
                 <tbody>
                   <tr th:each="memoria : ${party.memoriaList}">
                     <td><span class="glyphicon glyphicon-user"></span> <span th:text="${memoria.name}">メモリア</span></td>
-                    <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.weapon.name}">武器</span></span></td>
-                    <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${e.name}">アクセサリ</span> </span></td>
+                    <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-thumbs-up"></span> <span th:text="${memoria.weapon.name}">武器</span></span></td>
+                    <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-leaf"></span> <span th:text="${e.name}">アクセサリ</span> </span></td>
+                    <td>
+                      <span th:each="e : ${memoria.leaderSkills}"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${e.name}">リーダースキル</span> </span>
+                      <span th:if="${memoria.jobSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.jobSkill}">ジョブスキル</span></span>
+                    </td>
                     <!--
                     <td><span th:text="${memoria}">メモリア+武器+アクセサリ+スキル</span></td>
                     -->

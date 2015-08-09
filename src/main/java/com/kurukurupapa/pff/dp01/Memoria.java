@@ -9,6 +9,7 @@ import org.apache.commons.lang3.Validate;
 import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BlackMagicItemDataEx;
 import com.kurukurupapa.pff.domain.ItemData;
+import com.kurukurupapa.pff.domain.JobSkill;
 import com.kurukurupapa.pff.domain.MagicType;
 import com.kurukurupapa.pff.domain.Mement;
 import com.kurukurupapa.pff.domain.MemoriaData;
@@ -184,6 +185,10 @@ public class Memoria implements Cloneable {
 		mAccessoryDataArr = new ItemData[] {};
 	}
 
+	public ItemData[] getLeaderSkills() {
+		return mLeaderSkillArr;
+	}
+
 	public void addLeaderSkill(ItemData leaderSkill) {
 		mLeaderSkillArr = ArrayUtils.add(mLeaderSkillArr, leaderSkill);
 	}
@@ -194,6 +199,10 @@ public class Memoria implements Cloneable {
 
 	public MemoriaData getMemoriaData() {
 		return mMemoriaData;
+	}
+
+	public JobSkill getJobSkill() {
+		return mMemoriaData.getJobSkill();
 	}
 
 	private ItemData[] getAllItemData() {
