@@ -26,11 +26,18 @@ import com.kurukurupapa.pff.dp01.WeaponRanking;
 
 /**
  * 最適パーティ計算クラス
- * 
+ * <p>
  * 分岐限定法のような考え方で計算してみます。
- * 
- * 分岐限定法
+ * </p>
+ * <p>
+ * ループの回し方は、（メモリア1 × 武器 × 魔法/アクセサリ1 × 魔法/アクセサリ2） × （メモリア2 × 武器 × 魔法/アクセサリ1 ×
+ * 魔法/アクセサリ2） × ・・・です。
+ * </p>
+ * <p>
+ * 参考：<br/>
+ * 分岐限定法<br/>
  * https://ja.wikipedia.org/wiki/%E5%88%86%E6%9E%9D%E9%99%90%E5%AE%9A%E6%B3%95
+ * </p>
  */
 public class PartyFinder2b {
 	protected Logger mLogger;
