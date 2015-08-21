@@ -1,10 +1,5 @@
 package com.kurukurupapa.pff.dp01;
 
-import static org.junit.Assert.*;
-
-import java.util.Arrays;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -18,7 +13,7 @@ import com.kurukurupapa.pff.test.BaseTestCase;
 import com.kurukurupapa.pff.test.SlowTests;
 
 @Category(SlowTests.class)
-public class Dp01Run4Test extends BaseTestCase {
+public class Dp01UserDataTest extends BaseTestCase {
 	/** ロガー */
 	private static Logger mLogger;
 
@@ -53,7 +48,7 @@ public class Dp01Run4Test extends BaseTestCase {
 			mLogger.debug(e);
 		}
 		// 検証
-		assertParty(""//
+		assertPartyAsMultiLine(""//
 				// 2015/6/15
 				// + "4021\n"
 				// + "マキナ+青紅の剣(レア5)+バルキーコート+ケアルバングル+アーロンLS\n"
@@ -61,7 +56,7 @@ public class Dp01Run4Test extends BaseTestCase {
 				// + "アーロン+SPの腕輪+プロテアバングル+アーロンLS"
 				// + "元帥シド(+1)+巨人の小手+タフネスリング+アーロンLS\n"
 				//
-				, dp.getParty().toMultiLineString());
+				, dp.getParty());
 	}
 
 	@Test
@@ -74,7 +69,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -87,7 +82,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -98,7 +93,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 		dp.run();
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -111,7 +106,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -124,7 +119,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -137,7 +132,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -150,7 +145,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -163,7 +158,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -176,7 +171,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -189,7 +184,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -202,7 +197,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -214,7 +209,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
 		dp.run();
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -227,7 +222,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -240,7 +235,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		dp.run();
 		mLogger.debug(dp.getParty());
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -252,7 +247,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
 		dp.run();
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -264,7 +259,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
 		dp.run();
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
@@ -276,17 +271,7 @@ public class Dp01Run4Test extends BaseTestCase {
 		Dp01 dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitness);
 		dp.run();
 		// 検証
-		assertParty(readExpectedFile(), dp.getParty().toMultiLineString());
-	}
-
-	private void assertParty(String expected, String actual) {
-		assertEquals(sort(expected), sort(actual));
-	}
-
-	private String sort(String text) {
-		String[] lines = text.split("\n");
-		Arrays.sort(lines);
-		return StringUtils.join(lines, "\n");
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 }

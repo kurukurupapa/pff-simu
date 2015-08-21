@@ -1,7 +1,10 @@
 package com.kurukurupapa.pff.test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -30,6 +33,17 @@ public class BaseTestCase {
 
 	protected void assertParty(String expected, Party actual) {
 		org.junit.Assert.assertEquals(expected, actual.toString() + "\n");
+	}
+
+	protected void assertPartyAsMultiLine(String expected, Party actual) {
+		assertEquals(sortMultiLine(expected),
+				sortMultiLine(actual.toMultiLineString()));
+	}
+
+	private String sortMultiLine(String text) {
+		String[] lines = text.split("\n");
+		Arrays.sort(lines);
+		return StringUtils.join(lines, "\n");
 	}
 
 	protected void assertMemoriaFitness(String expected,
