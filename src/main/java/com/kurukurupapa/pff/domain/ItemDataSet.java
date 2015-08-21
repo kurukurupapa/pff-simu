@@ -224,8 +224,16 @@ public class ItemDataSet {
 		readFile("/itemUser.txt", false);
 	}
 
+	public void readUserFile(boolean flatNumber) {
+		readFile("/itemUser.txt", flatNumber);
+	}
+
 	public void readMasterFile() {
 		readFile("/itemMaster.txt", false);
+	}
+
+	public void readMasterFile(boolean flatNumber) {
+		readFile("/itemMaster.txt", flatNumber);
 	}
 
 	/**
