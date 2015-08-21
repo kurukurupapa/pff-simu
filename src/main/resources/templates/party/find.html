@@ -141,7 +141,7 @@
                     <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-thumbs-up"></span> <span th:text="${memoria.weapon.name}">武器</span></span></td>
                     <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-leaf"></span> <span th:text="${e.name}">アクセサリ</span> </span></td>
                     <td>
-                      <span th:each="e : ${memoria.leaderSkills}"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${e.name}">リーダースキル</span> </span>
+                      <span th:if="${memoria.leaderSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.leaderSkill}">リーダースキル</span> </span>
                       <span th:if="${memoria.jobSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.jobSkill}">ジョブスキル</span></span>
                     </td>
                     <!--

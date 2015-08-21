@@ -139,7 +139,7 @@
                   </span>
                 </td>
                 <td>
-                  <span th:each="e2 : ${e.leaderSkills}"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${e2}">リーダースキル</span> </span>
+                  <span th:if="${e.leaderSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${e.leaderSkill}">リーダースキル</span> </span>
                   <span th:if="${e.jobSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${e.jobSkill}">ジョブスキル</span></span>
                 </td>
               </tr>
