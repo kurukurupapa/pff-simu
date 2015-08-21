@@ -119,12 +119,9 @@ public class Dp01Test extends BaseTestCase {
 			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
 		}
 		// 検証
-		assertThat(actual, is("" //
-				// + "2670,トレイ,2320,アーロン,1870,元帥シド"
-				// 2015/06/13
-				+ "4920,パンネロ,3720,ライトニング(No.119),3050,トレイ"
-		//
-				));
+		assertEquals("" //
+				+ "4920,パンネロ,3720,ライトニング(No.119),3050,トレイ" //
+		, actual);
 	}
 
 	/**
@@ -147,7 +144,7 @@ public class Dp01Test extends BaseTestCase {
 		}
 
 		// 検証
-		assertThat(actual, is("" //
+		assertEquals("" //
 				+ "7650,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n"
 				+ "7220,パンネロ+ダンシングダガー+赤兎馬のたてがみ(レア5)+パワーリスト\n"
 				+ "6450,ライトニング(No.119)+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n"
@@ -160,7 +157,7 @@ public class Dp01Test extends BaseTestCase {
 		// + "4620,元帥シド+五月雨+マーシャルネイ+マーシャルネイ\n"
 		// + "4620,元帥シド+烈風+マーシャルネイ+マーシャルネイ\n"
 		//
-				));
+				, actual);
 	}
 
 	@Test
@@ -297,6 +294,21 @@ public class Dp01Test extends BaseTestCase {
 		Dp01 dp;
 		dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 		dp.run(2);
+		Party actual = dp.getParty();
+
+		// 検証
+		assertParty(readExpectedFile(), actual);
+	}
+
+	@Test
+	public void testRun4_Battle() {
+		// 準備
+		FitnessCalculator fitnessCalculator = new FitnessCalculator();
+
+		// テスト実行
+		Dp01 dp;
+		dp = new Dp01(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
+		dp.run(4);
 		Party actual = dp.getParty();
 
 		// 検証
