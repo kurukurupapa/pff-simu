@@ -12,7 +12,7 @@ import com.kurukurupapa.pff.test.SlowTests;
 @SuiteClasses({ AccessoryFitnessTest.class, AccessoryRankingTest.class,
 		Dp01UserDataTest.class, Dp01Test.class, FitnessCalculatorTest.class,
 		MagicRankingTest.class, MemoriaRankingTest.class,
-		MemoriaRankingUsereDataTest.class, MemoriaTest.class, MemoTest.class,
+		MemoriaRankingUserDataTest.class, MemoriaTest.class, MemoTest.class,
 		WeaponFitnessTest.class, WeaponRankingTest.class })
 @ExcludeCategory(SlowTests.class)
 public class AllFastTests {

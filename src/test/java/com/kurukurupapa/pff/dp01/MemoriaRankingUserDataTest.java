@@ -16,7 +16,7 @@ import com.kurukurupapa.pff.test.SlowTests;
  * ユーザデータでメモリアのランキングを確認します。
  */
 @Category(SlowTests.class)
-public class MemoriaRankingUsereDataTest extends BaseTestCase {
+public class MemoriaRankingUserDataTest extends BaseTestCase {
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 

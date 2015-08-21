@@ -48,15 +48,7 @@ public class Dp01UserDataTest extends BaseTestCase {
 			mLogger.debug(e);
 		}
 		// 検証
-		assertPartyAsMultiLine(""//
-				// 2015/6/15
-				// + "4021\n"
-				// + "マキナ+青紅の剣(レア5)+バルキーコート+ケアルバングル+アーロンLS\n"
-				// + "ライトニング(No.119)+赤兎馬のたてがみ(レア5)+赤兎馬のたてがみ(レア3)+アーロンLS\n"
-				// + "アーロン+SPの腕輪+プロテアバングル+アーロンLS"
-				// + "元帥シド(+1)+巨人の小手+タフネスリング+アーロンLS\n"
-				//
-				, dp.getParty());
+		assertPartyAsMultiLine(readExpectedFile(), dp.getParty());
 	}
 
 	@Test
