@@ -170,6 +170,11 @@ public enum LeaderSkill {
 				luckUnit, physicalDefence, magicDefence, attr, null, 1);
 	}
 
+	@Override
+	public String toString() {
+		return mItemData.getName();
+	}
+
 	public String getName() {
 		return mItemData.getName();
 	}
