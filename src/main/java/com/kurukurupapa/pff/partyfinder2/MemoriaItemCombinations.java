@@ -27,8 +27,8 @@ public class MemoriaItemCombinations {
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
 	private FitnessCalculator mFitnessCalculator;
-	private TreeSet<FakeParty2> mPartySet;
-	private FakeParty2[] mPartyArray;
+	private TreeSet<FakeParty> mPartySet;
+	private FakeParty[] mPartyArray;
 
 	protected long mCalcCount;
 	private long mMCount;
@@ -44,7 +44,7 @@ public class MemoriaItemCombinations {
 	}
 
 	public void setup() {
-		mPartySet = new TreeSet<FakeParty2>(new Comparator<FakeParty2>() {
+		mPartySet = new TreeSet<FakeParty>(new Comparator<FakeParty>() {
 			/**
 			 * 比較メソッド
 			 * 
@@ -52,7 +52,7 @@ public class MemoriaItemCombinations {
 			 * そのため、なるべく返却を0以外にします。
 			 */
 			@Override
-			public int compare(FakeParty2 arg0, FakeParty2 arg1) {
+			public int compare(FakeParty arg0, FakeParty arg1) {
 				int result;
 				// 適応度の降順
 				result = arg1.getFitness() - arg0.getFitness();
@@ -88,7 +88,7 @@ public class MemoriaItemCombinations {
 			mMCount++;
 		}
 
-		mPartyArray = mPartySet.toArray(new FakeParty2[] {});
+		mPartyArray = mPartySet.toArray(new FakeParty[] {});
 
 		mLogger.debug("計算回数=" + mCalcCount + "(M:" + mMCount + ",W:" + mWCount
 				+ ",A1:" + mMaCount1 + ",A2:" + mMaCount2 + "),要素数="
@@ -120,7 +120,7 @@ public class MemoriaItemCombinations {
 
 					// 適応度計算
 					Memoria memoria = new Memoria(memoriaData, w, ma1, ma2);
-					FakeParty2 party = new FakeParty2(memoria);
+					FakeParty party = new FakeParty(memoria);
 					party.setLeaderSkill(leaderSkill);
 					party.calcFitness(mFitnessCalculator);
 					mPartySet.add(party);
@@ -148,7 +148,7 @@ public class MemoriaItemCombinations {
 
 	public String toDebugStr() {
 		StringBuilder sb = new StringBuilder();
-		for (FakeParty2 e : mPartyArray) {
+		for (FakeParty e : mPartyArray) {
 			sb.append(e + "\n");
 		}
 		return sb.toString();

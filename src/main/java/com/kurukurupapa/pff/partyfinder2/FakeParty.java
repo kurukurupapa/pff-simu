@@ -11,13 +11,13 @@ import com.kurukurupapa.pff.dp01.Party;
  * 
  * 重複するメモリアやアイテム、発動しないかもしれないリーダースキルなどを設定したあと、妥当性チェックができるパーティクラスです。
  */
-public class FakeParty2 extends Party {
+public class FakeParty extends Party {
 
-	public FakeParty2() {
+	public FakeParty() {
 		super();
 	}
 
-	public FakeParty2(Memoria memoria) {
+	public FakeParty(Memoria memoria) {
 		super(memoria);
 	}
 

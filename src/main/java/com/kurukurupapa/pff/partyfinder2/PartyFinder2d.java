@@ -261,7 +261,7 @@ public class PartyFinder2d {
 	 * @return 最大適応度パーティ。nullの場合あり。
 	 */
 	private Party calcMaxValidParty(Party maxParty, int[] indexes) {
-		FakeParty2 party = new FakeParty2();
+		FakeParty party = new FakeParty();
 		for (int i : indexes) {
 			party.add(mCombinations.get(i).getMemoria());
 		}
