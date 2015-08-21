@@ -6,7 +6,8 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ NextMagicAccessoryTest.class, NextMemoriaTest.class,
-		NextWeaponTest.class, PartyFinder2aTest.class, PartyFinder2bTest.class })
+		NextWeaponTest.class, PartyFinder2aTest.class, PartyFinder2bTest.class,
+		PartyFinder2cTest.class, PartyFinder2dTest.class })
 public class AllTests {
 
 }

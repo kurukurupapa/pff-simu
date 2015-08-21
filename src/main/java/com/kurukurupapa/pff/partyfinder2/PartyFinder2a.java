@@ -88,6 +88,7 @@ public class PartyFinder2a {
 						Party party = new Party(memoria);
 						party.calcFitness(mFitnessCalculator);
 						calcCount++;
+						// mLogger.debug(party);
 
 						// 最大適応度のパーティを残す
 						maxParty = max(maxParty, party);
