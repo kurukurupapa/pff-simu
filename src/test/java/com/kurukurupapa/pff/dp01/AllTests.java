@@ -8,7 +8,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ AccessoryFitnessTest.class, AccessoryRankingTest.class,
 		Dp01UserDataTest.class, Dp01Test.class, FitnessCalculatorTest.class,
 		MagicRankingTest.class, MemoriaRankingTest.class,
-		MemoriaRankingTest2.class, MemoriaTest.class, MemoTest.class,
+		MemoriaRankingUsereDataTest.class, MemoriaTest.class, MemoTest.class,
 		WeaponFitnessTest.class, WeaponRankingTest.class })
 public class AllTests {
 
