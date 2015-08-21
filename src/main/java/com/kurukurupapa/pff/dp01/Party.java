@@ -165,89 +165,35 @@ public class Party implements Cloneable {
 	}
 
 	public void calcFitness(FitnessCalculator fitnessCalculator) {
-		// パーティ内メモリアで適用可能なリーダースキルを取得
-		List<ItemData> leaderSkills = getLeaderSkills();
-
 		// 全リーダースキルを各々適用してみて最大適応度のリーダースキルを求めます。
-		ItemData maxLeaderSkill = null;
+		clearLeaderSkill();
+		LeaderSkill maxLeaderSkill = null;
 		FitnessValue maxFitnessValue = fitnessCalculator.calc(this);
-		for (ItemData e : leaderSkills) {
-			clearLeaderSkill();
-			addLeaderSkill(e);
+		for (Memoria e : mMemoriaList) {
+			// 当該メモリアのリーダースキルが適用可能か調べます。
+			LeaderSkill leaderSkill = LeaderSkill.parse(e.getMemoriaData());
+			if (leaderSkill == null || !leaderSkill.valid(this)) {
+				continue;
+			}
+
+			// リーダスキルを適用して、適応度を求めます。
+			setLeaderSkill(leaderSkill);
 			FitnessValue fitnessValue = fitnessCalculator.calc(this);
 			if (maxFitnessValue == null
 					|| maxFitnessValue.getValue() < fitnessValue.getValue()) {
 				maxFitnessValue = fitnessValue;
-				maxLeaderSkill = e;
+				maxLeaderSkill = leaderSkill;
 			}
 		}
 
 		// 最大適応度のリーダースキルを反映します。
-		clearLeaderSkill();
-		if (maxLeaderSkill != null) {
-			addLeaderSkill(maxLeaderSkill);
-		}
+		setLeaderSkill(maxLeaderSkill);
 		mFitnessValue = maxFitnessValue;
 	}
 
-	protected List<ItemData> getLeaderSkills() {
-		List<ItemData> list = new ArrayList<ItemData>();
-		clearLeaderSkill();
+	public void setLeaderSkill(LeaderSkill leaderSkill) {
 		for (Memoria e : mMemoriaList) {
-			// イベントメモリア
-			if (e.getName().indexOf("ヴァニラ") >= 0) {
-				// TODO ピクトロジカで【13マス】以下を塗ったときパーティーの「知性」が【微小】アップ
-			} else if (e.getName().indexOf("アーシェ") >= 0) {
-				// 編成時に自身の物理防御が【30pt】以上のときパーティーの「知性」が【微小】アップ
-				if (e.getPhysicalDefence() >= 30) {
-					list.add(LeaderSkill.LS117.getItemData());
-				}
-			} else if (e.getName().indexOf("セシル") >= 0) {
-				// TODO パーティーに【騎士剣】装備が【3人】以上のときパーティーの「物理防御」が【微小】アップ
-			}
-			// 限定プレミアムメモリア
-			if (e.getName().indexOf("元帥シド") >= 0) {
-				// パーティーの「無属性武器攻撃」が【大】アップ
-				// 無属性（武器系） 37%
-				list.add(LeaderSkill.LS187.getItemData());
-			}
-			// プレミアムメモリア
-			if (e.getName().indexOf("アーロン") >= 0) {
-				// 編成時に自身の物理防御が【30pt】以上のときパーティーの「HP」が【小】アップ
-				if (e.getPhysicalDefence() >= 30) {
-					list.add(LeaderSkill.LS029.getItemData());
-				}
-			} else if (e.getName().indexOf("トレイ") >= 0) {
-				// 攻撃人数が【4人】以上のときパーティーの「力」が【小】アップ
-				if (mMemoriaList.size() >= 4) {
-					list.add(LeaderSkill.LS052.getItemData());
-				}
-			} else if (e.getName().indexOf("ティナ") >= 0) {
-				// TODO ブレイクゲージが【200%】以上のときパーティーの「氷属性効果」が【中】アップ
-			} else if (e.getName().indexOf("ライトニング(No.119)") >= 0) {
-				// TODO ピクトロジカで【13マス】以上を塗ったときパーティーの「雷属性効果」が【中】アップ
-			} else if (e.getName().indexOf("マキナ") >= 0) {
-				if (mMemoriaList.size() <= 4) {
-					// TODO 攻撃人数が【4人】以下のときパーティーの「クリティカル率」が【小】アップ
-				}
-			}
-		}
-		return list;
-	}
-
-	protected void addLeaderSkill(List<ItemData> leaderSkillList) {
-		for (ItemData e : leaderSkillList) {
-			addLeaderSkill(e);
-		}
-	}
-
-	protected void addLeaderSkill(LeaderSkill leaderSkill) {
-		addLeaderSkill(leaderSkill.getItemData());
-	}
-
-	protected void addLeaderSkill(ItemData leaderSkill) {
-		for (Memoria e : mMemoriaList) {
-			e.addLeaderSkill(leaderSkill);
+			e.setLeaderSkill(leaderSkill);
 		}
 	}
 

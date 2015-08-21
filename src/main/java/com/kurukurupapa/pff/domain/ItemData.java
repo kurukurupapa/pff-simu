@@ -53,6 +53,33 @@ public class ItemData {
 	/** アイテムデータ拡張 */
 	private ItemDataEx mEx;
 
+	public static boolean equals(ItemData[] arg1, ItemData[] arg2) {
+		if (arg1 == null && arg2 == null) {
+			return true;
+		}
+
+		if (arg1 != null && arg2 != null && arg1.length == arg2.length) {
+			for (int i = 0; i < arg1.length; i++) {
+				if (!arg1[i].equals(arg2[i])) {
+					return false;
+				}
+			}
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean equals(ItemData arg1, ItemData arg2) {
+		if (arg1 == null && arg2 == null) {
+			return true;
+		}
+		if (arg1 != null && arg2 != null && arg1.equals(arg2)) {
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * 武器用コンストラクタ
 	 *

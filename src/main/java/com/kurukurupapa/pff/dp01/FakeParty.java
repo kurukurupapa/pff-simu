@@ -1,7 +1,5 @@
 package com.kurukurupapa.pff.dp01;
 
-import com.kurukurupapa.pff.domain.LeaderSkill;
-
 /**
  * 疑似パーティクラス
  * 
@@ -16,17 +14,8 @@ public class FakeParty extends Party {
 
 	@Override
 	public void calcFitness(FitnessCalculator fitnessCalculator) {
-		// 適用される可能性があるリーダースキルをすべて付加します。
-		clearLeaderSkill();
-		for (Memoria e : mMemoriaList) {
-			LeaderSkill leaderSkill = LeaderSkill.parse(e.getName());
-			if (leaderSkill != null) {
-				addLeaderSkill(leaderSkill);
-			}
-		}
-
 		// 適応度計算
-		mFitnessValue = fitnessCalculator.calc(this);
+		super.calcFitness(fitnessCalculator);
 
 		// リーダースキルとアイテムの相性もあるので、最大適応度を大目します。
 		// TODO 正確に判断することはできる？

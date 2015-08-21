@@ -10,6 +10,7 @@ import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BlackMagicItemDataEx;
 import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.JobSkill;
+import com.kurukurupapa.pff.domain.LeaderSkill;
 import com.kurukurupapa.pff.domain.MagicType;
 import com.kurukurupapa.pff.domain.Mement;
 import com.kurukurupapa.pff.domain.MemoriaData;
@@ -25,12 +26,11 @@ public class Memoria implements Cloneable {
 	protected MemoriaData mMemoriaData;
 	protected ItemData mWeaponData;
 	protected ItemData[] mAccessoryDataArr;
-	protected ItemData[] mLeaderSkillArr;
+	protected LeaderSkill mLeaderSkill;
 
 	public Memoria(MemoriaData memoriaData) {
 		mMemoriaData = memoriaData;
 		mAccessoryDataArr = new ItemData[] {};
-		mLeaderSkillArr = new ItemData[] {};
 	}
 
 	public Memoria(MemoriaData memoriaData, ItemData weapon,
@@ -51,7 +51,7 @@ public class Memoria implements Cloneable {
 		mMemoriaData = memoria.mMemoriaData;
 		mWeaponData = memoria.mWeaponData;
 		mAccessoryDataArr = memoria.mAccessoryDataArr.clone();
-		mLeaderSkillArr = memoria.mLeaderSkillArr.clone();
+		mLeaderSkill = memoria.mLeaderSkill;
 	}
 
 	@Override
@@ -64,8 +64,8 @@ public class Memoria implements Cloneable {
 		for (ItemData e : mAccessoryDataArr) {
 			sb.append("+" + e.getName());
 		}
-		for (ItemData e : mLeaderSkillArr) {
-			sb.append("+" + e.getName());
+		if (mLeaderSkill != null) {
+			sb.append("+" + mLeaderSkill.getName());
 		}
 		return sb.toString();
 	}
@@ -76,36 +76,21 @@ public class Memoria implements Cloneable {
 			return false;
 		}
 		Memoria other = (Memoria) obj;
+		// メモリアデータの確認
 		if (!getName().equals(other.getName())) {
 			return false;
 		}
 		// 武器の確認
-		if (mWeaponData == null) {
-			if (other.mWeaponData != null) {
-				return false;
-			}
-		} else {
-			if (!mWeaponData.equals(other.mWeaponData)) {
-				return false;
-			}
+		if (!ItemData.equals(mWeaponData, other.mWeaponData)) {
+			return false;
 		}
 		// アクセサリの確認
-		if (mAccessoryDataArr.length != other.mAccessoryDataArr.length) {
+		if (!ItemData.equals(mAccessoryDataArr, other.mAccessoryDataArr)) {
 			return false;
-		}
-		for (int i = 0; i < mAccessoryDataArr.length; i++) {
-			if (!mAccessoryDataArr[i].equals(other.mAccessoryDataArr[i])) {
-				return false;
-			}
 		}
 		// リーダースキルの確認
-		if (mLeaderSkillArr.length != other.mLeaderSkillArr.length) {
+		if (!LeaderSkill.equals(mLeaderSkill, other.mLeaderSkill)) {
 			return false;
-		}
-		for (int i = 0; i < mLeaderSkillArr.length; i++) {
-			if (!mLeaderSkillArr[i].equals(other.mLeaderSkillArr[i])) {
-				return false;
-			}
 		}
 		return true;
 	}
@@ -185,16 +170,16 @@ public class Memoria implements Cloneable {
 		mAccessoryDataArr = new ItemData[] {};
 	}
 
-	public ItemData[] getLeaderSkills() {
-		return mLeaderSkillArr;
+	public LeaderSkill getLeaderSkill() {
+		return mLeaderSkill;
 	}
 
-	public void addLeaderSkill(ItemData leaderSkill) {
-		mLeaderSkillArr = ArrayUtils.add(mLeaderSkillArr, leaderSkill);
+	public void setLeaderSkill(LeaderSkill leaderSkill) {
+		mLeaderSkill = leaderSkill;
 	}
 
 	public void clearLeaderSkill() {
-		mLeaderSkillArr = new ItemData[] {};
+		mLeaderSkill = null;
 	}
 
 	public MemoriaData getMemoriaData() {
@@ -213,8 +198,8 @@ public class Memoria implements Cloneable {
 		for (ItemData e : mAccessoryDataArr) {
 			itemDataList.add(e);
 		}
-		for (ItemData e : mLeaderSkillArr) {
-			itemDataList.add(e);
+		if (mLeaderSkill != null) {
+			itemDataList.add(mLeaderSkill.getItemData());
 		}
 		return itemDataList.toArray(new ItemData[] {});
 	}
@@ -364,10 +349,12 @@ public class Memoria implements Cloneable {
 		// フレア
 		// ブレイクゲージ200%以上の時に知恵メメントで攻撃すると初回のみフレアを発動
 		// TODO ひとまず、ターン数やブレイクに関わらず、1回発動することとします。
+		// TODO 1ターンとして数えます。
 		if (getMemoriaData().getJobSkill().isFurea()) {
 			damage += getMemoriaData().getJobSkill().getFureaAttackDamage(
 					getIntelligence(),
 					getMemoriaData().getMagicAttack(MagicType.BLACK));
+			// turn--;
 		}
 
 		// プレミアムスキル

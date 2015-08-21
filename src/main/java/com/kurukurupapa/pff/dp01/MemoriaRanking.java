@@ -71,7 +71,7 @@ public class MemoriaRanking {
 			for (LeaderSkill e2 : LeaderSkill.values()) {
 				// TODO 自分自身のリーダースキルは省いた方が良いかも。
 				Party party = dp.getParty().clone();
-				party.getMemoria(0).addLeaderSkill(e2.getItemData());
+				party.setLeaderSkill(e2);
 				party.calcFitness(mFitnessCalculator);
 				if (max.getValue() < party.getFitness()) {
 					max = party.getFitnessObj();
