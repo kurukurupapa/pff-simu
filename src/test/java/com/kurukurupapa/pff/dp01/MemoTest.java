@@ -20,7 +20,7 @@ public class MemoTest extends BaseTestCase {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		mItemDataSet = new ItemDataSet();
-		mItemDataSet.read();
+		mItemDataSet.readTestFile();
 		mMemoriaDataSet = new MemoriaDataSet(mItemDataSet);
 		mMemoriaDataSet.readTestFile();
 	}
