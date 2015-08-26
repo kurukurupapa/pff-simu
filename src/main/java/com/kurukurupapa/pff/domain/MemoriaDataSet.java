@@ -99,6 +99,11 @@ public class MemoriaDataSet implements Iterable<MemoriaData> {
 			throw new AppException("カラム数が不正です。カラム数=" + columns.length);
 		}
 
+		// トリム
+		for (int i = 0; i < columns.length; i++) {
+			columns[i] = columns[i].trim();
+		}
+
 		// 追加
 		add(new MemoriaData(toName(columns[0]), toInt(columns[1]),
 				toInt(columns[2]), toInt(columns[3]), toInt(columns[4]),
