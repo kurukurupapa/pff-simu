@@ -297,7 +297,7 @@ public class Dp01Test extends BaseTestCase {
 		Party actual = dp.getParty();
 
 		// 検証
-		assertParty(readExpectedFile(), actual);
+		assertPartyAsMultiLine(readExpectedFile(), actual);
 	}
 
 	@Test
@@ -312,7 +312,7 @@ public class Dp01Test extends BaseTestCase {
 		Party actual = dp.getParty();
 
 		// 検証
-		assertParty(readExpectedFile(), actual);
+		assertPartyAsMultiLine(readExpectedFile(), actual);
 	}
 
 	@Test
