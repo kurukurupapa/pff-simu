@@ -66,32 +66,65 @@ public enum LeaderSkill {
 	 *            パーティ
 	 * @return 妥当な場合true
 	 */
-	public static boolean validStructue(Party party) {
-		// 全メモリアについて、リーダースキルなし、または同一リーダースキルであること。
-		LeaderSkill leaderSkill = null;
-		for (Memoria e : party.getMemoriaList()) {
-			LeaderSkill ls = e.getLeaderSkill();
-			if (ls == null) {
-				continue;
-			}
-			if (leaderSkill == null) {
-				leaderSkill = ls;
-			} else if (!leaderSkill.equals(ls)) {
-				return false;
-			}
-		}
-
-		// パーティにリーダースキルが設定されていなければ終了
-		if (leaderSkill == null) {
+	public static boolean validOrNone(Party party) {
+		if (party.getMemoriaList().size() == 0) {
 			return true;
 		}
-
-		// 上記で取得したリーダースキルが適用可能であること。
-		return valid(leaderSkill, party);
+		if (!validStructure(party)) {
+			return false;
+		}
+		LeaderSkill leaderSkill = party.getMemoria(0).getLeaderSkill();
+		if (leaderSkill != null && !validCondition(leaderSkill, party)) {
+			return false;
+		}
+		return true;
 	}
 
 	/**
-	 * 引数のリーダースキルを、引数のパーティに対して、妥当か判定します。
+	 * 引数のパーティに対して、引数のメモリアのリーダースキルが妥当であるか判定します。
+	 * パーティやメモリアにリーダースキルが含まれていない場合も妥当とします。
+	 * 
+	 * @param party
+	 *            パーティ
+	 * @param memoria
+	 *            メモリア
+	 * @return 妥当な場合true
+	 */
+	public static boolean validOrNone(Party party, Memoria memoria) {
+		if (party.getMemoriaList().size() == 0) {
+			return true;
+		}
+		if (equals(party.getMemoria(0).getLeaderSkill(),
+				memoria.getLeaderSkill())) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * 引数のパーティに含まれるリーダースキルの構成が妥当であるか判定します。 パーティにリーダースキルが含まれていない場合も妥当とします。
+	 * 
+	 * @param party
+	 *            パーティ
+	 * @return 妥当な場合true
+	 */
+	private static boolean validStructure(Party party) {
+		if (party.getMemoriaList().size() == 0) {
+			return true;
+		}
+
+		// 全メモリアについて、リーダースキルなし、または同一リーダースキルであること。
+		LeaderSkill leaderSkill = party.getMemoria(0).getLeaderSkill();
+		for (Memoria e : party.getMemoriaList()) {
+			if (!equals(leaderSkill, e.getLeaderSkill())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 引数のリーダースキルが、引数のパーティに対して、妥当か判定します。
 	 * 
 	 * @param leaderSkill
 	 *            リーダースキル
@@ -99,61 +132,92 @@ public enum LeaderSkill {
 	 *            パーティ
 	 * @return 妥当な場合true
 	 */
-	public static boolean valid(LeaderSkill leaderSkill, Party party) {
+	public static boolean validCondition(LeaderSkill leaderSkill, Party party) {
 		Validate.notNull(leaderSkill);
+		Validate.notNull(party);
 
-		// 上記で取得したリーダースキルが適用可能であること。
 		for (Memoria e : party.getMemoriaList()) {
-			//
-			// イベントメモリア
-			//
-			if (e.getName().indexOf("ヴァニラ") >= 0) {
-				// TODO ピクトロジカで【13マス】以下を塗ったときパーティーの「知性」が【微小】アップ
-			} else if (e.getName().indexOf("アーシェ") >= 0) {
-				// 編成時に自身の物理防御が【30pt】以上のときパーティーの「知性」が【微小】アップ
-				if (e.getPhysicalDefence() >= 30) {
-					if (LS117.equals(leaderSkill)) {
-						return true;
-					}
-				}
-			} else if (e.getName().indexOf("セシル") >= 0) {
-				// TODO パーティーに【騎士剣】装備が【3人】以上のときパーティーの「物理防御」が【微小】アップ
+			if (validCondition(leaderSkill, e, party)) {
+				return true;
 			}
-			//
-			// 限定プレミアムメモリア
-			//
-			if (e.getName().indexOf("元帥シド") >= 0) {
-				// パーティーの「無属性武器攻撃」が【大】アップ
-				// 無属性（武器系） 37%
-				if (LS187.equals(leaderSkill)) {
+		}
+		return false;
+	}
+
+	public static boolean validCondition(LeaderSkill leaderSkill,
+			Memoria memoria) {
+		return validCondition(leaderSkill, memoria, null);
+	}
+
+	/**
+	 * 引数のリーダースキルが、引数のメモリアに対して、妥当か判定します。
+	 * 
+	 * @param leaderSkill
+	 *            リーダースキル
+	 * @param memoria
+	 *            メモリア
+	 * @param party
+	 *            パーティ。null以外の場合、パーティに関する条件も確認します。nullの場合、パーティ以外の条件のみ確認します。
+	 * @return 妥当な場合true
+	 */
+	private static boolean validCondition(LeaderSkill leaderSkill,
+			Memoria memoria, Party party) {
+		Validate.notNull(leaderSkill);
+		Validate.notNull(memoria);
+
+		//
+		// イベントメモリア
+		//
+		if (memoria.getName().indexOf("ヴァニラ") >= 0) {
+			// TODO ピクトロジカで【13マス】以下を塗ったときパーティーの「知性」が【微小】アップ
+		} else if (memoria.getName().indexOf("アーシェ") >= 0) {
+			// 編成時に自身の物理防御が【30pt】以上のときパーティーの「知性」が【微小】アップ
+			if (memoria.getPhysicalDefence() >= 30) {
+				if (LS117.equals(leaderSkill)) {
 					return true;
 				}
 			}
-			//
-			// プレミアムメモリア
-			//
-			if (e.getName().indexOf("アーロン") >= 0) {
-				// 編成時に自身の物理防御が【30pt】以上のときパーティーの「HP」が【小】アップ
-				if (e.getPhysicalDefence() >= 30) {
-					if (LS029.equals(leaderSkill)) {
-						return true;
-					}
+		} else if (memoria.getName().indexOf("セシル") >= 0) {
+			// TODO パーティーに【騎士剣】装備が【3人】以上のときパーティーの「物理防御」が【微小】アップ
+		}
+		//
+		// 限定プレミアムメモリア
+		//
+		if (memoria.getName().indexOf("元帥シド") >= 0) {
+			// パーティーの「無属性武器攻撃」が【大】アップ
+			// 無属性（武器系） 37%
+			if (LS187.equals(leaderSkill)) {
+				return true;
+			}
+		}
+		//
+		// プレミアムメモリア
+		//
+		if (memoria.getName().indexOf("アーロン") >= 0) {
+			// 編成時に自身の物理防御が【30pt】以上のときパーティーの「HP」が【小】アップ
+			if (memoria.getPhysicalDefence() >= 30) {
+				if (LS029.equals(leaderSkill)) {
+					return true;
 				}
-			} else if (e.getName().indexOf("トレイ") >= 0) {
-				// 攻撃人数が【4人】以上のときパーティーの「力」が【小】アップ
-				if (party.getMemoriaList().size() >= 4) {
-					if (LS052.equals(leaderSkill)) {
-						return true;
-					}
+			}
+		} else if (memoria.getName().indexOf("トレイ") >= 0) {
+			// 攻撃人数が【4人】以上のときパーティーの「力」が【小】アップ
+			if (party == null) {
+				return true;
+			} else if (party.getMemoriaList().size() >= 4) {
+				if (LS052.equals(leaderSkill)) {
+					return true;
 				}
-			} else if (e.getName().indexOf("ティナ") >= 0) {
-				// TODO ブレイクゲージが【200%】以上のときパーティーの「氷属性効果」が【中】アップ
-			} else if (e.getName().indexOf("ライトニング(No.119)") >= 0) {
-				// TODO ピクトロジカで【13マス】以上を塗ったときパーティーの「雷属性効果」が【中】アップ
-			} else if (e.getName().indexOf("マキナ") >= 0) {
-				if (party.getMemoriaList().size() <= 4) {
-					// TODO 攻撃人数が【4人】以下のときパーティーの「クリティカル率」が【小】アップ
-				}
+			}
+		} else if (memoria.getName().indexOf("ティナ") >= 0) {
+			// TODO ブレイクゲージが【200%】以上のときパーティーの「氷属性効果」が【中】アップ
+		} else if (memoria.getName().indexOf("ライトニング(No.119)") >= 0) {
+			// TODO ピクトロジカで【13マス】以上を塗ったときパーティーの「雷属性効果」が【中】アップ
+		} else if (memoria.getName().indexOf("マキナ") >= 0) {
+			if (party == null) {
+				return true;
+			} else if (party.getMemoriaList().size() <= 4) {
+				// TODO 攻撃人数が【4人】以下のときパーティーの「クリティカル率」が【小】アップ
 			}
 		}
 
@@ -189,8 +253,18 @@ public enum LeaderSkill {
 	 * @param party
 	 * @return
 	 */
-	public boolean valid(Party party) {
-		return valid(this, party);
+	public boolean validCondition(Party party) {
+		return validCondition(this, party);
+	}
+
+	/**
+	 * 引数のメモリアに対して、当リーダースキルを適用可能か判定します。
+	 * 
+	 * @param memoria
+	 * @return
+	 */
+	public boolean validCondition(Memoria memoria) {
+		return validCondition(this, memoria);
 	}
 
 }

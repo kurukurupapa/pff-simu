@@ -11,7 +11,7 @@ import com.kurukurupapa.pff.dp01.Party;
  * 
  * 重複するメモリアやアイテム、発動しないかもしれないリーダースキルなどを設定したあと、妥当性チェックができるパーティクラスです。
  */
-public class FakeParty extends Party {
+public class FakeParty extends Party implements Cloneable {
 
 	public FakeParty() {
 		super();
@@ -19,6 +19,15 @@ public class FakeParty extends Party {
 
 	public FakeParty(Memoria memoria) {
 		super(memoria);
+	}
+
+	public FakeParty(FakeParty other) {
+		super(other);
+	}
+
+	@Override
+	public FakeParty clone() {
+		return new FakeParty(this);
 	}
 
 	@Override
@@ -37,7 +46,29 @@ public class FakeParty extends Party {
 			return false;
 		}
 		// リーダースキル
-		if (!LeaderSkill.validStructue(this)) {
+		if (!LeaderSkill.validOrNone(this)) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * 引数のメモリアが追加可能か判定します。
+	 * 
+	 * @param memoria
+	 *            メモリア
+	 * @return 追加可能な場合true
+	 */
+	public boolean valid(Memoria memoria) {
+		// メモリア・アイテム重複チェック
+		for (int i = 0; i < mMemoriaList.size(); i++) {
+			Memoria tmp = mMemoriaList.get(i);
+			if (!validMemoriaItem(memoria, tmp)) {
+				return false;
+			}
+		}
+		// リーダースキル
+		if (!LeaderSkill.validOrNone(this, memoria)) {
 			return false;
 		}
 		return true;
@@ -49,22 +80,29 @@ public class FakeParty extends Party {
 			for (int m2 = m1 + 1; m2 < mMemoriaList.size(); m2++) {
 				Memoria m1obj = mMemoriaList.get(m1);
 				Memoria m2obj = mMemoriaList.get(m2);
-				// 同一メモリアオブジェクト
-				if (m1obj.getMemoriaData() == m2obj.getMemoriaData()) {
-					return false;
-				}
-				// 武器
-				if (m1obj.getWeapon() == m2obj.getWeapon()) {
-					return false;
-				}
-				// アクセサリ
-				ItemData[] m1ma = m1obj.getAccessories();
-				ItemData[] m2ma = m2obj.getAccessories();
-				if (m1ma[0] == m2ma[0] || m1ma[0] == m2ma[1]
-						|| m1ma[1] == m2ma[0] || m1ma[1] == m2ma[1]) {
+				if (!validMemoriaItem(m1obj, m2obj)) {
 					return false;
 				}
 			}
+		}
+		return true;
+	}
+
+	private boolean validMemoriaItem(Memoria memoria1, Memoria memoria2) {
+		// 同一メモリアオブジェクト
+		if (memoria1.getMemoriaData() == memoria2.getMemoriaData()) {
+			return false;
+		}
+		// 武器
+		if (memoria1.getWeapon() == memoria2.getWeapon()) {
+			return false;
+		}
+		// アクセサリ
+		ItemData[] m1ma = memoria1.getAccessories();
+		ItemData[] m2ma = memoria2.getAccessories();
+		if (m1ma[0] == m2ma[0] || m1ma[0] == m2ma[1] || m1ma[1] == m2ma[0]
+				|| m1ma[1] == m2ma[1]) {
+			return false;
 		}
 		return true;
 	}

@@ -41,9 +41,21 @@ public class MemoriaItemCombinationsTest extends BaseTestCase {
 		sut.setup();
 
 		// 検証
-		// setup後の要素数は、最大で、計算回数と一致する。
-		// 同一メモリア/アイテムが複数個存在する場合は、要素数が少なくなる。
-		assertTrue(sut.mCalcCount * 0.9 > sut.size());
+		// setup後の要素数は、計算回数以下である。
+		// ※同一メモリア/アイテムが複数個存在する場合でも、それだけを理由にして、要素数は少なくすることはない。
+		assertTrue(sut.mCalcCount >= sut.size());
+
+		// 要素数の想定
+		final int numMemorias = 12; // メモリア数
+		final int numLeaderSkills = 5; // リーダースキル数（リーダースキルなしも1件と数える）
+		final float numWeapons = 2.5f; // 1メモリアあたりの平均的な武器数
+		final int numMagicAccessories = 42; // 魔法/アクセサリ数（専用アイテム除く）
+		int maxSize = (int) (numMemorias * numLeaderSkills * numWeapons
+				* numMagicAccessories * 7);
+		assertTrue(sut.size() <= maxSize);
+
+		// 内容確認
+		assertEquals(readExpectedFile(), sut.toDebugStr());
 	}
 
 }

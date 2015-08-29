@@ -157,7 +157,7 @@ public class PartyFinder2dTest extends BaseTestCase {
 
 		// 検証
 		String expected = readExpectedFile();
-		assertParty(expected, pf.getParty());
+		assertPartyAsMultiLine(expected, pf.getParty());
 	}
 
 	@Test
@@ -169,11 +169,12 @@ public class PartyFinder2dTest extends BaseTestCase {
 		// テスト実行
 		PartyFinder2d pf;
 		pf = new PartyFinder2d(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
+		// pf.mDebug = true;
 		pf.run(4);
 
 		// 検証
 		String expected = readExpectedFile();
-		assertParty(expected, pf.getParty());
+		assertPartyAsMultiLine(expected, pf.getParty());
 	}
 
 	@Test
@@ -203,11 +204,12 @@ public class PartyFinder2dTest extends BaseTestCase {
 		// テスト実行
 		PartyFinder2d pf;
 		pf = new PartyFinder2d(memoriaDataSet, itemDataSet, fitnessCalculator);
+		// pf.mDebug = true;
 		pf.run(4);
 
 		// 検証
 		assertEquals(
-				"37319,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト+元帥シドLS,パンネロ+ダンシングダガー+ファイアRF+3+エクサイヤリング+1+元帥シドLS,元帥シド+おろち+マーシャルネイ+マーシャルネイ+元帥シドLS,ライトニング(No.119)+青紅の剣(レア5)+クリスタルの小手+エクサバックラー+2+元帥シドLS",
+				"37452,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト+元帥シドLS,パンネロ+ダンシングダガー+ファイアRF+3+ケアル+元帥シドLS,元帥シド+おろち+マーシャルネイ+マーシャルネイ+元帥シドLS,ライトニング(No.119)+青紅の剣(レア5)+クリスタルの小手+エクサバックラー+2+元帥シドLS",
 				pf.getParty().toString());
 	}
 

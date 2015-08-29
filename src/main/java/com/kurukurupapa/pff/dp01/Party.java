@@ -1,7 +1,6 @@
 package com.kurukurupapa.pff.dp01;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +14,20 @@ public class Party implements Cloneable {
 
 	protected List<Memoria> mMemoriaList;
 	protected FitnessValue mFitnessValue = new FitnessValue();
+
+	public static Party max(Party arg1, Party arg2) {
+		if (arg1 == null) {
+			return arg2;
+		}
+		if (arg2 == null) {
+			return arg1;
+		}
+		if (arg1.getFitness() < arg2.getFitness()) {
+			return arg2;
+		} else {
+			return arg2;
+		}
+	}
 
 	public Party() {
 		mMemoriaList = new ArrayList<Memoria>();
@@ -172,7 +185,7 @@ public class Party implements Cloneable {
 		for (Memoria e : mMemoriaList) {
 			// 当該メモリアのリーダースキルが適用可能か調べます。
 			LeaderSkill leaderSkill = LeaderSkill.parse(e.getMemoriaData());
-			if (leaderSkill == null || !leaderSkill.valid(this)) {
+			if (leaderSkill == null || !leaderSkill.validCondition(this)) {
 				continue;
 			}
 

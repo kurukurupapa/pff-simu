@@ -30,6 +30,8 @@ public class FitnessCalculator {
 	/** 敵の魔法防御 */
 	protected int mMagicResistance;
 
+	/** 敵の力 登録状態 */
+	protected boolean mEnemyPowerFlag;
 	/** 敵の力 */
 	protected int mEnemyPower;
 
@@ -70,10 +72,14 @@ public class FitnessCalculator {
 		// 案１：とりあえず、パーティの力の平均を、敵の力とします。
 		// mEnemyPower = party.getAveragePower();
 		// 案２：敵1体、自メモリア4対での戦いを想定し、敵は自メモリアの4倍の力とします。
-		// →素早さの評価が上がりすぎる気がする。
 		// mEnemyPower = party.getAveragePower() * 4;
+		// →素早さの評価が上がりすぎる気がする。
 		// 案３：案２の微調整
-		mEnemyPower = party.getAveragePower() * 2;
+		// mEnemyPower = party.getAveragePower() * 2;
+		// →メモリアの適応度の単純な積み上げが、パーティの適応度にならない。
+		// 　最適パーティの探索が難しくなるため、別案を検討する。
+		// 案４：
+		// 案３の問題点と、既存処理の互換性を考慮し、メモリアごとに敵の力を計算します。
 
 		FitnessValue fitnessValue = new FitnessValue();
 		for (Memoria e : party.getMemoriaList()) {
@@ -85,6 +91,14 @@ public class FitnessCalculator {
 	protected MemoriaFitness calc(Memoria memoria) {
 		MemoriaFitness value = new MemoriaFitness(memoria);
 
+		// 敵の力
+		int enemyPower;
+		if (mEnemyPowerFlag) {
+			enemyPower = mEnemyPower;
+		} else {
+			enemyPower = memoria.getPower() * 2;
+		}
+
 		// HP
 		value.setHp(memoria.getHp());
 
@@ -95,7 +109,7 @@ public class FitnessCalculator {
 
 		// 物理被ダメージ
 		value.setPhysicalDefenceDamage(memoria.getPhysicalDefenceDamage(TURN,
-				mEnemyPower));
+				enemyPower));
 
 		// 魔法被ダメージ
 		value.setMagicDefenceDamage(memoria.getMagicDefenceDamage(TURN));
@@ -205,8 +219,24 @@ public class FitnessCalculator {
 		mPhysicalResistance = physicalResistance;
 	}
 
+	/**
+	 * 敵の魔法防御を登録します。
+	 * 
+	 * @param magicResistance
+	 *            防御
+	 */
 	public void setEnemyMagicResistance(int magicResistance) {
 		mMagicResistance = magicResistance;
 	}
 
+	/**
+	 * 敵の力を登録します。
+	 * 
+	 * @param power
+	 *            力
+	 */
+	public void setEnemyPower(int power) {
+		mEnemyPowerFlag = true;
+		mEnemyPower = power;
+	}
 }
