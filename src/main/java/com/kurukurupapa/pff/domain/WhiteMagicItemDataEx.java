@@ -15,11 +15,12 @@ public class WhiteMagicItemDataEx extends MagicItemDataEx {
 	 *
 	 * @return 回復量
 	 */
-	public int getRecovery(int intelligence, float magicAttack) {
+	public float getRecovery(int intelligence, float magicAttack) {
 		// 回復量＝(知性＋効果値)×魔法倍率
 		// http://wikiwiki.jp/pictlogicaff/?%C0%EF%C6%AE%BE%F0%CA%F3#measure
 		// ※祈りメメントで白魔法 1.25を前提とします。
-		return (int) ((intelligence + mMagicEffect) * magicAttack * Mement.INORI_WHITE_RATE);
+		return (intelligence + mMagicEffect) * magicAttack
+				* Mement.INORI_WHITE_RATE;
 	}
 
 }

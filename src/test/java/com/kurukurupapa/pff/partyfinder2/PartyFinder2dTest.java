@@ -177,40 +177,4 @@ public class PartyFinder2dTest extends BaseTestCase {
 		assertPartyAsMultiLine(expected, pf.getParty());
 	}
 
-	@Test
-	public void testRun4_Battle_不具合対応1() {
-		// 準備
-		FitnessCalculator fitnessCalculator = new FitnessCalculator();
-		ItemDataSet itemDataSet = new ItemDataSet();
-		itemDataSet.addWeaponData(mItemDataSet.find("ダンシングダガー"));
-		itemDataSet.addWeaponData(mItemDataSet.find("おろち"));
-		itemDataSet.addWeaponData(mItemDataSet.find("黄忠の長弓(レア5)"));
-		itemDataSet.addWeaponData(mItemDataSet.find("青紅の剣(レア5)"));
-		itemDataSet.addMagicData(mItemDataSet.find("ファイアRF+3"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("エクサイヤリング+1"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("マーシャルネイ"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("マーシャルネイ"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("赤兎馬のたてがみ(レア5)"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("パワーリスト"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("クリスタルの小手"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("エクサバックラー+2"));
-		itemDataSet.addAccessoryData(mItemDataSet.find("ケアル"));
-		MemoriaDataSet memoriaDataSet = new MemoriaDataSet(itemDataSet);
-		memoriaDataSet.add(mMemoriaDataSet.find("パンネロ"));
-		memoriaDataSet.add(mMemoriaDataSet.find("元帥シド"));
-		memoriaDataSet.add(mMemoriaDataSet.find("トレイ"));
-		memoriaDataSet.add(mMemoriaDataSet.find("ライトニング(No.119)"));
-
-		// テスト実行
-		PartyFinder2d pf;
-		pf = new PartyFinder2d(memoriaDataSet, itemDataSet, fitnessCalculator);
-		// pf.mDebug = true;
-		pf.run(4);
-
-		// 検証
-		assertEquals(
-				"37452,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト+元帥シドLS,パンネロ+ダンシングダガー+ファイアRF+3+ケアル+元帥シドLS,元帥シド+おろち+マーシャルネイ+マーシャルネイ+元帥シドLS,ライトニング(No.119)+青紅の剣(レア5)+クリスタルの小手+エクサバックラー+2+元帥シドLS",
-				pf.getParty().toString());
-	}
-
 }

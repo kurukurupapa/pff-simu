@@ -58,15 +58,15 @@ public class NextMemoriaTest extends BaseTestCase {
 		Party maxParty = null;
 
 		sut = new NextMemoria(mFitnessCalculator, 0, mMemoriaFitnesses);
-		assertEquals("パンネロ", sut.next(currentParty, maxParty).getName());
-		assertEquals("元帥シド", sut.next(currentParty, maxParty).getName());
+		MemoriaData m1 = sut.next(currentParty, maxParty);
+		sut.next(currentParty, maxParty);
 
 		// テスト実行
 		sut.reset();
 		MemoriaData actual = sut.next(currentParty, maxParty);
 
 		// 検証
-		assertEquals("パンネロ", actual.getName());
+		assertEquals(m1, actual);
 	}
 
 	@Test
@@ -79,12 +79,13 @@ public class NextMemoriaTest extends BaseTestCase {
 		// テスト実行
 		MemoriaData actual = sut.next(currentParty, maxParty);
 		// 検証
-		assertEquals("パンネロ", actual.getName());
+		assertNotNull(actual);
 
 		// テスト実行
 		MemoriaData actual2 = sut.next(currentParty, maxParty);
 		// 検証
-		assertEquals("元帥シド", actual2.getName());
+		assertNotNull(actual2);
+		assertNotEquals(actual, actual2);
 	}
 
 	@Test

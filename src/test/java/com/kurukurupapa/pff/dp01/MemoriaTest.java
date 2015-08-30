@@ -155,7 +155,7 @@ public class MemoriaTest extends BaseTestCase {
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
-		int actual = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+		int actual = (int) sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
 				new ArrayList<Attr>(), 0);
 
 		// 検証
@@ -176,7 +176,7 @@ public class MemoriaTest extends BaseTestCase {
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
-		int actual = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+		int actual = (int) sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
 				new ArrayList<Attr>(), 0);
 
 		// 検証
@@ -196,7 +196,7 @@ public class MemoriaTest extends BaseTestCase {
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
-		int actual = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+		int actual = (int) sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
 				new ArrayList<Attr>(), 0);
 
 		// 検証
@@ -217,7 +217,7 @@ public class MemoriaTest extends BaseTestCase {
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
-		int actual = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+		int actual = (int) sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
 				new ArrayList<Attr>(), 0);
 
 		// 検証
@@ -232,7 +232,7 @@ public class MemoriaTest extends BaseTestCase {
 		Memoria sut = new Memoria(mMemoriaDataSet.find(TINA_NAME));
 
 		// テスト実行
-		int actual = sut.getAttackDamageForBlackMagic(null,
+		int actual = (int) sut.getAttackDamageForBlackMagic(null,
 				new ArrayList<Attr>(), new ArrayList<Attr>(), 0);
 
 		// 検証
@@ -246,8 +246,9 @@ public class MemoriaTest extends BaseTestCase {
 		sut.addAccessory(mItemDataSet.find("ファイラ"));
 
 		// テスト実行
-		int actual = sut.getAttackDamageForBlackMagic(sut.mAccessoryDataArr[0],
-				new ArrayList<Attr>(), new ArrayList<Attr>(), 0);
+		int actual = (int) sut.getAttackDamageForBlackMagic(
+				sut.mAccessoryDataArr[0], new ArrayList<Attr>(),
+				new ArrayList<Attr>(), 0);
 
 		// 検証
 		assertThat(actual, is((int) ((TINA_INTELLIGENCE + 50)
@@ -260,7 +261,7 @@ public class MemoriaTest extends BaseTestCase {
 		Memoria sut = new Memoria(mMemoriaDataSet.find(TINA_NAME));
 
 		// テスト実行
-		int actual = sut.getAttackDamageForSummonMagic(null,
+		int actual = (int) sut.getAttackDamageForSummonMagic(null,
 				new ArrayList<Attr>(), new ArrayList<Attr>());
 
 		// 検証
@@ -274,7 +275,7 @@ public class MemoriaTest extends BaseTestCase {
 		sut.addAccessory(mItemDataSet.find("シヴァ"));
 
 		// テスト実行
-		int actual = sut.getAttackDamageForSummonMagic(
+		int actual = (int) sut.getAttackDamageForSummonMagic(
 				sut.mAccessoryDataArr[0], new ArrayList<Attr>(),
 				new ArrayList<Attr>());
 
@@ -291,9 +292,10 @@ public class MemoriaTest extends BaseTestCase {
 		int actual = sut.getAttackDamage(TURN, CHARGE_PER_BATTLE);
 
 		// 検証
-		assertThat(actual, is((int) (TINA_POWER * TINA_PHYSICAL_ATTACK
-				* (1f + TINA_LUCK / 500f) * MEMENT_CHIKARA_PHYSICAL_RATE)
-				* TURN));
+		assertThat(actual,
+				is((int) (TINA_POWER * TINA_PHYSICAL_ATTACK
+						* (1f + TINA_LUCK / 500f)
+						* MEMENT_CHIKARA_PHYSICAL_RATE * TURN)));
 	}
 
 	@Test
@@ -306,13 +308,15 @@ public class MemoriaTest extends BaseTestCase {
 		int actual = sut.getAttackDamage(TURN, CHARGE_PER_BATTLE);
 
 		// 検証
+		final int MAGIC_CHARGE = 49;
+		final float MAGIC_TIMES = (float) CHARGE_PER_BATTLE / MAGIC_CHARGE;
 		assertThat(
 				actual,
-				is((int) (TINA_POWER * (1f + TINA_LUCK / 500f) * MEMENT_CHIKARA_PHYSICAL_RATE)
-						* (TURN - 2)
-						+ (int) ((TINA_INTELLIGENCE + 50)
-								* TINA_BLACK_MAGIC_ATTACK * MEMENT_CHIE_BLACK_RATE)
-						* 2));
+				is((int) (TINA_POWER * (1f + TINA_LUCK / 500f)
+						* MEMENT_CHIKARA_PHYSICAL_RATE * (TURN - MAGIC_TIMES) + (TINA_INTELLIGENCE + 50f)
+						* TINA_BLACK_MAGIC_ATTACK
+						* MEMENT_CHIE_BLACK_RATE
+						* MAGIC_TIMES)));
 	}
 
 	@Test
@@ -325,12 +329,11 @@ public class MemoriaTest extends BaseTestCase {
 		int actual = sut.getAttackDamage(TURN, CHARGE_PER_BATTLE);
 
 		// 検証
-		assertThat(
-				actual,
-				is((int) (TINA_POWER * (1f + TINA_LUCK / 500f) * MEMENT_CHIKARA_PHYSICAL_RATE)
-						* (TURN - 1)
-						+ (int) (80 * TINA_SUMMON_MAGIC_ATTACK)
-						* 1));
+		final int MAGIC_CHARGE = 64;
+		final float MAGIC_TIMES = (float) CHARGE_PER_BATTLE / MAGIC_CHARGE;
+		assertThat(actual, is((int) (TINA_POWER * (1f + TINA_LUCK / 500f)
+				* MEMENT_CHIKARA_PHYSICAL_RATE * (TURN - MAGIC_TIMES) + 80f
+				* TINA_SUMMON_MAGIC_ATTACK * MAGIC_TIMES)));
 	}
 
 	@Test
@@ -344,13 +347,15 @@ public class MemoriaTest extends BaseTestCase {
 		int actual = sut.getAttackDamage(TURN, CHARGE_PER_BATTLE);
 
 		// 検証
+		final int MAGIC_CHARGE = 49;
+		final float MAGIC_TIMES = (float) CHARGE_PER_BATTLE / MAGIC_CHARGE;
 		assertThat(
 				actual,
-				is((int) (TINA_POWER * (1f + TINA_LUCK / 500f) * MEMENT_CHIKARA_PHYSICAL_RATE)
-						* (TURN - 2)
-						+ (int) ((TINA_INTELLIGENCE + 50)
-								* TINA_BLACK_MAGIC_ATTACK * MEMENT_CHIE_BLACK_RATE)
-						* 2));
+				is((int) (TINA_POWER * (1f + TINA_LUCK / 500f)
+						* MEMENT_CHIKARA_PHYSICAL_RATE * (TURN - MAGIC_TIMES) + (TINA_INTELLIGENCE + 50)
+						* TINA_BLACK_MAGIC_ATTACK
+						* MEMENT_CHIE_BLACK_RATE
+						* MAGIC_TIMES)));
 	}
 
 	@Test

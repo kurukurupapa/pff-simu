@@ -1,13 +1,17 @@
 package com.kurukurupapa.pff.dp01;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.isNotNull;
+import static org.mockito.Matchers.isNull;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.kurukurupapa.pff.domain.Attr;
+import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.test.BaseTestCase;
@@ -106,22 +110,19 @@ public class Dp01Test extends BaseTestCase {
 		// 準備
 		FitnessCalculator fitnessCalculator = FitnessCalculatorFactory
 				.createForAttack();
+
 		// テスト実行
-		String actual = "";
-		Dp01 dp;
-		for (int i = 0; i < 3; i++) {
-			dp = new Dp01(mMemoriaDataSet, new ItemDataSet(), fitnessCalculator);
-			dp.run(1);
-			if (i > 0) {
-				actual += ",";
-			}
-			actual += dp.getParty();
-			mMemoriaDataSet.remove(dp.getParty().getMemoria(0).getName());
-		}
+		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
+				fitnessCalculator);
+		dp.run(1);
+		Party actual = dp.getParty();
+
 		// 検証
-		assertEquals("" //
-				+ "4920,パンネロ,3720,ライトニング(No.119),3050,トレイ" //
-		, actual);
+		// ひとまず簡単な検証のみ
+		assertTrue(actual.getFitness() > 0);
+		assertEquals(1, actual.getMemoriaList().size());
+		assertEquals(null, actual.getMemoria(0).getWeapon());
+		assertEquals(0, actual.getMemoria(0).getNumAccessories());
 	}
 
 	/**
@@ -145,19 +146,10 @@ public class Dp01Test extends BaseTestCase {
 
 		// 検証
 		assertEquals("" //
-				+ "7650,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n"
-				+ "7220,パンネロ+ダンシングダガー+赤兎馬のたてがみ(レア5)+パワーリスト\n"
-				+ "6450,ライトニング(No.119)+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n"
-		// + "6390,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+宿炎の指輪\n"
-		// + "6090,トレイ+黄忠の長弓(レア5)+宿炎の指輪+リストバンド\n"
-		// + "5400,トレイ+ディバインアロー+宿炎の指輪+リストバンド\n"
-		// + "5400,アーロン+五月雨+赤兎馬のたてがみ(レア5)+宿炎の指輪\n"
-		// + "5400,アーロン+烈風+赤兎馬のたてがみ(レア5)+宿炎の指輪\n"
-		// + "5140,アーロン+烈風+宿炎の指輪+リストバンド\n"
-		// + "4620,元帥シド+五月雨+マーシャルネイ+マーシャルネイ\n"
-		// + "4620,元帥シド+烈風+マーシャルネイ+マーシャルネイ\n"
-		//
-				, actual);
+				+ "9382,パンネロ+ダンシングダガー+パワーリスト+エアロラ\n" //
+				+ "7855,ライトニング(No.119)+青紅の剣(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n" //
+				+ "7658,トレイ+黄忠の長弓(レア5)+赤兎馬のたてがみ(レア5)+パワーリスト\n" //
+		, actual);
 	}
 
 	@Test
@@ -171,11 +163,8 @@ public class Dp01Test extends BaseTestCase {
 		dp.run(1);
 		// 検証
 		assertThat(dp.getParty().toString(), is("" //
-				// +"720,元帥シド"
-				// 2015/06/13
-				+ "820,パンネロ"
-		//
-				));
+				+ "827,パンネロ" //
+		));
 	}
 
 	@Test
@@ -196,25 +185,29 @@ public class Dp01Test extends BaseTestCase {
 
 		// 検証
 		assertEquals("" //
-				+ "2861,ユウナ(No.48)+燃える戦杖+ケアルラ+ケアル\n"
-				+ "2180,ヴァニラ+イノセントロッド+ケアルラ+ケアル\n"
-				+ "1462,アーシェ+ネクロフォリア+ルフェインローブ+ケアルラ\n"
-		//
-				, sb.toString());
+				+ "3158,ユウナ(No.48)+燃える戦杖+ケアルラ+ケアル\n" //
+				+ "2359,ヴァニラ+イノセントロッド+ケアルラ+ケアル\n" //
+				+ "1586,アーシェ+ネクロフォリア+ルフェインローブ+ケアルラ\n" //
+		, sb.toString());
 	}
 
 	@Test
 	public void testRun1_BattleItem0() {
 		// 準備
 		FitnessCalculator fitnessCalculator = new FitnessCalculator();
+
 		// テスト実行
 		Dp01 dp = new Dp01(mMemoriaDataSet, new ItemDataSet(),
 				fitnessCalculator);
 		dp.run(1);
+		Party actual = dp.getParty();
+
 		// 検証
-		assertEquals("" //
-				+ "6300,パンネロ" //
-		, dp.getParty().toString());
+		// ひとまず簡単な検証のみ
+		assertTrue(actual.getFitness() > 0);
+		assertEquals(1, actual.getMemoriaList().size());
+		assertEquals(null, actual.getMemoria(0).getWeapon());
+		assertEquals(0, actual.getMemoria(0).getNumAccessories());
 	}
 
 	@Test
@@ -255,9 +248,9 @@ public class Dp01Test extends BaseTestCase {
 
 		// 検証
 		assertEquals("" //
-				+ "12930,ライトニング(No.119)+閃光のウォーソード+パワーリスト+雷の指輪\n" //
-				+ "10471,マキナ+閃光のウォーソード+パワーリスト+雷の指輪\n" //
-				+ "9378,ティナ+閃光のウォーソード+パワーリスト+雷の指輪\n" //
+				+ "14340,ライトニング(No.119)+閃光のウォーソード+パワーリスト+雷の指輪\n" //
+				+ "11290,パンネロ+ダンシングダガー+ファイアRF+3+ケアルラ\n" //
+				+ "10476,マキナ+閃光のウォーソード+パワーリスト+雷の指輪\n" //
 		, actual);
 	}
 
@@ -280,9 +273,10 @@ public class Dp01Test extends BaseTestCase {
 
 		// 検証
 		assertEquals("" //
-				+ "7220,ライトニング(No.119)+閃光のウォーソード+赤兎馬のたてがみ(レア5)+パワーリスト\n"
-				+ "7216,パンネロ+ダンシングダガー+ファイアRF+3+ケアル\n"
-				+ "6713,元帥シド+おろち+マーシャルネイ+マーシャルネイ+元帥シドLS\n", actual);
+				+ "9497,パンネロ+ダンシングダガー+エアロラ+ケアル\n" //
+				+ "8628,ライトニング(No.119)+閃光のウォーソード+赤兎馬のたてがみ(レア5)+パワーリスト\n" //
+				+ "6728,元帥シド+おろち+マーシャルネイ+マーシャルネイ+元帥シドLS\n" //
+		, actual);
 	}
 
 	@Test

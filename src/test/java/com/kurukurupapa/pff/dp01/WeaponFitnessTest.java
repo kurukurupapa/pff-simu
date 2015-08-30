@@ -39,10 +39,13 @@ public class WeaponFitnessTest extends BaseTestCase {
 
 		// テスト実行
 		sut.calc(memoria);
-		String actual = sut.toString();
 
 		// 検証
-		assertEquals("[6764,烈風,アーロン+烈風]", actual);
+		assertEquals("烈風", sut.getItem().getName());
+		assertTrue(sut.getFitness() > 0);
+		assertEquals("アーロン", sut.getMemoria().getMemoriaData().getName());
+		assertEquals("烈風", sut.getMemoria().getWeapon().getName());
+		assertEquals(0, sut.getMemoria().getNumAccessories());
 	}
 
 }

@@ -310,11 +310,11 @@ public class Memoria implements Cloneable {
 	public int getAttackDamage(int turn, int charge, List<Attr> weakList,
 			List<Attr> resistanceList, int physicalResistance,
 			int magicResistance) {
-		int damage = 0;
-		int tmp = 0;
+		float damage = 0f;
+		float tmp = 0f;
 
 		// 全て物理攻撃の場合
-		int physical = getPhysicalAttackDamage(weakList, resistanceList,
+		float physical = getPhysicalAttackDamage(weakList, resistanceList,
 				physicalResistance);
 		tmp = physical * turn;
 		damage = Math.max(damage, tmp);
@@ -323,10 +323,10 @@ public class Memoria implements Cloneable {
 		for (ItemData e : mAccessoryDataArr) {
 			BlackMagicItemDataEx ex = e.getBlackMagicEx();
 			if (ex != null) {
-				int black = getAttackDamageForBlackMagic(e, weakList,
+				float black = getAttackDamageForBlackMagic(e, weakList,
 						resistanceList, magicResistance);
-				int magicTimes = (int) (charge / ex.getMagicCharge());
-				int physicalTimes = turn - magicTimes;
+				float magicTimes = (float) charge / ex.getMagicCharge();
+				float physicalTimes = turn - magicTimes;
 				tmp = black * magicTimes + physical * physicalTimes;
 				damage = Math.max(damage, tmp);
 			}
@@ -336,10 +336,10 @@ public class Memoria implements Cloneable {
 		for (ItemData e : mAccessoryDataArr) {
 			SummonMagicItemDataEx ex = e.getSummonMagicEx();
 			if (ex != null) {
-				int summon = getAttackDamageForSummonMagic(e, weakList,
+				float summon = getAttackDamageForSummonMagic(e, weakList,
 						resistanceList);
-				int magicTimes = (int) (charge / ex.getMagicCharge());
-				int physicalTimes = turn - magicTimes;
+				float magicTimes = (float) charge / ex.getMagicCharge();
+				float physicalTimes = turn - magicTimes;
 				tmp = summon * magicTimes + physical * physicalTimes;
 				damage = Math.max(damage, tmp);
 			}
@@ -362,7 +362,7 @@ public class Memoria implements Cloneable {
 			damage += getMemoriaData().getPremiumSkill().getAttackDamage(turn);
 		}
 
-		return damage;
+		return (int) damage;
 	}
 
 	/**
@@ -376,7 +376,7 @@ public class Memoria implements Cloneable {
 	 *            敵の物理防御
 	 * @return 物理与ダメージ
 	 */
-	protected int getPhysicalAttackDamage(List<Attr> weakList,
+	protected float getPhysicalAttackDamage(List<Attr> weakList,
 			List<Attr> resistanceList, int physicalResistance) {
 		float damage = 0f;
 
@@ -411,29 +411,29 @@ public class Memoria implements Cloneable {
 		// 敵の弱点・属性
 		damage *= getAttrRateForPhysical(weakList, resistanceList);
 
-		return (int) damage;
+		return damage;
 	}
 
-	protected int getAttackDamageForBlackMagic(ItemData blackMagic,
+	protected float getAttackDamageForBlackMagic(ItemData blackMagic,
 			List<Attr> weakList, List<Attr> resistanceList, int magicResistance) {
 		if (blackMagic == null) {
 			return 0;
 		}
-		return (int) (blackMagic.getBlackMagicEx().getAttackDamage(
-				getIntelligence(),
+		return blackMagic.getBlackMagicEx().getAttackDamage(getIntelligence(),
 				getMemoriaData().getMagicAttack(MagicType.BLACK),
-				magicResistance) * getAttrRateForBlackMagic(blackMagic,
-				weakList, resistanceList));
+				magicResistance)
+				* getAttrRateForBlackMagic(blackMagic, weakList, resistanceList);
 	}
 
-	protected int getAttackDamageForSummonMagic(ItemData summonMagic,
+	protected float getAttackDamageForSummonMagic(ItemData summonMagic,
 			List<Attr> weakList, List<Attr> resistanceList) {
 		if (summonMagic == null) {
 			return 0;
 		}
-		return (int) (summonMagic.getSummonMagicEx().getAttackDamage(
-				getMemoriaData().getMagicAttack(MagicType.SUMMON)) * getAttrRateForSummonMagic(
-				summonMagic, weakList, resistanceList));
+		return summonMagic.getSummonMagicEx().getAttackDamage(
+				getMemoriaData().getMagicAttack(MagicType.SUMMON))
+				* getAttrRateForSummonMagic(summonMagic, weakList,
+						resistanceList);
 	}
 
 	/**
@@ -639,14 +639,14 @@ public class Memoria implements Cloneable {
 
 		// 祈りメメントの回復量
 		// http://wikiwiki.jp/pictlogicaff/?%C0%EF%C6%AE%BE%F0%CA%F3#memento
-		int inori = (int) ((getHp() / 50.0 + getIntelligence() / 2.0)) * turn;
+		float inori = (getHp() / 50.0f + getIntelligence() / 2.0f) * turn;
 
 		// 回復魔法
-		int white = 0;
+		float white = 0;
 		for (ItemData e : mAccessoryDataArr) {
 			WhiteMagicItemDataEx ex = e.getWhiteMagicEx();
 			if (ex != null) {
-				int recovery = ex.getRecovery(getIntelligence(),
+				float recovery = ex.getRecovery(getIntelligence(),
 						getMemoriaData().getMagicAttack(MagicType.WHITE));
 
 				// ジョブスキル
@@ -655,13 +655,13 @@ public class Memoria implements Cloneable {
 							.calcRecoveryMagicDamage(recovery);
 				}
 
-				int magicTimes = (int) (charge / ex.getMagicCharge());
-				int tmp = recovery * magicTimes;
+				float magicTimes = (float) charge / ex.getMagicCharge();
+				float tmp = recovery * magicTimes;
 				white = Math.max(white, tmp);
 			}
 		}
 
-		return inori + white;
+		return (int) (inori + white);
 	}
 
 	/**

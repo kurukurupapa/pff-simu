@@ -6,15 +6,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
+import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.test.BaseTestCase;
 
 public class AccessoryFitnessTest extends BaseTestCase {
-	/** 1バトルあたりのターン数 */
-	private static final int TURN = 10;
-
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
@@ -38,41 +37,55 @@ public class AccessoryFitnessTest extends BaseTestCase {
 	@Test
 	public void testCalc_アクセサリ1件() {
 		// 準備
-		sut.setup(mItemDataSet.find("タフネスリング"));
-		Memoria memoria = new Memoria(mMemoriaDataSet.find("アーロン"));
+		ItemData itemData = mItemDataSet.find("タフネスリング");
+		sut.setup(itemData);
+		MemoriaData memoriaData = mMemoriaDataSet.find("アーロン");
+		Memoria memoria = new Memoria(memoriaData);
 
 		// テスト実行
 		sut.calc(memoria);
 		String actual = sut.toString();
 
 		// 検証
-		int beforeHp = 911;
-		int afterHp = (int) (911 * 1.1);
-		int upHp = afterHp - beforeHp;
-		int upRecovery = ((int) (afterHp / 50) - (int) (beforeHp / 50)) * TURN;
-		assertEquals("[" + (upHp + upRecovery) + ",タフネスリング,アーロン+タフネスリング]",
-				actual);
+		FitnessCalculator calculator = new FitnessCalculator();
+		MemoriaFitness before = calculator.calc(new Memoria(memoriaData, null,
+				null, null));
+		MemoriaFitness after = calculator.calc(new Memoria(memoriaData, null,
+				itemData, null));
+		int value = after.getValue() - before.getValue();
+		assertEquals("[" + value + ",タフネスリング,アーロン+タフネスリング]", actual);
 	}
 
 	@Test
 	public void testCalc_アクセサリ素早さ() {
 		// 準備
-		sut.setup(mItemDataSet.find("ルフェインブーツ"));
-		Memoria memoria = new Memoria(mMemoriaDataSet.find("アーロン"));
+		MemoriaData mdata = mMemoriaDataSet.find("アーロン");
+		ItemData accessory = mItemDataSet.find("ルフェインブーツ");
+		sut.setup(accessory);
+		Memoria memoria = new Memoria(mdata);
 
 		// テスト実行
 		sut.calc(memoria);
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("[180,ルフェインブーツ,アーロン+ルフェインブーツ]", actual);
+		FitnessCalculator calculator = new FitnessCalculator();
+		calculator.addEnemyWeak(Attr.WIND);
+		MemoriaFitness before = calculator.calc(new Memoria(mdata, null, null,
+				null));
+		MemoriaFitness after = calculator.calc(new Memoria(mdata, null,
+				accessory, null));
+		int value = after.getValue() - before.getValue();
+		assertEquals("[" + value + ",ルフェインブーツ,アーロン+ルフェインブーツ]", actual);
 	}
 
 	@Test
 	public void testCalc_武器なし指輪() {
 		// 準備
-		sut.setup(mItemDataSet.find("風の指輪"));
-		Memoria memoria = new Memoria(mMemoriaDataSet.find("アーロン"));
+		MemoriaData mdata = mMemoriaDataSet.find("アーロン");
+		ItemData accessory = mItemDataSet.find("風の指輪");
+		sut.setup(accessory);
+		Memoria memoria = new Memoria(mdata);
 
 		// テスト実行
 		sut.calc(memoria);
@@ -85,9 +98,11 @@ public class AccessoryFitnessTest extends BaseTestCase {
 	@Test
 	public void testCalc_武器あり指輪() {
 		// 準備
-		sut.setup(mItemDataSet.find("風の指輪"));
+		MemoriaData mdata = mMemoriaDataSet.find("アーロン");
 		ItemData weapon = mItemDataSet.find("烈風");
-		Memoria memoria = new Memoria(mMemoriaDataSet.find("アーロン"));
+		ItemData accessory = mItemDataSet.find("風の指輪");
+		sut.setup(accessory);
+		Memoria memoria = new Memoria(mdata);
 		memoria.setWeapon(weapon);
 
 		// テスト実行
@@ -95,23 +110,38 @@ public class AccessoryFitnessTest extends BaseTestCase {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("[2270,風の指輪,アーロン+烈風+風の指輪]", actual);
+		FitnessCalculator calculator = new FitnessCalculator();
+		calculator.addEnemyWeak(Attr.WIND);
+		MemoriaFitness before = calculator.calc(new Memoria(mdata, weapon,
+				null, null));
+		MemoriaFitness after = calculator.calc(new Memoria(mdata, weapon,
+				accessory, null));
+		int value = after.getValue() - before.getValue();
+		assertEquals("[" + value + ",風の指輪,アーロン+烈風+風の指輪]", actual);
 	}
 
 	@Test
 	public void testCalc_武器あり指輪2() {
 		// 準備
-		sut.setup(mItemDataSet.find("炎の指輪"));
+		MemoriaData mdata = mMemoriaDataSet.find("ユウナ(No.48)");
 		ItemData weapon = mItemDataSet.find("燃える戦杖");
-		Memoria memoria = new Memoria(mMemoriaDataSet.find("ユウナ(No.48)"));
-		memoria.setWeapon(weapon);
+		ItemData accessory = mItemDataSet.find("炎の指輪");
+		sut.setup(accessory);
+		Memoria memoria = new Memoria(mdata, weapon, null, null);
 
 		// テスト実行
 		sut.calc(memoria);
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("[550,炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪]", actual);
+		FitnessCalculator calculator = new FitnessCalculator();
+		calculator.addEnemyWeak(Attr.FIRE);
+		MemoriaFitness before = calculator.calc(new Memoria(mdata, weapon,
+				null, null));
+		MemoriaFitness after = calculator.calc(new Memoria(mdata, weapon,
+				accessory, null));
+		int value = after.getValue() - before.getValue();
+		assertEquals("[" + value + ",炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪]", actual);
 	}
 
 }

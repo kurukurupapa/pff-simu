@@ -27,24 +27,24 @@ public class PremiumSkill {
 		return StringUtils.isNotEmpty(mName);
 	}
 
-	public int getAttackDamage(int turn) {
-		int damage = 0;
+	public float getAttackDamage(int turn) {
+		float damage = 0f;
 		if (mName.equals("生殺与奪")) {
 			// パンネロ
 			// 中速（6ターンごと）、知恵メメント、効果値3200
-			int count = turn / 6;
+			float count = (float) turn / 6f;
 			damage = 3200 * count;
 		} else if (mName.equals("ブレイズラッシュ")) {
 			// ライトニング（No.119）
 			// 中速（6ターンごと）、力メメント、効果値2100
 			// TODO 雷弱点付与
-			int count = turn / 6;
+			float count = (float) turn / 6f;
 			damage = 2100 * count;
 		} else if (mName.equals("スパークブロウ")) {
 			// ライトニング（No.39）
 			// 中速（6ターンごと）、知恵メメント、効果値2100
 			// TODO 雷属性
-			int count = turn / 6;
+			float count = (float) turn / 6f;
 			damage = 2100 * count;
 		}
 		return damage;
