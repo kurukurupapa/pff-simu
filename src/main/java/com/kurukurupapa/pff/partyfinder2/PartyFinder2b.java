@@ -34,6 +34,9 @@ import com.kurukurupapa.pff.dp01.WeaponRanking;
  * 魔法/アクセサリ2） × ・・・です。
  * </p>
  * <p>
+ * PartyFinder2aと比べるとよくなりましたが、メモリア4体のパーティを処理することはできませんでした。 一旦、開発中止とします。
+ * </p>
+ * <p>
  * 参考：<br/>
  * 分岐限定法<br/>
  * https://ja.wikipedia.org/wiki/%E5%88%86%E6%9E%9D%E9%99%90%E5%AE%9A%E6%B3%95

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -13,6 +14,10 @@ import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.test.BaseTestCase;
 import com.kurukurupapa.pff.test.SlowTests;
 
+/**
+ * 開発中止。詳細はPartyFinder2bクラスのコメント参照。
+ */
+@Ignore
 public class PartyFinder2bTest extends BaseTestCase {
 
 	private ItemDataSet mItemDataSet;
@@ -61,15 +66,13 @@ public class PartyFinder2bTest extends BaseTestCase {
 		FitnessCalculator fitnessCalculator = new FitnessCalculator();
 
 		// テスト実行
-		StringBuilder actual = new StringBuilder();
 		PartyFinder2b pf;
 		pf = new PartyFinder2b(mMemoriaDataSet, mItemDataSet, fitnessCalculator);
 		pf.run(2);
-		actual.append(pf.getParty() + "\n");
 
 		// 検証
 		String expected = readExpectedFile();
-		assertEquals(expected, actual.toString());
+		assertPartyAsMultiLine(expected, pf.getParty());
 	}
 
 }
