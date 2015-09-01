@@ -178,6 +178,11 @@ public class Party implements Cloneable {
 	}
 
 	public void calcFitness(FitnessCalculator fitnessCalculator) {
+		calcLeaderSkill(fitnessCalculator);
+		calcJobSkill(fitnessCalculator);
+	}
+
+	private void calcLeaderSkill(FitnessCalculator fitnessCalculator) {
 		// 全リーダースキルを各々適用してみて最大適応度のリーダースキルを求めます。
 		clearLeaderSkill();
 		LeaderSkill maxLeaderSkill = null;
@@ -202,6 +207,49 @@ public class Party implements Cloneable {
 		// 最大適応度のリーダースキルを反映します。
 		setLeaderSkill(maxLeaderSkill);
 		mFitnessValue = maxFitnessValue;
+	}
+
+	private void calcJobSkill(FitnessCalculator fitnessCalculator) {
+		// 排他的なジョブスキルを洗い出す。
+		// 排他的でないジョブスキルを有効にする。
+		List<Memoria> firstAttackMemorias = new ArrayList<Memoria>();
+		for (Memoria e : mMemoriaList) {
+			if (e.getMemoriaData().hasJobSkill()) {
+				if (e.getMemoriaData().getJobSkill().isFirstAttackCondition()) {
+					firstAttackMemorias.add(e);
+					e.disableJobSkill();
+				} else {
+					e.enableJobSkill();
+				}
+			} else {
+				e.disableJobSkill();
+			}
+		}
+
+		// 一番始めの攻撃を条件とするジョブスキルを適用してみて、
+		// 最大適応度となるメモリアのジョブスキルを求める。
+		Memoria maxFirstAttackMemoria = null;
+		FitnessValue maxFitnessValue = null;
+		for (Memoria e : firstAttackMemorias) {
+			e.enableJobSkill();
+
+			FitnessValue fitnessValue = fitnessCalculator.calc(this);
+			if (maxFitnessValue == null
+					|| maxFitnessValue.getValue() < fitnessValue.getValue()) {
+				maxFirstAttackMemoria = e;
+				maxFitnessValue = fitnessValue;
+			}
+
+			e.disableJobSkill();
+		}
+
+		// 最大適応度のジョブスキルを反映します。
+		if (maxFirstAttackMemoria != null) {
+			maxFirstAttackMemoria.enableJobSkill();
+			mFitnessValue = maxFitnessValue;
+		} else {
+			mFitnessValue = fitnessCalculator.calc(this);
+		}
 	}
 
 	public void setLeaderSkill(LeaderSkill leaderSkill) {

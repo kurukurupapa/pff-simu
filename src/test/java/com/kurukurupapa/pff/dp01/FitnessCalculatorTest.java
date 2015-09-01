@@ -54,7 +54,7 @@ public class FitnessCalculatorTest extends BaseTestCase {
 		FitnessValue actual = sut.calc(party);
 
 		// 検証
-		assertEquals("[10687,[5889,アーロン+烈風],[4798,アーシェ+オブリージュ]]",
+		assertEquals("[10687,[5889,アーロン+烈風+居合い抜き],[4798,アーシェ+オブリージュ+フレア]]",
 				actual.toString());
 	}
 
@@ -70,7 +70,7 @@ public class FitnessCalculatorTest extends BaseTestCase {
 		MemoriaFitness actual = sut.calc(memoria);
 
 		// 検証
-		assertEquals("[5889,アーロン+烈風]", actual.toString());
+		assertEquals("[5889,アーロン+烈風+居合い抜き]", actual.toString());
 	}
 
 	@Test

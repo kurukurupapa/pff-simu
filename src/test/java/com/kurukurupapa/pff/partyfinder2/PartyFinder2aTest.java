@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -146,6 +147,7 @@ public class PartyFinder2aTest extends BaseTestCase {
 
 	@Test
 	@Category(SlowTests.class)
+	@Ignore
 	public void testRun2_Battle() {
 		// 準備
 		FitnessCalculator fitnessCalculator = new FitnessCalculator();

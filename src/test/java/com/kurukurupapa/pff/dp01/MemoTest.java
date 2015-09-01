@@ -1,6 +1,5 @@
 package com.kurukurupapa.pff.dp01;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -43,7 +42,8 @@ public class MemoTest extends BaseTestCase {
 		Party actual = sut.get(0, 0);
 
 		// 検証
-		assertThat(actual.toString(), is("0,ヴァニラ"));
+		assertEquals(1, actual.getMemoriaList().size());
+		assertEquals("ヴァニラ", actual.getMemoria(0).getName());
 	}
 
 	@Test
@@ -65,7 +65,9 @@ public class MemoTest extends BaseTestCase {
 		Party actual = sut.get(0, 0);
 
 		// 検証
-		assertThat(actual.toString(), is("0,アーロン"));
+		assertEquals(1, actual.getMemoriaList().size());
+		assertEquals("アーロン", actual.getMemoria(0).getName());
+		assertEquals(null, actual.getMemoria(0).getWeapon());
 	}
 
 }

@@ -67,6 +67,7 @@ public abstract class ItemFitness {
 
 	protected void calcDifference(FitnessCalculator fitnessCalculator,
 			Memoria before, Memoria after) {
+		// ひとまず、リーダスキルなしで計算することとする。
 		mBeforeValue = fitnessCalculator.calc(new Party(before));
 		mAfterValue = fitnessCalculator.calc(new Party(after));
 	}

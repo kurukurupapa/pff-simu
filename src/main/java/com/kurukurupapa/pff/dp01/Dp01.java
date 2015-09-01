@@ -24,7 +24,10 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
  */
 public class Dp01 {
 	/** ロガー */
-	private Logger mLogger;
+	private static Logger mLogger = Logger.getLogger(Dp01.class);
+
+	/** デバッグ */
+	public boolean mDebug;
 
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
@@ -40,8 +43,6 @@ public class Dp01 {
 
 	public Dp01(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet,
 			FitnessCalculator fitnessCalculator) {
-		mLogger = Logger.getLogger(Dp01.class);
-
 		mMemoriaDataSet = memoriaDataSet;
 		mItemDataSet = itemDataSet;
 		mFitnessCalculator = fitnessCalculator;
@@ -283,7 +284,7 @@ public class Dp01 {
 		}
 
 		if (!needFlag) {
-			mLogger.info("当該メモリアの計算を一部省略可能です。\n\tメモリア=" + memoriaData
+			debug("当該メモリアの計算を一部省略可能です。\n\tメモリア=" + memoriaData
 					+ ",\n\t当該メモリア不参加パーティ=" + maxParty + ",\n\t当該メモリア参加パーティ="
 					+ fakeParty);
 		}
@@ -340,4 +341,9 @@ public class Dp01 {
 		return value;
 	}
 
+	private void debug(String msg) {
+		if (mDebug) {
+			mLogger.debug(msg);
+		}
+	}
 }

@@ -712,4 +712,49 @@ public class MemoriaTest extends BaseTestCase {
 				+ (100 * TURN / 2f) // 500
 				)));
 	}
+
+	@Test
+	public void testGetRecovery_アイテム0() {
+		// 準備
+		Memoria sut = new Memoria(mMemoriaDataSet.find("ティナ"));
+
+		// テスト実行
+		int actual = sut.getRecovery(TURN, CHARGE_PER_BATTLE);
+
+		// 検証
+		assertThat(actual, is(705));
+	}
+
+	@Test
+	public void testGetRecovery_アイテム1() {
+		// 準備
+		ItemData item1 = mItemDataSet.find("ケアル");
+		Memoria sut = new Memoria(mMemoriaDataSet.find("ティナ"), null, item1,
+				null);
+
+		// テスト実行
+		int actual = sut.getRecovery(TURN, CHARGE_PER_BATTLE);
+
+		// 検証
+		assertThat(actual, is(1283));
+	}
+
+	@Test
+	public void testGetRecovery_重複アイテム() {
+		// 準備
+		ItemData item1 = mItemDataSet.find("ケアル");
+		ItemData item2 = mItemDataSet.find("ケアルラ");
+		Memoria sut = new Memoria(mMemoriaDataSet.find("ティナ"), null, item1,
+				item2);
+
+		int expected = new Memoria(mMemoriaDataSet.find("ティナ"), null, item1,
+				null).getRecovery(TURN, CHARGE_PER_BATTLE);
+
+		// テスト実行
+		int actual = sut.getRecovery(TURN, CHARGE_PER_BATTLE);
+
+		// 検証
+		assertThat(actual, is(expected));
+	}
+
 }

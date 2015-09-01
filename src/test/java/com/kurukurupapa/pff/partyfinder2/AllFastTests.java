@@ -12,7 +12,8 @@ import com.kurukurupapa.pff.test.SlowTests;
 @SuiteClasses({ MemoriaItemCombinationsTest.class,
 		NextMagicAccessoryTest.class, NextMemoriaTest.class,
 		NextWeaponTest.class, PartyFinder2aTest.class, PartyFinder2bTest.class,
-		PartyFinder2cTest.class, PartyFinder2dTest.class })
+		PartyFinder2cTest.class, PartyFinder2dTest.class,
+		PartyFinder2dUserDataTest.class })
 @ExcludeCategory(SlowTests.class)
 public class AllFastTests {
 

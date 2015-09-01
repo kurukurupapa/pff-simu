@@ -27,10 +27,15 @@ public class Memoria implements Cloneable {
 	protected ItemData mWeaponData;
 	protected ItemData[] mAccessoryDataArr;
 	protected LeaderSkill mLeaderSkill;
+	protected boolean mJobSkillFlag;
 
 	public Memoria(MemoriaData memoriaData) {
 		mMemoriaData = memoriaData;
 		mAccessoryDataArr = new ItemData[] {};
+		// ジョブスキルフラグは、既存処理との互換性のため、デフォルト有効とする。
+		if (memoriaData.getJobSkill() != null) {
+			mJobSkillFlag = true;
+		}
 	}
 
 	public Memoria(MemoriaData memoriaData, ItemData weapon,
@@ -52,6 +57,7 @@ public class Memoria implements Cloneable {
 		mWeaponData = memoria.mWeaponData;
 		mAccessoryDataArr = memoria.mAccessoryDataArr.clone();
 		mLeaderSkill = memoria.mLeaderSkill;
+		mJobSkillFlag = memoria.mJobSkillFlag;
 	}
 
 	@Override
@@ -63,6 +69,9 @@ public class Memoria implements Cloneable {
 		}
 		for (ItemData e : mAccessoryDataArr) {
 			sb.append("+" + e.getName());
+		}
+		if (mJobSkillFlag) {
+			sb.append("+" + getJobSkill());
 		}
 		if (mLeaderSkill != null) {
 			sb.append("+" + mLeaderSkill.getName());
@@ -187,7 +196,22 @@ public class Memoria implements Cloneable {
 	}
 
 	public JobSkill getJobSkill() {
-		return mMemoriaData.getJobSkill();
+		if (mJobSkillFlag) {
+			return mMemoriaData.getJobSkill();
+		}
+		return null;
+	}
+
+	public void setJobSkillFlag(boolean flag) {
+		mJobSkillFlag = flag;
+	}
+
+	public void enableJobSkill() {
+		setJobSkillFlag(true);
+	}
+
+	public void disableJobSkill() {
+		setJobSkillFlag(false);
 	}
 
 	private ItemData[] getAllItemData() {
@@ -350,10 +374,27 @@ public class Memoria implements Cloneable {
 		// ブレイクゲージ200%以上の時に知恵メメントで攻撃すると初回のみフレアを発動
 		// TODO ひとまず、ターン数やブレイクに関わらず、1回発動することとします。
 		// TODO 1ターンとして数えます。
-		if (getMemoriaData().getJobSkill().isFurea()) {
+		if (mJobSkillFlag && getMemoriaData().getJobSkill().isFurea()) {
 			damage += getMemoriaData().getJobSkill().getFureaAttackDamage(
 					getIntelligence(),
 					getMemoriaData().getMagicAttack(MagicType.BLACK));
+			// turn--;
+		}
+		// ホーリー
+		// ブレイクゲージ200%以上の時に祈りメメントで攻撃すると初回のみホーリーを発動
+		// TODO ひとまず、ターン数やブレイクに関わらず、1回発動することとします。
+		// TODO 1ターンとして数えます。
+		if (mJobSkillFlag && getJobSkill().isHoly()) {
+			float holy = getJobSkill().getHolyAttackDamage(getIntelligence(),
+					getMemoriaData().getMagicAttack(MagicType.WHITE));
+
+			// リーダースキル 白魔法効果
+			// ※回復魔法に効果あり
+			if (mLeaderSkill != null) {
+				holy = mLeaderSkill.calcWhiteMagic(holy);
+			}
+
+			damage += holy;
 			// turn--;
 		}
 
@@ -396,16 +437,8 @@ public class Memoria implements Cloneable {
 		}
 
 		// ジョブスキル
-		// 居合い抜き
-		// 自身が一番初めの攻撃を行うと与ダメージ50%アップの居合い抜きを発動
-		if (getMemoriaData().getJobSkill().isIainuki()) {
-			damage *= 1.5f;
-		}
-		// 乱れ撃ち
-		// 自身が一番初めの攻撃を行うと2～4回の連続攻撃を発動。1回あたりの与ダメージは通常の60%。
-		// ※平均3回攻撃と考えます。
-		if (getMemoriaData().getJobSkill().isMidareuchi()) {
-			damage *= 3 * 0.60f;
+		if (mJobSkillFlag) {
+			damage = getJobSkill().calcPhysicalAttackDamage(damage);
 		}
 
 		// 敵の弱点・属性
@@ -650,7 +683,8 @@ public class Memoria implements Cloneable {
 						getMemoriaData().getMagicAttack(MagicType.WHITE));
 
 				// ジョブスキル
-				if (getMemoriaData().getJobSkill().isRecoveryMagic()) {
+				if (mJobSkillFlag
+						&& getMemoriaData().getJobSkill().isRecoveryMagic()) {
 					recovery = getMemoriaData().getJobSkill()
 							.calcRecoveryMagicDamage(recovery);
 				}
@@ -661,7 +695,22 @@ public class Memoria implements Cloneable {
 			}
 		}
 
-		return (int) (inori + white);
+		// リーダースキル 白魔法効果
+		// ※回復魔法に効果あり
+		if (mLeaderSkill != null) {
+			white = mLeaderSkill.calcWhiteMagic(white);
+		}
+
+		// 合計
+		float recovery = inori + white;
+
+		// リーダースキル 回復効果
+		// ※祈りメメントと回復魔法の両方に効果あり
+		if (mLeaderSkill != null) {
+			recovery = mLeaderSkill.calcRecovery(recovery);
+		}
+
+		return (int) recovery;
 	}
 
 	/**

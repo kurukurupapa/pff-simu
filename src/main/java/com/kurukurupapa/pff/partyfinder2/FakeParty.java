@@ -1,6 +1,7 @@
 package com.kurukurupapa.pff.partyfinder2;
 
 import com.kurukurupapa.pff.domain.ItemData;
+import com.kurukurupapa.pff.domain.JobSkill;
 import com.kurukurupapa.pff.domain.LeaderSkill;
 import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.Memoria;
@@ -45,6 +46,10 @@ public class FakeParty extends Party implements Cloneable {
 		if (!validMemoriaItem()) {
 			return false;
 		}
+		// ジョブスキル
+		if (!JobSkill.validOrNone(this)) {
+			return false;
+		}
 		// リーダースキル
 		if (!LeaderSkill.validOrNone(this)) {
 			return false;
@@ -66,6 +71,10 @@ public class FakeParty extends Party implements Cloneable {
 			if (!validMemoriaItem(memoria, tmp)) {
 				return false;
 			}
+		}
+		// ジョブスキル
+		if (!JobSkill.validOrNone(this, memoria)) {
+			return false;
 		}
 		// リーダースキル
 		if (!LeaderSkill.validOrNone(this, memoria)) {

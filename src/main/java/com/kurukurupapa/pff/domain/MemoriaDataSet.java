@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * メモリアデータ集合クラス
  */
@@ -136,7 +138,12 @@ public class MemoriaDataSet implements Iterable<MemoriaData> {
 	}
 
 	private static JobSkill toJobSkill(String column) {
-		return new JobSkill(column.trim());
+		column = column.trim();
+		if (StringUtils.isEmpty(column)) {
+			return null;
+		} else {
+			return new JobSkill(column.trim());
+		}
 	}
 
 	private static PremiumSkill toPremiumSkill(String column) {

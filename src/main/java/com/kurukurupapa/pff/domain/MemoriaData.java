@@ -1,6 +1,7 @@
 package com.kurukurupapa.pff.domain;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -215,6 +216,10 @@ public class MemoriaData {
 
 	public JobSkill getJobSkill() {
 		return mJobSkill;
+	}
+
+	public boolean hasJobSkill() {
+		return mJobSkill != null;
 	}
 
 	public PremiumSkill getPremiumSkill() {

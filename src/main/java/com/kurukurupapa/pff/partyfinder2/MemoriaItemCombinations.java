@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
+import com.kurukurupapa.pff.domain.JobSkill;
 import com.kurukurupapa.pff.domain.LeaderSkill;
 import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
@@ -58,7 +59,6 @@ public class MemoriaItemCombinations {
 		mMaCount2 = 0;
 
 		// 各メモリアについて、武器・魔法・アクセサリ・リーダースキルの全パターンを洗い出します。
-		// TODO ジョブスキル
 		List<MemoriaData> memorias = mMemoriaDataSet.getMemoriaDataList();
 		for (MemoriaData m1 : memorias) {
 			// リーダースキルなし
@@ -86,6 +86,19 @@ public class MemoriaItemCombinations {
 	}
 
 	private void setupParties(MemoriaData memoriaData, LeaderSkill leaderSkill) {
+		JobSkill jobSkill = memoriaData.getJobSkill();
+		if (jobSkill == null || jobSkill.isExclusiveCondition()) {
+			// ジョブスキルなし
+			setupParties(memoriaData, leaderSkill, false);
+		}
+		if (jobSkill != null) {
+			// ジョブスキルあり
+			setupParties(memoriaData, leaderSkill, true);
+		}
+	}
+
+	private void setupParties(MemoriaData memoriaData, LeaderSkill leaderSkill,
+			boolean jobSkillFlag) {
 		List<ItemData> wlist = mItemDataSet.getWeaponList();
 		List<ItemData> malist = mItemDataSet.getMagicAccessoryList();
 
@@ -124,7 +137,7 @@ public class MemoriaItemCombinations {
 
 					// 適応度計算
 					partySet.add(calcParty(memoriaData, w, ma1, ma2,
-							leaderSkill));
+							leaderSkill, jobSkillFlag));
 
 					mMaCount2++;
 				}
@@ -151,9 +164,10 @@ public class MemoriaItemCombinations {
 
 	private FakeParty calcParty(MemoriaData memoriaData, ItemData weapon,
 			ItemData magicAccessory1, ItemData magicAccessory2,
-			LeaderSkill leaderSkill) {
+			LeaderSkill leaderSkill, boolean jobSkillFlag) {
 		Memoria memoria = new Memoria(memoriaData, weapon, magicAccessory1,
 				magicAccessory2);
+		memoria.setJobSkillFlag(jobSkillFlag);
 		FakeParty party = new FakeParty(memoria);
 		party.setLeaderSkill(leaderSkill);
 		party.calcFitness(mFitnessCalculator);

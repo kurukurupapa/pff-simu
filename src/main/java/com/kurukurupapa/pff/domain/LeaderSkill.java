@@ -9,23 +9,51 @@ import com.kurukurupapa.pff.dp01.Party;
  * リーダースキルクラス
  */
 public enum LeaderSkill {
-	/** アーロンLS HP小（18%）アップ */
-	LS029("アーロン", 18, Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
-			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE),
-	/** トレイLS 力小（10%）アップ */
-	LS052("トレイ", 0, Unit.PERCENT, 10, Unit.PERCENT, 0, Unit.PERCENT, 0,
-			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE),
+	//
+	// イベントメモリア
+	//
 	/** アーシェLS 知性微小（6%）アップ */
 	LS117("アーシェ", 0, Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 6,
 			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE),
-	/** 元帥シド 「無属性武器攻撃」が【大】アップ（無属性（武器系） 37%） */
+	/** セーラ(No.217)LS パーティーの「回復効果」が【大】アップ（30%） */
+	LS217("セーラ(No.217)", 0, Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
+			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE, 30, 0),
+	//
+	// 限定プレミアムメモリア
+	//
+	/** 元帥シドLS 「無属性武器攻撃」が【大】アップ（無属性（武器系） 37%） */
 	LS187("元帥シド", 0, Unit.PERCENT, 37, Unit.PERCENT, 0, Unit.PERCENT, 0,
 			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE),
+	//
+	// プレミアムメモリア
+	//
+	/** アーロンLS HP小（18%）アップ */
+	LS029("アーロン", 18, Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
+			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE),
+	/** パンネロLS パーティーの「知性」が【小】アップ（12%） */
+	LS036("パンネロ", 0, Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 12,
+			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE),
+	/**
+	 * キマリLS 物理防御小（16pt）アップ<br>
+	 * ※発動条件は「パーティーのHPが【70%】以上のとき」であるが、処理を簡略化するため「バトル中の7割でHP70%以上である」と考える。
+	 */
+	LS049("キマリ", 0, Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
+			Unit.PERCENT, 0, Unit.PERCENT, (int) (16 * 0.7), 0, Attr.NONE),
+	/** トレイLS 力小（10%）アップ */
+	LS052("トレイ", 0, Unit.PERCENT, 10, Unit.PERCENT, 0, Unit.PERCENT, 0,
+			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE),
+	/** ポロムLS パーティーの「白魔法効果」が【小】アップ（15%） */
+	LS057("ポロム", 0, Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0,
+			Unit.PERCENT, 0, Unit.PERCENT, 0, 0, Attr.NONE, 0, 15),
 	//
 	;
 
 	private String mMemoriaName;
 	private ItemData mItemData;
+	/** 回復効果（%） */
+	private int mRecoveryEffect;
+	/** 白魔法効果（%） */
+	private int mWhiteMagicEffect;
 
 	public static LeaderSkill parse(Memoria memoria) {
 		return parse(memoria.getName());
@@ -179,6 +207,12 @@ public enum LeaderSkill {
 			}
 		} else if (memoria.getName().indexOf("セシル") >= 0) {
 			// TODO パーティーに【騎士剣】装備が【3人】以上のときパーティーの「物理防御」が【微小】アップ
+		} else if (memoria.getName().indexOf("セーラ(No.217)") >= 0) {
+			// メメントが【祈り】のとき
+			// パーティーの「回復効果」が【大】アップ
+			if (LS217.equals(leaderSkill)) {
+				return true;
+			}
 		}
 		//
 		// 限定プレミアムメモリア
@@ -200,6 +234,21 @@ public enum LeaderSkill {
 					return true;
 				}
 			}
+		} else if (memoria.getName().indexOf("パンネロ") >= 0) {
+			// 編成時に自身の物理防御が【10pt】以下のとき
+			// パーティーの「知性」が【小】アップ
+			if (memoria.getPhysicalDefence() <= 10) {
+				if (LS036.equals(leaderSkill)) {
+					return true;
+				}
+			}
+		} else if (memoria.getName().indexOf("キマリ") >= 0) {
+			// パーティーのHPが【70%】以上のとき
+			// パーティーの「物理防御」が【小】アップ
+			// ※発動条件簡略化
+			if (LS049.equals(leaderSkill)) {
+				return true;
+			}
 		} else if (memoria.getName().indexOf("トレイ") >= 0) {
 			// 攻撃人数が【4人】以上のときパーティーの「力」が【小】アップ
 			if (party == null) {
@@ -208,6 +257,12 @@ public enum LeaderSkill {
 				if (LS052.equals(leaderSkill)) {
 					return true;
 				}
+			}
+		} else if (memoria.getName().indexOf("ポロム") >= 0) {
+			// メメントが【祈り】のとき
+			// パーティーの「白魔法効果」が【小】アップ
+			if (LS057.equals(leaderSkill)) {
+				return true;
 			}
 		} else if (memoria.getName().indexOf("ティナ") >= 0) {
 			// TODO ブレイクゲージが【200%】以上のときパーティーの「氷属性効果」が【中】アップ
@@ -228,10 +283,22 @@ public enum LeaderSkill {
 			Unit powerUnit, int speed, Unit speedUnit, int intelligence,
 			Unit intelligenceUnit, int luck, Unit luckUnit,
 			int physicalDefence, int magicDefence, Attr attr) {
+		this(name, hp, hpUnit, power, powerUnit, speed, speedUnit,
+				intelligence, intelligenceUnit, luck, luckUnit,
+				physicalDefence, magicDefence, attr, 0, 0);
+	}
+
+	private LeaderSkill(String name, int hp, Unit hpUnit, int power,
+			Unit powerUnit, int speed, Unit speedUnit, int intelligence,
+			Unit intelligenceUnit, int luck, Unit luckUnit,
+			int physicalDefence, int magicDefence, Attr attr,
+			int recoveryEffect, int whiteMagicEffect) {
 		mMemoriaName = name;
 		mItemData = new ItemData("", name + "LS", hp, hpUnit, power, powerUnit,
 				speed, speedUnit, intelligence, intelligenceUnit, luck,
 				luckUnit, physicalDefence, magicDefence, attr, null, 1);
+		mRecoveryEffect = recoveryEffect;
+		mWhiteMagicEffect = whiteMagicEffect;
 	}
 
 	@Override
@@ -265,6 +332,34 @@ public enum LeaderSkill {
 	 */
 	public boolean validCondition(Memoria memoria) {
 		return validCondition(this, memoria);
+	}
+
+	/**
+	 * 回復効果を適用します。
+	 * 
+	 * @param recovery
+	 *            リーダースキル適用前の回復値
+	 * @return 回復値
+	 */
+	public float calcRecovery(float recovery) {
+		if (mRecoveryEffect > 0) {
+			return recovery * (1f + mRecoveryEffect / 100f);
+		}
+		return recovery;
+	}
+
+	/**
+	 * 白魔法効果を適用します。
+	 * 
+	 * @param recovery
+	 *            リーダースキル適用前の回復値
+	 * @return 回復値
+	 */
+	public float calcWhiteMagic(float recovery) {
+		if (mWhiteMagicEffect > 0) {
+			return recovery * (1f + mWhiteMagicEffect / 100f);
+		}
+		return recovery;
 	}
 
 }

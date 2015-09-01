@@ -53,7 +53,7 @@ public class AccessoryFitnessTest extends BaseTestCase {
 		MemoriaFitness after = calculator.calc(new Memoria(memoriaData, null,
 				itemData, null));
 		int value = after.getValue() - before.getValue();
-		assertEquals("[" + value + ",タフネスリング,アーロン+タフネスリング]", actual);
+		assertEquals("[" + value + ",タフネスリング,アーロン+タフネスリング+居合い抜き]", actual);
 	}
 
 	@Test
@@ -76,7 +76,7 @@ public class AccessoryFitnessTest extends BaseTestCase {
 		MemoriaFitness after = calculator.calc(new Memoria(mdata, null,
 				accessory, null));
 		int value = after.getValue() - before.getValue();
-		assertEquals("[" + value + ",ルフェインブーツ,アーロン+ルフェインブーツ]", actual);
+		assertEquals("[" + value + ",ルフェインブーツ,アーロン+ルフェインブーツ+居合い抜き]", actual);
 	}
 
 	@Test
@@ -92,7 +92,7 @@ public class AccessoryFitnessTest extends BaseTestCase {
 		String actual = sut.toString();
 
 		// 検証
-		assertEquals("[0,風の指輪,アーロン+風の指輪]", actual);
+		assertEquals("[0,風の指輪,アーロン+風の指輪+居合い抜き]", actual);
 	}
 
 	@Test
@@ -117,7 +117,7 @@ public class AccessoryFitnessTest extends BaseTestCase {
 		MemoriaFitness after = calculator.calc(new Memoria(mdata, weapon,
 				accessory, null));
 		int value = after.getValue() - before.getValue();
-		assertEquals("[" + value + ",風の指輪,アーロン+烈風+風の指輪]", actual);
+		assertEquals("[" + value + ",風の指輪,アーロン+烈風+風の指輪+居合い抜き]", actual);
 	}
 
 	@Test
@@ -141,7 +141,7 @@ public class AccessoryFitnessTest extends BaseTestCase {
 		MemoriaFitness after = calculator.calc(new Memoria(mdata, weapon,
 				accessory, null));
 		int value = after.getValue() - before.getValue();
-		assertEquals("[" + value + ",炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪]", actual);
+		assertEquals("[" + value + ",炎の指輪,ユウナ(No.48)+燃える戦杖+炎の指輪+オーラ]", actual);
 	}
 
 }

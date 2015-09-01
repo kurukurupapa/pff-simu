@@ -85,10 +85,19 @@ public class WeaponRankingTest extends BaseTestCase {
 				0);
 		sut.run();
 		List<ItemFitness> actual = sut.getFitnesses();
-		String actualStr = toString(actual);
 
 		// 検証
-		assertEquals(readExpectedFile(), actualStr);
+		assertEquals(3, actual.size());
+		assertEquals("烈風", actual.get(0).getItem().getName());
+		assertEquals("五月雨", actual.get(1).getItem().getName());
+		assertEquals("おろち", actual.get(2).getItem().getName());
+		for (ItemFitness e : actual) {
+			assertEquals("元帥シド", e.getMemoria().getName());
+			assertEquals("マーシャルネイ",
+					e.getMemoria().getAccessories()[0].toString());
+			assertEquals("マーシャルネイ",
+					e.getMemoria().getAccessories()[1].toString());
+		}
 	}
 
 	private String toString(List<ItemFitness> weaponFitnessList) {

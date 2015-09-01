@@ -43,7 +43,7 @@ public class PartyFinder2dUserDataTest extends BaseTestCase {
 		// テスト実行
 		PartyFinder2d dp = new PartyFinder2d(mMemoriaDataSet, mItemDataSet,
 				fitnessCalculator);
-		dp.mDebug = true;
+		// dp.mDebug = true;
 		dp.run();
 
 		// 検証
