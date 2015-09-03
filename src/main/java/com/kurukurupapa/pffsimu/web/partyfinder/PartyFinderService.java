@@ -1,4 +1,4 @@
-package com.kurukurupapa.pffsimu.web;
+package com.kurukurupapa.pffsimu.web.partyfinder;
 
 import org.springframework.stereotype.Service;
 
@@ -10,15 +10,15 @@ import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.Party;
 
 @Service
-public class PartyFindService {
+public class PartyFinderService {
 
-	private PartyFindForm form;
+	private PartyFinderForm form;
 	private ItemDataSet itemDataSet;
 	private MemoriaDataSet memoriaDataSet;
 	private FitnessCalculator fitness;
 	private Dp01 dp;
 
-	public void set(PartyFindForm form) {
+	public void set(PartyFinderForm form) {
 		this.form = form;
 	}
 

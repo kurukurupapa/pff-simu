@@ -1,4 +1,4 @@
-package com.kurukurupapa.pffsimu.web;
+package com.kurukurupapa.pffsimu.web.partyfinder;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -10,7 +10,7 @@ import com.kurukurupapa.pff.domain.BattleType;
 /**
  * パーティ検討フォームクラス
  */
-public class PartyFindForm {
+public class PartyFinderForm {
 
 	/** バトル形式 */
 	@NotEmpty
@@ -33,7 +33,7 @@ public class PartyFindForm {
 	/**
 	 * コンストラクタ
 	 */
-	public PartyFindForm() {
+	public PartyFinderForm() {
 		battleType = BattleType.NORMAL.name();
 	}
 

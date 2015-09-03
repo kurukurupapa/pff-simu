@@ -68,7 +68,7 @@
           <h1 class="page-header">パーティ検討</h1>
           <p>下のパラメータを選択/入力して、「検討スタート」ボタンを押してください。</p>
           <h2 class="sub-header">評価条件</h2>
-          <form method="get" th:action="@{/party/find}" th:object="${form}">
+          <form method="get" th:action="@{/partyfinder/find}" th:object="${form}">
             <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
               <p th:errors="*">ErrorMessage</p>
             </div>

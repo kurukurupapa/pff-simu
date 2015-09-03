@@ -1,4 +1,4 @@
-package com.kurukurupapa.pffsimu.web;
+package com.kurukurupapa.pffsimu.web.partyfinder;
 
 import javax.validation.Valid;
 
@@ -14,30 +14,33 @@ import com.kurukurupapa.pff.domain.Attr;
 import com.kurukurupapa.pff.domain.BattleType;
 import com.kurukurupapa.pff.dp01.Party;
 
+/**
+ * パーティ検討機能 コントローラクラス
+ */
 @Controller
-@RequestMapping("/party")
-public class PartyController {
-	private Logger logger = Logger.getLogger(PartyController.class);
+@RequestMapping("/partyfinder")
+public class PartyFinderController {
+	private Logger logger = Logger.getLogger(PartyFinderController.class);
 
 	@Autowired
-	private PartyFindService partyFindService;
+	private PartyFinderService partyFinderService;
 
 	@RequestMapping
 	public String index() {
-		return "redirect:/party/find";
+		return "redirect:/partyfinder/find";
 	}
 
 	@RequestMapping("/find")
 	public String getFindForm(Model model) {
-		PartyFindForm form = new PartyFindForm();
+		PartyFinderForm form = new PartyFinderForm();
 		model.addAttribute("form", form);
 		model.addAttribute("battleTypes", BattleType.values());
 		model.addAttribute("attrs", Attr.getValuesWithoutNone());
-		return "party/find";
+		return "partyfinder/find";
 	}
 
 	@RequestMapping(value = "/find", params = { "btn" })
-	public String find(@Valid @ModelAttribute PartyFindForm form,
+	public String find(@Valid @ModelAttribute PartyFinderForm form,
 			BindingResult result, Model model) {
 		logger.trace("Start");
 		logger.info("リクエストパラメータ=" + form.toString());
@@ -46,9 +49,9 @@ public class PartyController {
 			// 入力チェックエラーあり
 			// 何もしない
 		} else {
-			partyFindService.set(form);
-			partyFindService.run();
-			Party party = partyFindService.getParty();
+			partyFinderService.set(form);
+			partyFinderService.run();
+			Party party = partyFinderService.getParty();
 			model.addAttribute("party", party);
 			logger.debug("Party=" + party);
 		}
@@ -57,7 +60,7 @@ public class PartyController {
 		model.addAttribute("attrs", Attr.getValuesWithoutNone());
 
 		logger.trace("End");
-		return "party/find";
+		return "partyfinder/find";
 	}
 
 }
