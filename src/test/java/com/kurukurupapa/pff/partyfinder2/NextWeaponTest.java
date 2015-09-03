@@ -17,7 +17,7 @@ import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.ItemFitness;
 import com.kurukurupapa.pff.dp01.Memoria;
 import com.kurukurupapa.pff.dp01.Party;
-import com.kurukurupapa.pff.dp01.WeaponRanking;
+import com.kurukurupapa.pff.ranking.WeaponRanking;
 import com.kurukurupapa.pff.test.BaseTestCase;
 
 public class NextWeaponTest extends BaseTestCase {

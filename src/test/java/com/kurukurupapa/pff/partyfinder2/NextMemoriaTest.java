@@ -15,8 +15,8 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.Memoria;
 import com.kurukurupapa.pff.dp01.MemoriaFitness;
-import com.kurukurupapa.pff.dp01.MemoriaRanking;
 import com.kurukurupapa.pff.dp01.Party;
+import com.kurukurupapa.pff.ranking.MemoriaRanking;
 import com.kurukurupapa.pff.test.BaseTestCase;
 
 public class NextMemoriaTest extends BaseTestCase {

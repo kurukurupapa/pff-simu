@@ -1,4 +1,4 @@
-package com.kurukurupapa.pff.dp01;
+package com.kurukurupapa.pff.ranking;
 
 import static org.junit.Assert.*;
 
@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.dp01.ItemFitness;
 import com.kurukurupapa.pff.test.BaseTestCase;
 
 public class MagicRankingTest extends BaseTestCase {

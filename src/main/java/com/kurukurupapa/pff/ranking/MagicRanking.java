@@ -1,4 +1,4 @@
-package com.kurukurupapa.pff.dp01;
+package com.kurukurupapa.pff.ranking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,11 @@ import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.dp01.FitnessCalculator;
+import com.kurukurupapa.pff.dp01.ItemFitness;
+import com.kurukurupapa.pff.dp01.MagicFitness;
+import com.kurukurupapa.pff.dp01.Memoria;
+import com.kurukurupapa.pff.dp01.Party;
 
 /**
  * 魔法順位付けクラス

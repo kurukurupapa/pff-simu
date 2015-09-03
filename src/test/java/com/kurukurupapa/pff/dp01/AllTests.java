@@ -5,11 +5,9 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ AccessoryFitnessTest.class, AccessoryRankingTest.class,
-		Dp01UserDataTest.class, Dp01Test.class, FitnessCalculatorTest.class,
-		MagicRankingTest.class, MemoriaRankingTest.class,
-		MemoriaRankingUserDataTest.class, MemoriaTest.class, MemoTest.class,
-		WeaponFitnessTest.class, WeaponRankingTest.class })
+@SuiteClasses({ AccessoryFitnessTest.class, Dp01UserDataTest.class,
+		Dp01Test.class, FitnessCalculatorTest.class, MemoriaTest.class,
+		MemoTest.class, WeaponFitnessTest.class })
 public class AllTests {
 
 }

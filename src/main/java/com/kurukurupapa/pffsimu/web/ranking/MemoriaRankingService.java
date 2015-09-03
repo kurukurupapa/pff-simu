@@ -8,8 +8,8 @@ import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.MemoriaFitness;
-import com.kurukurupapa.pff.dp01.MemoriaRanking;
 import com.kurukurupapa.pff.dp01.Party;
+import com.kurukurupapa.pff.ranking.MemoriaRanking;
 
 /**
  * ランキング機能 メモリアランキングサービスクラス

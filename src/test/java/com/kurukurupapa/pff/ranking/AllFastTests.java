@@ -1,4 +1,4 @@
-package com.kurukurupapa.pff.dp01;
+package com.kurukurupapa.pff.ranking;
 
 import org.junit.experimental.categories.Categories;
 
@@ -9,9 +9,9 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.kurukurupapa.pff.test.SlowTests;
 
 @RunWith(Categories.class)
-@SuiteClasses({ AccessoryFitnessTest.class, Dp01UserDataTest.class,
-		Dp01Test.class, FitnessCalculatorTest.class, MemoriaTest.class,
-		MemoTest.class, WeaponFitnessTest.class })
+@SuiteClasses({ AccessoryRankingTest.class, MagicRankingTest.class,
+		MemoriaRankingTest.class, MemoriaRankingUserDataTest.class,
+		WeaponRankingTest.class })
 @ExcludeCategory(SlowTests.class)
 public class AllFastTests {
 

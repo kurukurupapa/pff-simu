@@ -1,4 +1,4 @@
-package com.kurukurupapa.pff.dp01;
+package com.kurukurupapa.pff.ranking;
 
 import java.util.List;
 
@@ -9,6 +9,8 @@ import org.junit.experimental.categories.Category;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.dp01.FitnessCalculator;
+import com.kurukurupapa.pff.dp01.MemoriaFitness;
 import com.kurukurupapa.pff.test.BaseTestCase;
 import com.kurukurupapa.pff.test.SlowTests;
 

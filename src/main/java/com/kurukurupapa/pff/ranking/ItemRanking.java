@@ -1,4 +1,4 @@
-package com.kurukurupapa.pff.dp01;
+package com.kurukurupapa.pff.ranking;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,6 +7,9 @@ import java.util.List;
 
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.dp01.FitnessCalculator;
+import com.kurukurupapa.pff.dp01.ItemFitness;
+import com.kurukurupapa.pff.dp01.Party;
 
 /**
  * アイテム順位付け抽象クラス

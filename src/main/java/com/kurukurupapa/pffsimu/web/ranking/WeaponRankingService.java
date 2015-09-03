@@ -10,7 +10,7 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.ItemFitness;
 import com.kurukurupapa.pff.dp01.Party;
-import com.kurukurupapa.pff.dp01.WeaponRanking;
+import com.kurukurupapa.pff.ranking.WeaponRanking;
 
 /**
  * ランキング機能 武器ランキングサービスクラス
