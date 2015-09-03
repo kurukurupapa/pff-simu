@@ -31,7 +31,7 @@ public class BaseTestCase {
 				+ "\n");
 	}
 
-	protected void assertParty(String expected, Party actual) {
+	protected void assertPartyAsOneLine(String expected, Party actual) {
 		org.junit.Assert.assertEquals(expected, actual.toString() + "\n");
 	}
 
