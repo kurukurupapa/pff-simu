@@ -14,6 +14,7 @@ import com.kurukurupapa.pff.dp01.FitnessValue;
 import com.kurukurupapa.pff.dp01.Memoria;
 import com.kurukurupapa.pff.dp01.MemoriaFitness;
 import com.kurukurupapa.pff.dp01.Party;
+import com.kurukurupapa.pff.partyfinder.PartyFinder;
 
 /**
  * 最適パーティ計算クラス
@@ -25,7 +26,7 @@ import com.kurukurupapa.pff.dp01.Party;
  * 魔法/アクセサリ2） ＋ ・・・ で、さらに工夫しています。
  * </p>
  */
-public class PartyFinder2d {
+public class PartyFinder2d implements PartyFinder {
 	/** 処理タイムアウト時間 */
 	private static final long TIMEOUT = 3 * 60 * 1000;
 

@@ -8,7 +8,12 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.dp01.Dp01;
 import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.Party;
+import com.kurukurupapa.pff.partyfinder.PartyFinder;
+import com.kurukurupapa.pff.partyfinder2.PartyFinder2d;
 
+/**
+ * パーティ検討機能 サービスクラス
+ */
 @Service
 public class PartyFinderService {
 
@@ -16,7 +21,7 @@ public class PartyFinderService {
 	private ItemDataSet itemDataSet;
 	private MemoriaDataSet memoriaDataSet;
 	private FitnessCalculator fitness;
-	private Dp01 dp;
+	private PartyFinder partyFinder;
 
 	public void set(PartyFinderForm form) {
 		this.form = form;
@@ -40,12 +45,20 @@ public class PartyFinderService {
 		}
 		fitness.setEnemyPhysicalResistance(form.getPhysicalResistance());
 		fitness.setEnemyMagicResistance(form.getMagicResistance());
-		dp = new Dp01(memoriaDataSet, itemDataSet, fitness);
-		dp.run();
+		switch (form.getAlgorithmId()) {
+		case ALGORITHM1:
+			partyFinder = new Dp01(memoriaDataSet, itemDataSet, fitness);
+			break;
+		case ALGORITHM2:
+			partyFinder = new PartyFinder2d(memoriaDataSet, itemDataSet,
+					fitness);
+			break;
+		}
+		partyFinder.run();
 	}
 
 	public Party getParty() {
-		return dp.getParty();
+		return partyFinder.getParty();
 	}
 
 }

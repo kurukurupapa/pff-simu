@@ -144,11 +144,9 @@
                 </td>
               </tr>
               <tr th:if="${#lists.size(party.memoriaList) lt 4}">
-                <td><button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,MEMORIA,0'"><span class="glyphicon glyphicon-plus"></span> メモリア追加</button></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td colspan="5">
+                  <button type="submit" class="btn btn-primary" name="btn" th:value="'ADD,MEMORIA,0'"><span class="glyphicon glyphicon-plus"></span> メモリア追加</button>
+                </td>
               </tr>
             </tbody>
           </table>

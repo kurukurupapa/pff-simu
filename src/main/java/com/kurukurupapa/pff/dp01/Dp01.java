@@ -9,6 +9,8 @@ import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pff.partyfinder.PartyFinder;
+import com.kurukurupapa.pff.ranking.MemoriaRanking;
 
 /**
  * 最適パーティ計算クラス
@@ -22,7 +24,7 @@ import com.kurukurupapa.pff.domain.MemoriaDataSet;
  * それでも、計算速度が速いので、ある程度役に立ちそうです。
  * </p>
  */
-public class Dp01 {
+public class Dp01 implements PartyFinder {
 	/** ロガー */
 	private static Logger mLogger = Logger.getLogger(Dp01.class);
 

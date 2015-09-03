@@ -14,15 +14,15 @@ import com.kurukurupapa.pff.domain.ItemData;
 import com.kurukurupapa.pff.domain.ItemDataSet;
 import com.kurukurupapa.pff.domain.MemoriaData;
 import com.kurukurupapa.pff.domain.MemoriaDataSet;
-import com.kurukurupapa.pff.dp01.AccessoryRanking;
 import com.kurukurupapa.pff.dp01.FitnessCalculator;
 import com.kurukurupapa.pff.dp01.ItemFitness;
-import com.kurukurupapa.pff.dp01.MagicRanking;
 import com.kurukurupapa.pff.dp01.Memoria;
 import com.kurukurupapa.pff.dp01.MemoriaFitness;
-import com.kurukurupapa.pff.dp01.MemoriaRanking;
 import com.kurukurupapa.pff.dp01.Party;
-import com.kurukurupapa.pff.dp01.WeaponRanking;
+import com.kurukurupapa.pff.ranking.AccessoryRanking;
+import com.kurukurupapa.pff.ranking.MagicRanking;
+import com.kurukurupapa.pff.ranking.MemoriaRanking;
+import com.kurukurupapa.pff.ranking.WeaponRanking;
 
 /**
  * 最適パーティ計算クラス

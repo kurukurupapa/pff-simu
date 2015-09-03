@@ -1,11 +1,13 @@
 package com.kurukurupapa.pffsimu.web.partyfinder;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 import com.kurukurupapa.pff.domain.BattleType;
+import com.kurukurupapa.pff.partyfinder.PartyFinderKind;
 
 /**
  * パーティ検討フォームクラス
@@ -29,6 +31,9 @@ public class PartyFinderForm {
 	/** 敵の魔法防御 */
 	@Range(min = 0, max = 1000)
 	private int magicResistance;
+
+	/** ボタン */
+	private String btn;
 
 	/**
 	 * コンストラクタ
@@ -79,6 +84,18 @@ public class PartyFinderForm {
 
 	public void setMagicResistance(int magicResistance) {
 		this.magicResistance = magicResistance;
+	}
+
+	public String getBtn() {
+		return btn;
+	}
+
+	public void setBtn(String btn) {
+		this.btn = btn;
+	}
+
+	public PartyFinderKind getAlgorithmId() {
+		return PartyFinderKind.valueOf(btn);
 	}
 
 	@Override
