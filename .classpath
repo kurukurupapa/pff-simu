@@ -17,6 +17,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="src" path="src/test/resources"/>
+	<classpathentry kind="src" path="src2/main/java"/>
+	<classpathentry kind="src" path="src2/main/resources"/>
+	<classpathentry kind="src" path="src2/test/java"/>
+	<classpathentry kind="src" path="src2/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

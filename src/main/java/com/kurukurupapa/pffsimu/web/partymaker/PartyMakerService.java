@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.kurukurupapa.pff.dp01.ItemFitness;
-import com.kurukurupapa.pff.dp01.Party;
+import com.kurukurupapa.pffsimu.domain.fitness.ItemFitness;
+import com.kurukurupapa.pffsimu.domain.party.Party;
 import com.kurukurupapa.pffsimu.web.ranking.AccessoryRankingService;
 import com.kurukurupapa.pffsimu.web.ranking.MagicRankingService;
 import com.kurukurupapa.pffsimu.web.ranking.MemoriaRankingService;

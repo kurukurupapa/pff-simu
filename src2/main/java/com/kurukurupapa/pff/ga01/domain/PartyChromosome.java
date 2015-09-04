@@ -9,9 +9,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.Validate;
 
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaData;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 
 /**
  * 染色体クラス

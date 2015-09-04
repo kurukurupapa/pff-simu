@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.RandomUtils;
 
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 
 /**
  * 母集団クラス

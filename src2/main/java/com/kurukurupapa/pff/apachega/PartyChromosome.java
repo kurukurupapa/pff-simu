@@ -6,9 +6,9 @@ import java.util.List;
 import org.apache.commons.math3.genetics.AbstractListChromosome;
 import org.apache.commons.math3.genetics.BinaryChromosome;
 
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaData;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 
 /**
  * メモリア遺伝子クラス

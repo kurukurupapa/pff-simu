@@ -1,6 +1,6 @@
 package com.kurukurupapa.pff.ga01.domain;
 
-import com.kurukurupapa.pff.domain.ItemData;
+import com.kurukurupapa.pffsimu.domain.item.ItemData;
 
 /**
  * メモリアアイテムクラス

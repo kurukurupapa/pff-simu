@@ -5,8 +5,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 
 /**
  * 集団クラス

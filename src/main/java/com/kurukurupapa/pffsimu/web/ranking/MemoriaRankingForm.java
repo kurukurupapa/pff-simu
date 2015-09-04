@@ -5,9 +5,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
-import com.kurukurupapa.pff.domain.Attr;
-import com.kurukurupapa.pff.domain.BattleType;
-import com.kurukurupapa.pff.dp01.FitnessCalculator;
+import com.kurukurupapa.pffsimu.domain.Attr;
+import com.kurukurupapa.pffsimu.domain.BattleType;
+import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
 
 /**
  * ランキング機能 メモリアランキングフォームクラス

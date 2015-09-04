@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
-import com.kurukurupapa.pff.dp01.ItemFitness;
-import com.kurukurupapa.pff.dp01.MemoriaFitness;
-import com.kurukurupapa.pff.dp01.Party;
-import com.kurukurupapa.pff.dp01.WeaponFitness;
+import com.kurukurupapa.pffsimu.domain.fitness.ItemFitness;
+import com.kurukurupapa.pffsimu.domain.fitness.MemoriaFitness;
+import com.kurukurupapa.pffsimu.domain.fitness.WeaponFitness;
+import com.kurukurupapa.pffsimu.domain.party.Party;
 
 /**
  * パーティメーカー機能用 セッションヘルパークラス

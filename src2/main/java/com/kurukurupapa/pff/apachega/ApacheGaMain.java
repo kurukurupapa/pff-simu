@@ -15,8 +15,8 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 
 /**
  * Apache Commons Mathの遺伝的アルゴリズムを使用して、ピクトロジカファイナルファンタジーの最強パーティを見つけ出します。

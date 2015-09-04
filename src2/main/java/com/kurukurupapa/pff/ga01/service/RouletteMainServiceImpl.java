@@ -10,12 +10,12 @@ import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.springframework.stereotype.Component;
 
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
 import com.kurukurupapa.pff.ga01.domain.Fitness;
 import com.kurukurupapa.pff.ga01.domain.FitnessForBattle;
 import com.kurukurupapa.pff.ga01.domain.Population;
 import com.kurukurupapa.pff.ga01.domain.PopulationByRoulette;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 
 /**
  * メインサービスの実装クラスです。

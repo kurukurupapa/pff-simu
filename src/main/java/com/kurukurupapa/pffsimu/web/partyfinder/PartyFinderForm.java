@@ -1,13 +1,12 @@
 package com.kurukurupapa.pffsimu.web.partyfinder;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
-import com.kurukurupapa.pff.domain.BattleType;
-import com.kurukurupapa.pff.partyfinder.PartyFinderKind;
+import com.kurukurupapa.pffsimu.domain.BattleType;
+import com.kurukurupapa.pffsimu.domain.partyfinder.PartyFinderKind;
 
 /**
  * パーティ検討フォームクラス

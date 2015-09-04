@@ -11,9 +11,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kurukurupapa.pff.domain.Attr;
-import com.kurukurupapa.pff.domain.BattleType;
-import com.kurukurupapa.pff.dp01.Party;
+import com.kurukurupapa.pffsimu.domain.Attr;
+import com.kurukurupapa.pffsimu.domain.BattleType;
+import com.kurukurupapa.pffsimu.domain.party.Party;
 
 /**
  * パーティメーカー機能 コントローラクラス

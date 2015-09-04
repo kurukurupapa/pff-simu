@@ -2,14 +2,14 @@ package com.kurukurupapa.pffsimu.web.partyfinder;
 
 import org.springframework.stereotype.Service;
 
-import com.kurukurupapa.pff.domain.Attr;
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
-import com.kurukurupapa.pff.dp01.Dp01;
-import com.kurukurupapa.pff.dp01.FitnessCalculator;
-import com.kurukurupapa.pff.dp01.Party;
-import com.kurukurupapa.pff.partyfinder.PartyFinder;
-import com.kurukurupapa.pff.partyfinder2.PartyFinder2d;
+import com.kurukurupapa.pffsimu.domain.Attr;
+import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
+import com.kurukurupapa.pffsimu.domain.party.Party;
+import com.kurukurupapa.pffsimu.domain.partyfinder.PartyFinder;
+import com.kurukurupapa.pffsimu.domain.partyfinder.impl1.Dp01;
+import com.kurukurupapa.pffsimu.domain.partyfinder.impl2.PartyFinder2d;
 
 /**
  * パーティ検討機能 サービスクラス

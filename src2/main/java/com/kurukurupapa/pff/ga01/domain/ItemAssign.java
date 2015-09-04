@@ -3,8 +3,8 @@ package com.kurukurupapa.pff.ga01.domain;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.kurukurupapa.pff.domain.ItemData;
-import com.kurukurupapa.pff.domain.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.item.ItemData;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
 
 /**
  * アイテム割り当てクラス

@@ -5,12 +5,12 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.kurukurupapa.pff.domain.ItemDataSet;
-import com.kurukurupapa.pff.domain.MemoriaDataSet;
-import com.kurukurupapa.pff.dp01.FitnessCalculator;
-import com.kurukurupapa.pff.dp01.ItemFitness;
-import com.kurukurupapa.pff.dp01.Party;
-import com.kurukurupapa.pff.ranking.WeaponRanking;
+import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
+import com.kurukurupapa.pffsimu.domain.fitness.ItemFitness;
+import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
+import com.kurukurupapa.pffsimu.domain.party.Party;
+import com.kurukurupapa.pffsimu.domain.ranking.WeaponRanking;
 
 /**
  * ランキング機能 武器ランキングサービスクラス
