@@ -1,6 +1,6 @@
 package com.kurukurupapa.pffsimu.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -40,7 +40,7 @@ public class BaseTestCase {
 				sortMultiLine(actual.toMultiLineString()));
 	}
 
-	private String sortMultiLine(String text) {
+	protected String sortMultiLine(String text) {
 		String[] lines = text.split("\n");
 		Arrays.sort(lines);
 		return StringUtils.join(lines, "\n");
