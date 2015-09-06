@@ -12,6 +12,7 @@ import com.kurukurupapa.pffsimu.domain.fitness.FitnessValue;
 import com.kurukurupapa.pffsimu.domain.fitness.MemoriaFitness;
 import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
 import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkill;
+import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkillFactory;
 import com.kurukurupapa.pffsimu.domain.memoria.Memoria;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
@@ -20,7 +21,7 @@ import com.kurukurupapa.pffsimu.domain.partyfinder.impl1.Dp01;
 
 /**
  * メモリア順位付けクラス
- * 
+ *
  * メモリアを評価し、順位をつけます。 これにより、不要なメモリアを判断しやすくなると思います。
  */
 public class MemoriaRanking {
@@ -74,10 +75,11 @@ public class MemoriaRanking {
 			FitnessValue max = dp.getParty().getFitnessObj();
 
 			// リーダースキルを考慮する
-			for (LeaderSkill e2 : LeaderSkill.values()) {
+			for (MemoriaData e2 : mMemoriaDataSet) {
+				LeaderSkill leaderSkill = LeaderSkillFactory.get(e2);
 				// TODO 自分自身のリーダースキルは省いた方が良いかも。
 				Party party = dp.getParty().clone();
-				party.setLeaderSkill(e2);
+				party.setLeaderSkill(leaderSkill);
 				party.calcFitness(mFitnessCalculator);
 				if (max.getValue() < party.getFitness()) {
 					max = party.getFitnessObj();

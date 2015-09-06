@@ -9,6 +9,7 @@ import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
 import com.kurukurupapa.pffsimu.domain.fitness.FitnessValue;
 import com.kurukurupapa.pffsimu.domain.item.ItemData;
 import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkill;
+import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkillFactory;
 import com.kurukurupapa.pffsimu.domain.memoria.Memoria;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
 
@@ -192,7 +193,7 @@ public class Party implements Cloneable {
 		FitnessValue maxFitnessValue = fitnessCalculator.calc(this);
 		for (Memoria e : mMemoriaList) {
 			// 当該メモリアのリーダースキルが適用可能か調べます。
-			LeaderSkill leaderSkill = LeaderSkill.parse(e.getMemoriaData());
+			LeaderSkill leaderSkill = LeaderSkillFactory.get(e);
 			if (leaderSkill == null || !leaderSkill.validCondition(this)) {
 				continue;
 			}

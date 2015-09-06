@@ -13,6 +13,7 @@ import com.kurukurupapa.pffsimu.domain.item.ItemData;
 import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
 import com.kurukurupapa.pffsimu.domain.memoria.JobSkill;
 import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkill;
+import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkillFactory;
 import com.kurukurupapa.pffsimu.domain.memoria.Memoria;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
@@ -67,7 +68,7 @@ public class MemoriaItemCombinations {
 			// リーダースキルあり
 			// TODO 同一リーダースキルを持ったメモリアが複数存在する場合を考慮していません。
 			for (MemoriaData m2 : memorias) {
-				LeaderSkill leaderSkill = LeaderSkill.parse(m2);
+				LeaderSkill leaderSkill = LeaderSkillFactory.get(m2);
 				if (leaderSkill != null) {
 					setupParties(m1, leaderSkill);
 				}
@@ -159,7 +160,8 @@ public class MemoriaItemCombinations {
 		if (leaderSkill == null) {
 			return false;
 		}
-		return LeaderSkill.equals(LeaderSkill.parse(memoriaData), leaderSkill);
+		return LeaderSkill.equals(LeaderSkillFactory.get(memoriaData),
+				leaderSkill);
 	}
 
 	private FakeParty calcParty(MemoriaData memoriaData, ItemData weapon,

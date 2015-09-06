@@ -429,17 +429,24 @@ public class Memoria implements Cloneable {
 		damage = (getPower() * getMemoriaData().getPhysicalAttack()
 				* (1.0f + criticalRate) - physicalResistance)
 				* Mement.CHIKARA_PHYSICAL_RATE;
-		if (damage < 1f) {
-			damage = 1f;
-		}
 
 		// ジョブスキル
 		if (mJobSkillFlag) {
 			damage = getJobSkill().calcPhysicalAttackDamage(damage);
 		}
 
+		// リーダースキル
+		if (mLeaderSkill != null) {
+			damage = mLeaderSkill.calcPhysicalAttackDamage(damage, this);
+		}
+
 		// 敵の弱点・属性
 		damage *= getAttrRateForPhysical(weakList, resistanceList);
+
+		// 補正
+		if (damage < 1f) {
+			damage = 1f;
+		}
 
 		return damage;
 	}
