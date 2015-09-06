@@ -40,10 +40,6 @@ public class BlackMagicItemDataEx extends MagicItemDataEx {
 		return mAttr.isAttrWithoutFlight(weakList) ? 1 : 0;
 	}
 
-	public float getBoostValue(List<Attr> weakList) {
-		return 0;
-	}
-
 	public float getResistanceAttrRate(List<Attr> resistanceList) {
 		return mAttr.isAttrWithoutFlight(resistanceList) ? 0.8f : 1;
 	}
