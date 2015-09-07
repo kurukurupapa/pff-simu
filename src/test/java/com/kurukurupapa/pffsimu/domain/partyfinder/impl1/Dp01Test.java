@@ -12,7 +12,6 @@ import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculatorFactory;
 import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 import com.kurukurupapa.pffsimu.domain.party.Party;
-import com.kurukurupapa.pffsimu.domain.partyfinder.impl1.Dp01;
 import com.kurukurupapa.pffsimu.test.BaseTestCase;
 
 public class Dp01Test extends BaseTestCase {
@@ -288,7 +287,7 @@ public class Dp01Test extends BaseTestCase {
 		assertEquals("" //
 				+ "9813,パンネロ+ダンシングダガー+エアロラ+ケアル+フレア+パンネロLS\n" //
 				+ "8628,ライトニング(No.119)+閃光のウォーソード+赤兎馬のたてがみ(レア5)+パワーリスト+奥義\n" //
-				+ "6728,元帥シド+おろち+マーシャルネイ+マーシャルネイ+算術+元帥シドLS\n" //
+				+ "5738,元帥シド+おろち+マーシャルネイ+マーシャルネイ+算術\n" //
 		, actual);
 	}
 

@@ -27,6 +27,7 @@ public class LeaderSkillNoAttrWeaponEffect extends LeaderSkillEffect {
 	 *            メモリア
 	 * @return ダメージ
 	 */
+	@Override
 	public float calcPhysicalAttackDamage(float damage, Memoria memoria) {
 		ItemData weapon = memoria.getWeapon();
 		if (weapon != null && weapon.getAttr().isNone()) {

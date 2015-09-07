@@ -22,10 +22,7 @@ public class LeaderSkillFactory {
 			// 限定プレミアムメモリア
 			//
 			/** 元帥シドLS 「無属性武器攻撃」が【大】アップ（無属性（武器系） 37%） */
-			new LeaderSkill("元帥シド", 0, Unit.PERCENT, 37, Unit.PERCENT, 0,
-					Unit.PERCENT, 0, Unit.PERCENT, 0, Unit.PERCENT, 0, 0,
-					Attr.NONE),
-			// new LeaderSkill("元帥シド", new LeaderSkillNoAttrWeaponEffect(37)),
+			new LeaderSkill("元帥シド", new LeaderSkillNoAttrWeaponEffect(37)),
 			//
 			// プレミアムメモリア
 			//

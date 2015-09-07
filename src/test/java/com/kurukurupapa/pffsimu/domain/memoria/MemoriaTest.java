@@ -15,11 +15,6 @@ import com.kurukurupapa.pffsimu.domain.item.ItemData;
 import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
 import com.kurukurupapa.pffsimu.domain.item.WeaponType;
 import com.kurukurupapa.pffsimu.domain.item.WeaponTypeFactory;
-import com.kurukurupapa.pffsimu.domain.memoria.JobSkill;
-import com.kurukurupapa.pffsimu.domain.memoria.Memoria;
-import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
-import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
-import com.kurukurupapa.pffsimu.domain.memoria.PremiumSkill;
 import com.kurukurupapa.pffsimu.test.BaseTestCase;
 
 public class MemoriaTest extends BaseTestCase {
@@ -225,6 +220,57 @@ public class MemoriaTest extends BaseTestCase {
 		assertThat(
 				actual,
 				is((int) (power * physicalAttack * 2 * MEMENT_CHIKARA_PHYSICAL_RATE)));
+	}
+
+	@Test
+	public void testGetPhysicalAttackDamage_元帥シドLS_無属性武器() {
+		// 準備
+		Memoria sut = new Memoria(mMemoriaDataSet.find("アーシェ"),
+				mItemDataSet.find("フォースイーター"), null, null);
+		float damage1 = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+				new ArrayList<Attr>(), 0);
+		sut.setLeaderSkill(LeaderSkillFactory.get("元帥シド"));
+
+		// テスト実行
+		float actual = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+				new ArrayList<Attr>(), 0);
+
+		// 検証
+		assertTrue(actual > damage1);
+	}
+
+	@Test
+	public void testGetPhysicalAttackDamage_元帥シドLS_無属性飛行武器() {
+		// 準備
+		Memoria sut = new Memoria(mMemoriaDataSet.find("トレイ"),
+				mItemDataSet.find("黄忠の長弓(レア5)"), null, null);
+		float damage1 = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+				new ArrayList<Attr>(), 0);
+		sut.setLeaderSkill(LeaderSkillFactory.get("元帥シド"));
+
+		// テスト実行
+		float actual = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+				new ArrayList<Attr>(), 0);
+
+		// 検証
+		assertTrue(actual > damage1);
+	}
+
+	@Test
+	public void testGetPhysicalAttackDamage_元帥シドLS_属性あり武器() {
+		// 準備
+		Memoria sut = new Memoria(mMemoriaDataSet.find("アーシェ"),
+				mItemDataSet.find("オブリージュ"), null, null);
+		float damage1 = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+				new ArrayList<Attr>(), 0);
+		sut.setLeaderSkill(LeaderSkillFactory.get("元帥シド"));
+
+		// テスト実行
+		float actual = sut.getPhysicalAttackDamage(new ArrayList<Attr>(),
+				new ArrayList<Attr>(), 0);
+
+		// 検証
+		assertThat(actual, is(damage1));
 	}
 
 	@Test
@@ -756,6 +802,36 @@ public class MemoriaTest extends BaseTestCase {
 
 		// 検証
 		assertThat(actual, is(expected));
+	}
+
+	@Test
+	public void testGetRecovery_セーラNo217LS() {
+		// 準備
+		Memoria sut = new Memoria(mMemoriaDataSet.find("ティナ"), null,
+				mItemDataSet.find("ケアル"), null);
+		int result1 = sut.getRecovery(TURN, CHARGE_PER_BATTLE);
+		sut.setLeaderSkill(LeaderSkillFactory.get("セーラ(No.217)"));
+
+		// テスト実行
+		int actual = sut.getRecovery(TURN, CHARGE_PER_BATTLE);
+
+		// 検証
+		assertTrue(actual > result1);
+	}
+
+	@Test
+	public void testGetRecovery_ポロムLS() {
+		// 準備
+		Memoria sut = new Memoria(mMemoriaDataSet.find("ティナ"), null,
+				mItemDataSet.find("ケアル"), null);
+		int result1 = sut.getRecovery(TURN, CHARGE_PER_BATTLE);
+		sut.setLeaderSkill(LeaderSkillFactory.get("ポロム"));
+
+		// テスト実行
+		int actual = sut.getRecovery(TURN, CHARGE_PER_BATTLE);
+
+		// 検証
+		assertTrue(actual > result1);
 	}
 
 }

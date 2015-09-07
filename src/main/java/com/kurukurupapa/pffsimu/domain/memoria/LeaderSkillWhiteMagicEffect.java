@@ -24,7 +24,8 @@ public class LeaderSkillWhiteMagicEffect extends LeaderSkillEffect {
 	 *            リーダースキル適用前の回復値
 	 * @return 回復値
 	 */
-	public float calc(float recovery) {
+	@Override
+	public float calcWhiteMagic(float recovery) {
 		return recovery * (1f + mEffect / 100f);
 	}
 }
