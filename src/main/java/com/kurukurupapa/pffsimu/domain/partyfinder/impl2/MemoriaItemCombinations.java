@@ -86,6 +86,32 @@ public class MemoriaItemCombinations {
 				+ mPartyArray.length);
 	}
 
+	public void setup(LeaderSkill leaderSkill) {
+		mPartySet = new FakePartySet();
+
+		mCalcCount = 0;
+		mMCount = 0;
+		mWCount = 0;
+		mMaCount1 = 0;
+		mMaCount2 = 0;
+
+		// 各メモリアについて、武器・魔法・アクセサリの全パターンを洗い出します。
+		// TODO 同一リーダースキルを持ったメモリアが複数存在する場合を考慮していません。
+		List<MemoriaData> memorias = mMemoriaDataSet.getMemoriaDataList();
+		for (MemoriaData m1 : memorias) {
+			setupParties(m1, leaderSkill);
+			mMCount++;
+		}
+		mPartyArray = mPartySet.toArray(new FakeParty[] {});
+
+		mLogger.debug("メモリア数=" + memorias.size() + ",武器数="
+				+ mItemDataSet.getWeaponList().size() + ",魔法/アクセサリ数="
+				+ mItemDataSet.getMagicAccessoryList().size() + ",LS="
+				+ leaderSkill + ",計算回数=" + mCalcCount + "(M:" + mMCount + ",W:"
+				+ mWCount + ",A1:" + mMaCount1 + ",A2:" + mMaCount2
+				+ "),結果要素数=" + mPartyArray.length);
+	}
+
 	private void setupParties(MemoriaData memoriaData, LeaderSkill leaderSkill) {
 		JobSkill jobSkill = memoriaData.getJobSkill();
 		if (jobSkill == null || jobSkill.isExclusiveCondition()) {

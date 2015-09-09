@@ -11,7 +11,10 @@ import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
 import com.kurukurupapa.pffsimu.domain.fitness.FitnessValue;
 import com.kurukurupapa.pffsimu.domain.fitness.MemoriaFitness;
 import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
+import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkill;
+import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkillFactory;
 import com.kurukurupapa.pffsimu.domain.memoria.Memoria;
+import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 import com.kurukurupapa.pffsimu.domain.party.Party;
 import com.kurukurupapa.pffsimu.domain.partyfinder.PartyFinder;
@@ -78,24 +81,26 @@ public class PartyFinder2d implements PartyFinder {
 		mMCount4 = 0;
 		mStart = System.currentTimeMillis();
 
-		// 各メモリアの各アイテム全組み合わせ求めます。
-		// 適応度の降順でソートされる前提です。
-		mCombinations = new MemoriaItemCombinations(mMemoriaDataSet,
-				mItemDataSet, mFitnessCalculator);
-		mCombinations.setup();
-		debug("mCombinations=\n" + mCombinations.toDebugStr());
+		if (maxMemorias < 4) {
+			// 各メモリアの各アイテム全組み合わせ求めます。
+			// 適応度の降順でソートされる前提です。
+			mCombinations = new MemoriaItemCombinations(mMemoriaDataSet,
+					mItemDataSet, mFitnessCalculator);
+			mCombinations.setup();
+			debug("mCombinations=\n" + mCombinations.toDebugStr());
 
-		if (maxMemorias == 1) {
-			calc1();
-		} else if (maxMemorias == 2) {
-			calc2();
-		} else if (maxMemorias == 3) {
-			calc3();
+			if (maxMemorias == 1) {
+				calc1();
+			} else if (maxMemorias == 2) {
+				calc2();
+			} else if (maxMemorias == 3) {
+				calc3();
+			}
+
 		} else if (maxMemorias == 4) {
 			calc4();
-		} else {
-			throw new AppException("未実装");
 		}
+
 		if (mBestParty == null) {
 			mBestParty = new Party();
 		}
@@ -214,11 +219,36 @@ public class PartyFinder2d implements PartyFinder {
 
 	/**
 	 * メモリア4体のパーティ計算
-	 * 
-	 * 動的計画法に似た方法で、計算量を削減してみました。
+	 *
+	 * 動的計画法に似た方法で、計算量を削減してみました。 その他にも工夫しました。
 	 */
 	private void calc4() {
+		Party maxParty = null;
+
+		// リーダースキルなし
+		maxParty = calc4(maxParty, null);
+
+		// リーダースキルあり
+		List<MemoriaData> memorias = mMemoriaDataSet.getMemoriaDataList();
+		for (MemoriaData m : memorias) {
+			LeaderSkill leaderSkill = LeaderSkillFactory.get(m);
+			if (leaderSkill != null) {
+				maxParty = calc4(maxParty, leaderSkill);
+			}
+		}
+
+		mBestParty = maxParty;
+	}
+
+	private Party calc4(Party maxParty, LeaderSkill leaderSkill) {
 		final int num = 4;
+
+		// 各メモリアの各アイテム全組み合わせ求めます。
+		// 適応度の降順でソートされる前提です。
+		mCombinations = new MemoriaItemCombinations(mMemoriaDataSet,
+				mItemDataSet, mFitnessCalculator);
+		mCombinations.setup(leaderSkill);
+		debug("mCombinations=\n" + mCombinations.toDebugStr());
 
 		// メモデータ
 		// 適応度の降順になる。
@@ -227,7 +257,6 @@ public class PartyFinder2d implements PartyFinder {
 
 		// 全組み合わせのうち、適応度の高い組み合わせのみを使って、妥当なパーティが作れるとよい。
 		// 組み合わせの上位4つから始めて、1件ずつ増やしていく。
-		Party maxParty = null;
 		for (int m4 = num - 1; m4 < mCombinations.size() - (num - 1); m4++) {
 			debugCombinationsLoop(m4, maxParty, memo2, memo3);
 			checkTimeout();
@@ -283,7 +312,7 @@ public class PartyFinder2d implements PartyFinder {
 			mMCount4++;
 		}
 
-		mBestParty = maxParty;
+		return maxParty;
 	}
 
 	private boolean isProcess(Party maxParty, int m1) {
@@ -319,7 +348,7 @@ public class PartyFinder2d implements PartyFinder {
 
 	/**
 	 * 今回パーティの処理が必要であるか判定します。
-	 * 
+	 *
 	 * @param maxParty
 	 *            前回までの最大適応度パーティ。null可能。
 	 * @param indexes
@@ -338,7 +367,7 @@ public class PartyFinder2d implements PartyFinder {
 
 	/**
 	 * 今回パーティの処理が必要であるか判定します。
-	 * 
+	 *
 	 * @param maxParty
 	 *            前回までの最大適応度パーティ。null可能。
 	 * @param memoriaFitnesses
@@ -387,7 +416,7 @@ public class PartyFinder2d implements PartyFinder {
 	 * ある暫定的なパーティに対して、メモリアを追加し、新たな暫定的なパーティを作成する。
 	 * 暫定的なパーティでは、パーティ構成として妥当でないものが含まれている可能性あり。
 	 * たとえば、メンバーに存在しないメモリアのリーダースキルが含まれている可能性がある。
-	 * 
+	 *
 	 * @param memorias
 	 *            基本となるパーティを表すメモリア配列
 	 * @param memoria
@@ -437,7 +466,7 @@ public class PartyFinder2d implements PartyFinder {
 
 	/**
 	 * 引数のメモリアからパーティを作成し、妥当であれば、前回までの最大適応度パーティと比較し、適応度が大きいパーティを返却します。
-	 * 
+	 *
 	 * @param maxParty
 	 *            前回までの最大適応度パーティ。null可能。
 	 * @param indexes
@@ -457,7 +486,7 @@ public class PartyFinder2d implements PartyFinder {
 
 	/**
 	 * 引数のメモリアからパーティを作成し、妥当であれば、前回までの最大適応度パーティと比較し、適応度が大きいパーティを返却します。
-	 * 
+	 *
 	 * @param maxParty
 	 *            前回までの最大適応度パーティ。null可能。
 	 * @param memoriaFitnesses
