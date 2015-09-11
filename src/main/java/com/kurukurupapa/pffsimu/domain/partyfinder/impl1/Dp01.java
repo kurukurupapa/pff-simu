@@ -15,7 +15,7 @@ import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 import com.kurukurupapa.pffsimu.domain.party.FakeParty;
 import com.kurukurupapa.pffsimu.domain.party.Party;
 import com.kurukurupapa.pffsimu.domain.partyfinder.PartyFinder;
-import com.kurukurupapa.pffsimu.domain.ranking.MemoriaRanking;
+import com.kurukurupapa.pffsimu.domain.ranking.impl1.MemoriaRanking1;
 
 /**
  * 最適パーティ計算クラス
@@ -76,7 +76,7 @@ public class Dp01 implements PartyFinder {
 		if (maxMemorias == 1) {
 			mMemoriaFitnesses = null;
 		} else {
-			MemoriaRanking memoriaRanking = new MemoriaRanking();
+			MemoriaRanking1 memoriaRanking = new MemoriaRanking1();
 			memoriaRanking.setParams(mMemoriaDataSet, mItemDataSet,
 					mFitnessCalculator);
 			memoriaRanking.run();
