@@ -216,7 +216,7 @@ public class ItemDataSet {
 
 	/**
 	 * テスト用アイテムファイルを読み込みます。
-	 * 
+	 *
 	 * @param flatNumber
 	 *            アイテム個数分アイテムオブジェクトを生成する場合true
 	 */
@@ -242,7 +242,7 @@ public class ItemDataSet {
 
 	/**
 	 * アイテムファイルを読み込みます。
-	 * 
+	 *
 	 * @param path
 	 *            ファイルパス
 	 * @param flatNumber
@@ -281,7 +281,7 @@ public class ItemDataSet {
 
 	/**
 	 * アイテムファイル1行分を解析し、アイテムオブジェクトを作成します。
-	 * 
+	 *
 	 * @param line
 	 *            アイテムファイルの1行
 	 * @param flatNumber
@@ -324,8 +324,8 @@ public class ItemDataSet {
 					toUnit(columns[5]), toInt(columns[6]), toUnit(columns[6]),
 					toInt(columns[7]), toUnit(columns[7]),
 					toDefenceInt(columns[8]), toDefenceInt(columns[9]),
-					magicType, magicCharge, magicEffect,
-					Attr.parse(columns[12]), toStr(columns[13]), number);
+					magicType, magicCharge, magicEffect, Attr.parse(columns[12]
+							.trim()), toStr(columns[13]), number);
 			switch (itemType) {
 			case WEAPON:
 				addWeaponData(itemData);
