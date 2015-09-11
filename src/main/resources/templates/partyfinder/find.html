@@ -8,17 +8,20 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title th:text="#{project_name}">Dashboard Template for Bootstrap</title>
+    <title th:text="#{project_name}">Theme Template for Bootstrap</title>
 
-    <!-- Bootstrap -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="/assets/css/dashboard.css" rel="stylesheet" />
+    <!-- Bootstrap core CSS -->
+    <link href="../../static/assets/css/bootstrap.min.css" th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet" />
+    <!-- Bootstrap theme -->
+    <link href="../../static/assets/css/bootstrap-theme.min.css" th:href="@{/assets/css/bootstrap-theme.min.css}" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="../../static/assets/css/theme.css" th:href="@{/assets/css/theme.css}" rel="stylesheet" />
     <!-- 独自CSS -->
-    <link href="/css/base.css" rel="stylesheet" />
+    <link href="../../static/css/base.css" th:href="@{/css/base.css}" rel="stylesheet" />
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="/assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="/assets/js/ie-emulation-modes-warning.js"></script>
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js" th:src="@{/assets/js/ie8-responsive-file-warning.js}"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js" th:src="@{/assets/js/ie-emulation-modes-warning.js}"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -27,10 +30,11 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body role="document">
 
+    <!-- Fixed navbar -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
+      <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
@@ -38,163 +42,165 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/" th:text="#{project_name}">Project name</a>
+          <a class="navbar-brand" href="/" th:text="#{project_name}">Bootstrap theme</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Dashboard</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li>
-            <li><a href="#">Help</a></li>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
           </ul>
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search..." />
-          </form>
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
     </nav>
 
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li><a href="/">Overview</a></li>
-            <li class="active"><a href="#">パーティ検討 <span class="sr-only">(current)</span></a></li>
-            <li><a href="/memoria">メモリア検討</a></li>
-            <li><a href="/item">アイテム検討</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">パーティ検討</h1>
-          <p>下のパラメータを選択/入力して、「検討スタート」ボタンを押してください。</p>
-          <h2 class="sub-header">評価条件</h2>
-          <form method="get" th:action="@{/partyfinder/find}" th:object="${form}">
-            <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
-              <p th:errors="*">ErrorMessage</p>
-            </div>
-            <div class="form-group">
-              <label>バトル形式</label><br/>
-              <label class="radio-inline" th:if="${battleTypes}==null">
-                <input type="radio" name="battleType" value="1" th:checked="${#strings.equals(form.battleType,'1')}" />通常バトル
-              </label>
-              <label class="radio-inline" th:if="${battleTypes}==null">
-                <input type="radio" name="battleType" value="2" th:checked="${#strings.equals(form.battleType,'2')}" />エクサバトリア
-              </label>
-              <label class="radio-inline" th:each="e:${battleTypes}">
-                <input type="radio" name="battleType" th:value="${e.name}" th:checked="${#strings.equals(form.battleType,e.name)}" /><span th:text="${e.text}">通常バトル</span>
-              </label>
-            </div>
-            <div class="form-group">
-              <label>敵の弱点属性</label><br/>
-              <label class="checkbox-inline" th:each="e : ${attrs}">
-                <input type="checkbox" name="enemyWeakPoints" th:value="${e.name}" th:checked="${#arrays.contains(form.enemyWeakPoints,e.name)}" th:text="${e.longText}" />
-              </label>
-            </div>
-            <div class="form-group">
-              <label>敵の耐性属性</label><br/>
-              <label class="checkbox-inline" th:each="e : ${attrs}">
-                <input type="checkbox" name="enemyStrongPoints" th:value="${e.name}" th:checked="${#arrays.contains(form.enemyStrongPoints,e.name)}" th:text="${e.longText}" />
-              </label>
-            </div>
-            <div class="form-group">
-              <label for="physicalResistance">敵の物理防御</label>
-              <input type="number" class="form-control" id="physicalResistance" name="physicalResistance" placeholder="数値を入力してください。" th:value="*{physicalResistance}" />
-            </div>
-            <div class="form-group">
-              <label for="magicResistance">敵の魔法防御</label>
-              <input type="number" class="form-control" id="magicResistance" name="magicResistance" placeholder="数値を入力してください。" th:value="*{magicResistance}" />
-            </div>
-          <!--
-          <h2 class="sub-header">検討結果</h2>
-          -->
-          <div th:if="${party} != null">
-            <!--
-            <div>
-              <p th:text="${party}">26147,ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS,トレイ+黄忠の長弓(レア5)+トレイLS,パンネロ+ダンシングダガー+ファイアRF+3+ケアル+トレイLS,アーロン+五月雨+トレイLS</p>
-            </div>
-            -->
-            <!--
-            <h4>パーティ構成</h4>
-            -->
-            <h2 class="sub-header">パーティ構成</h2>
-            <!--
-            <span th:each="memoria : ${party.memoriaList}">
-              <span th:text="${memoria}">ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS</span><br/>
-            </span>
-            -->
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th><span class="glyphicon glyphicon-user"></span> メモリア</th>
-                    <th><span class="glyphicon glyphicon-thumbs-up"></span> 武器</th>
-                    <th><span class="glyphicon glyphicon-leaf"></span> アクセサリ</th>
-                    <th><span class="glyphicon glyphicon-asterisk"></span> 他</th>
-                    <!--
-                    <th>メモリア+武器+アクセサリ+スキル</th>
-                    -->
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="memoria : ${party.memoriaList}">
-                    <td><span class="glyphicon glyphicon-user"></span> <span th:text="${memoria.name}">メモリア</span></td>
-                    <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-thumbs-up"></span> <span th:text="${memoria.weapon.name}">武器</span></span></td>
-                    <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-leaf"></span> <span th:text="${e.name}">アクセサリ</span> </span></td>
-                    <td>
-                      <span th:if="${memoria.leaderSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.leaderSkill}">リーダースキル</span> </span>
-                      <span th:if="${memoria.jobSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.jobSkill}">ジョブスキル</span></span>
-                    </td>
-                    <!--
-                    <td><span th:text="${memoria}">メモリア+武器+アクセサリ+スキル</span></td>
-                    -->
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <!--
-            <h4>評価内容</h4>
-            -->
-            <h2 class="sub-header">評価内容</h2>
-            <div class="table-responsive">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th>項目</th>
-                    <th>値</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>評価値</td>
-                    <td><span th:text="${party.fitnessObj.value}">12345</span>ポイント</td>
-                  </tr>
-                  <tr>
-                    <td>HP</td>
-                    <td><span th:text="${party.fitnessObj.hp}">1234</span></td>
-                  </tr>
-                  <tr>
-                    <td>攻撃</td>
-                    <td><span th:text="${party.fitnessObj.attackDamage}">1234</span></td>
-                  </tr>
-                  <tr>
-                    <td>防御</td>
-                    <td><span th:text="${party.fitnessObj.defenceDamage}">1234</span></td>
-                  </tr>
-                  <tr>
-                    <td>回復</td>
-                    <td><span th:text="${party.fitnessObj.recovery}">1234</span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+    <div class="container theme-showcase" role="main">
 
-          </div>
-            <button type="submit" name="btn" class="btn btn-primary" value="ALGORITHM1">検討スタート</button>
-            <button type="submit" name="btn" class="btn btn-default" value="ALGORITHM2">別アルゴリズム（作成中）</button>
-          </form>
-        </div>
+      <div class="page-header">
+        <h1>パーティ検討</h1>
       </div>
-      
+      <p>下のパラメータを選択/入力して、「検討スタート」ボタンを押してください。</p>
+
+      <h2>評価条件</h2>
+      <form method="get" th:action="@{/partyfinder/find}" th:object="${form}">
+        <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+          <p th:errors="*">ErrorMessage</p>
+        </div>
+        <div class="form-group">
+          <label>バトル形式</label><br/>
+          <label class="radio-inline" th:if="${battleTypes}==null">
+            <input type="radio" name="battleType" value="1" th:checked="${#strings.equals(form.battleType,'1')}" />通常バトル
+          </label>
+          <label class="radio-inline" th:if="${battleTypes}==null">
+            <input type="radio" name="battleType" value="2" th:checked="${#strings.equals(form.battleType,'2')}" />エクサバトリア
+          </label>
+          <label class="radio-inline" th:each="e:${battleTypes}">
+            <input type="radio" name="battleType" th:value="${e.name}" th:checked="${#strings.equals(form.battleType,e.name)}" /><span th:text="${e.text}">通常バトル</span>
+          </label>
+        </div>
+        <div class="form-group">
+          <label>敵の弱点属性</label><br/>
+          <label class="checkbox-inline" th:each="e : ${attrs}">
+            <input type="checkbox" name="enemyWeakPoints" th:value="${e.name}" th:checked="${#arrays.contains(form.enemyWeakPoints,e.name)}" th:text="${e.longText}" />
+          </label>
+        </div>
+        <div class="form-group">
+          <label>敵の耐性属性</label><br/>
+          <label class="checkbox-inline" th:each="e : ${attrs}">
+            <input type="checkbox" name="enemyStrongPoints" th:value="${e.name}" th:checked="${#arrays.contains(form.enemyStrongPoints,e.name)}" th:text="${e.longText}" />
+          </label>
+        </div>
+        <div class="form-group">
+          <label for="physicalResistance">敵の物理防御</label>
+          <input type="number" class="form-control" id="physicalResistance" name="physicalResistance" placeholder="数値を入力してください。" th:value="*{physicalResistance}" />
+        </div>
+        <div class="form-group">
+          <label for="magicResistance">敵の魔法防御</label>
+          <input type="number" class="form-control" id="magicResistance" name="magicResistance" placeholder="数値を入力してください。" th:value="*{magicResistance}" />
+        </div>
+      <!--
+      <h2 class="sub-header">検討結果</h2>
+      -->
+      <div th:if="${party} != null">
+        <!--
+        <div>
+          <p th:text="${party}">26147,ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS,トレイ+黄忠の長弓(レア5)+トレイLS,パンネロ+ダンシングダガー+ファイアRF+3+ケアル+トレイLS,アーロン+五月雨+トレイLS</p>
+        </div>
+        -->
+        <!--
+        <h4>パーティ構成</h4>
+        -->
+        <h2 class="sub-header">パーティ構成</h2>
+        <!--
+        <span th:each="memoria : ${party.memoriaList}">
+          <span th:text="${memoria}">ティナ+青紅の剣(レア5)+タイタン+ケアルラ+トレイLS</span><br/>
+        </span>
+        -->
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th><span class="glyphicon glyphicon-user"></span> メモリア</th>
+                <th><span class="glyphicon glyphicon-thumbs-up"></span> 武器</th>
+                <th><span class="glyphicon glyphicon-leaf"></span> アクセサリ</th>
+                <th><span class="glyphicon glyphicon-asterisk"></span> 他</th>
+                <!--
+                <th>メモリア+武器+アクセサリ+スキル</th>
+                -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="memoria : ${party.memoriaList}">
+                <td><span class="glyphicon glyphicon-user"></span> <span th:text="${memoria.name}">メモリア</span></td>
+                <td><span th:if="${memoria.weapon}!=null"><span class="glyphicon glyphicon-thumbs-up"></span> <span th:text="${memoria.weapon.name}">武器</span></span></td>
+                <td><span th:each="e : ${memoria.accessories}"><span class="glyphicon glyphicon-leaf"></span> <span th:text="${e.name}">アクセサリ</span> </span></td>
+                <td>
+                  <span th:if="${memoria.leaderSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.leaderSkill}">リーダースキル</span> </span>
+                  <span th:if="${memoria.jobSkill}!=null"><span class="glyphicon glyphicon-asterisk"></span> <span th:text="${memoria.jobSkill}">ジョブスキル</span></span>
+                </td>
+                <!--
+                <td><span th:text="${memoria}">メモリア+武器+アクセサリ+スキル</span></td>
+                -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!--
+        <h4>評価内容</h4>
+        -->
+        <h2 class="sub-header">評価内容</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>項目</th>
+                <th>値</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>評価値</td>
+                <td><span th:text="${party.fitnessObj.value}">12345</span>ポイント</td>
+              </tr>
+              <tr>
+                <td>HP</td>
+                <td><span th:text="${party.fitnessObj.hp}">1234</span></td>
+              </tr>
+              <tr>
+                <td>攻撃</td>
+                <td><span th:text="${party.fitnessObj.attackDamage}">1234</span></td>
+              </tr>
+              <tr>
+                <td>防御</td>
+                <td><span th:text="${party.fitnessObj.defenceDamage}">1234</span></td>
+              </tr>
+              <tr>
+                <td>回復</td>
+                <td><span th:text="${party.fitnessObj.recovery}">1234</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+        <!-- 旧アルゴリズム
+        <button type="submit" name="btn" class="btn btn-primary" value="ALGORITHM1">検討スタート</button>
+        -->
+        <button type="submit" name="btn" class="btn btn-default" value="ALGORITHM2">検討スタート</button>
+      </form>
+
       <hr/>
       <footer>
         <p>@ kurukurupapa 2015</p>
