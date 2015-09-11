@@ -1,4 +1,4 @@
-package com.kurukurupapa.pffsimu.domain.ranking;
+package com.kurukurupapa.pffsimu.domain.ranking.impl1;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -16,14 +16,13 @@ import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
 import com.kurukurupapa.pffsimu.domain.memoria.Memoria;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 import com.kurukurupapa.pffsimu.domain.party.Party;
-import com.kurukurupapa.pffsimu.domain.ranking.MemoriaRanking;
 import com.kurukurupapa.pffsimu.test.BaseTestCase;
 
-public class MemoriaRankingTest extends BaseTestCase {
+public class MemoriaRanking1Test extends BaseTestCase {
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
-	private MemoriaRanking sut;
+	private MemoriaRanking1 sut;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -37,7 +36,7 @@ public class MemoriaRankingTest extends BaseTestCase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		sut = new MemoriaRanking();
+		sut = new MemoriaRanking1();
 	}
 
 	@Test

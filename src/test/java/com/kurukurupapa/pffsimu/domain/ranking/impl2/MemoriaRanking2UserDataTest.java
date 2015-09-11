@@ -1,4 +1,4 @@
-package com.kurukurupapa.pffsimu.domain.ranking;
+package com.kurukurupapa.pffsimu.domain.ranking.impl2;
 
 import java.util.List;
 
@@ -11,7 +11,6 @@ import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
 import com.kurukurupapa.pffsimu.domain.fitness.MemoriaFitness;
 import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
-import com.kurukurupapa.pffsimu.domain.ranking.MemoriaRanking;
 import com.kurukurupapa.pffsimu.test.BaseTestCase;
 import com.kurukurupapa.pffsimu.test.SlowTests;
 
@@ -19,17 +18,17 @@ import com.kurukurupapa.pffsimu.test.SlowTests;
  * ユーザデータでメモリアのランキングを確認します。
  */
 @Category(SlowTests.class)
-public class MemoriaRankingUserDataTest extends BaseTestCase {
+public class MemoriaRanking2UserDataTest extends BaseTestCase {
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
-	private MemoriaRanking sut;
+	private MemoriaRanking2 sut;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		// ユーザデータ読み込み
 		mItemDataSet = new ItemDataSet();
-		mItemDataSet.readUserFile();
+		mItemDataSet.readUserFile(true);
 		mMemoriaDataSet = new MemoriaDataSet(mItemDataSet);
 		mMemoriaDataSet.readUserFile();
 	}
@@ -37,7 +36,7 @@ public class MemoriaRankingUserDataTest extends BaseTestCase {
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
-		sut = new MemoriaRanking();
+		sut = new MemoriaRanking2();
 	}
 
 	@Test

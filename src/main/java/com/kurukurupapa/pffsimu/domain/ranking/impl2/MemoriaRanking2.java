@@ -1,32 +1,28 @@
-package com.kurukurupapa.pffsimu.domain.ranking;
+package com.kurukurupapa.pffsimu.domain.ranking.impl2;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
-import com.kurukurupapa.pffsimu.domain.fitness.FitnessValue;
 import com.kurukurupapa.pffsimu.domain.fitness.MemoriaFitness;
+import com.kurukurupapa.pffsimu.domain.fitness.MemoriaFitnessSet;
 import com.kurukurupapa.pffsimu.domain.item.ItemDataSet;
-import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkill;
-import com.kurukurupapa.pffsimu.domain.memoria.LeaderSkillFactory;
 import com.kurukurupapa.pffsimu.domain.memoria.Memoria;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaData;
 import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
 import com.kurukurupapa.pffsimu.domain.party.Party;
-import com.kurukurupapa.pffsimu.domain.partyfinder.impl1.Dp01;
+import com.kurukurupapa.pffsimu.domain.partyfinder.impl2.MemoriaItemCombinations;
 
 /**
  * メモリア順位付けクラス
- *
- * メモリアを評価し、順位をつけます。 これにより、不要なメモリアを判断しやすくなると思います。
+ * <p>
+ * メモリアを評価し、順位をつけます。 これにより、不要なメモリアを判断しやすくなると思います。 内部処理に、PartyFinder2dを使用しています。
+ * </p>
  */
-public class MemoriaRanking {
+public class MemoriaRanking2 {
 	/** ロガー */
-	private Logger mLogger = Logger.getLogger(MemoriaRanking.class);
+	private Logger mLogger = Logger.getLogger(MemoriaRanking2.class);
 
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
@@ -64,40 +60,24 @@ public class MemoriaRanking {
 		}
 
 		// 各メモリアの評価
-		mFitnessList = new ArrayList<MemoriaFitness>();
-		Dp01 dp;
+		MemoriaFitnessSet set = MemoriaFitnessSet.createAsFitnessDesc();
 		for (MemoriaData e : memoriaDataSet) {
 			// 当該メモリアの最大評価を計算
+			// リーダースキルの考慮あり
 			MemoriaDataSet tmpMemoriaDataSet = new MemoriaDataSet(itemDataSet);
 			tmpMemoriaDataSet.add(e);
-			dp = new Dp01(tmpMemoriaDataSet, itemDataSet, mFitnessCalculator);
-			dp.run(1);
-			FitnessValue max = dp.getParty().getFitnessObj();
-
-			// リーダースキルを考慮する
-			for (MemoriaData e2 : mMemoriaDataSet) {
-				LeaderSkill leaderSkill = LeaderSkillFactory.get(e2);
-				// TODO 自分自身のリーダースキルは省いた方が良いかも。
-				Party party = dp.getParty().clone();
-				party.setLeaderSkill(leaderSkill);
-				party.calcFitness(mFitnessCalculator);
-				if (max.getValue() < party.getFitness()) {
-					max = party.getFitnessObj();
-				}
-			}
-
-			mFitnessList.add(max.getMemoriaFitnesses().get(0));
+			MemoriaItemCombinations combinations = new MemoriaItemCombinations(
+					tmpMemoriaDataSet, itemDataSet, mFitnessCalculator);
+			combinations.setup();
+			combinations.get(0);
+			set.add(combinations.get(0));
 		}
 
-		// 評価値の降順でソート
-		Collections.sort(mFitnessList, new Comparator<MemoriaFitness>() {
-			@Override
-			public int compare(MemoriaFitness arg0, MemoriaFitness arg1) {
-				// 降順
-				return arg1.getValue() - arg0.getValue();
-			}
-		});
+		// 型変換
+		mFitnessList = set.toList();
 
+		mLogger.info("メモリア数=" + mMemoriaDataSet.size() + ",結果件数="
+				+ mFitnessList.size());
 		mLogger.trace("End");
 	}
 

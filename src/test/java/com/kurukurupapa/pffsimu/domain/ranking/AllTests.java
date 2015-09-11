@@ -4,9 +4,14 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.kurukurupapa.pffsimu.domain.ranking.impl1.MemoriaRanking1Test;
+import com.kurukurupapa.pffsimu.domain.ranking.impl1.MemoriaRanking1UserDataTest;
+import com.kurukurupapa.pffsimu.domain.ranking.impl2.MemoriaRanking2Test;
+
 @RunWith(Suite.class)
 @SuiteClasses({ AccessoryRankingTest.class, MagicRankingTest.class,
-		MemoriaRankingTest.class, MemoriaRankingUserDataTest.class,
+		MemoriaRankingTest.class, MemoriaRanking1Test.class,
+		MemoriaRanking1UserDataTest.class, MemoriaRanking2Test.class,
 		WeaponRankingTest.class })
 public class AllTests {
 

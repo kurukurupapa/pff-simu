@@ -18,7 +18,7 @@ import com.kurukurupapa.pffsimu.domain.partyfinder.impl1.Dp01;
 import com.kurukurupapa.pffsimu.domain.partyfinder.impl2.PartyFinder2d;
 import com.kurukurupapa.pffsimu.test.BaseTestCase;
 
-public class Compare extends BaseTestCase {
+public class PartyFinderComparison extends BaseTestCase {
 	private static ItemDataSet mItemDataSet;
 	private static MemoriaDataSet mMemoriaDataSet;
 
