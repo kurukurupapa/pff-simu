@@ -50,6 +50,9 @@ public class MemoriaItemCombinations {
 		mFitnessCalculator = fitnessCalculator;
 	}
 
+	/**
+	 * 各メモリアについて、武器・魔法・アクセサリ・リーダースキルの全パターンを洗い出します。
+	 */
 	public void setup() {
 		mPartySet = new FakePartySet();
 
@@ -86,6 +89,12 @@ public class MemoriaItemCombinations {
 				+ mPartyArray.length);
 	}
 
+	/**
+	 * 各メモリアについて、武器・魔法・アクセサリの全パターンを洗い出します。 リーダースキルは、引数のスキルを使用します。
+	 *
+	 * @param leaderSkill
+	 *            リーダースキル。スキルなしの場合null。
+	 */
 	public void setup(LeaderSkill leaderSkill) {
 		mPartySet = new FakePartySet();
 
