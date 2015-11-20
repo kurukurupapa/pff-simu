@@ -20,12 +20,13 @@ public class MemoriaRankingService {
 	private MemoriaDataSet memoriaDataSet;
 	private FitnessCalculator fitnessCalculator;
 	private Party party;
+	private MemoriaRankingForm form;
 	private MemoriaRanking memoriaRanking;
 
 	public MemoriaRankingService() {
 		// データ読み込み
 		itemDataSet = new ItemDataSet();
-		itemDataSet.readUserFile();
+		itemDataSet.readUserFile(true);
 		memoriaDataSet = new MemoriaDataSet(itemDataSet);
 		memoriaDataSet.readUserFile();
 	}
@@ -39,10 +40,19 @@ public class MemoriaRankingService {
 		this.party = party;
 	}
 
+	public void setup(MemoriaRankingForm form) {
+		this.form = form;
+		setup(form.getFitnessCalculator(), new Party());
+	}
+
 	public void run() {
 		memoriaRanking = new MemoriaRanking();
-		memoriaRanking.setParams(memoriaDataSet, itemDataSet,
-				fitnessCalculator, party);
+		memoriaRanking.setParams(memoriaDataSet, itemDataSet, fitnessCalculator, party);
+		if (form != null) {
+			memoriaRanking.setLeaderSkillFlag(form.isLeaderSkillFlag());
+			memoriaRanking.setPremiumSkillFlag(form.isPremiumSkillFlag());
+			memoriaRanking.setJobSkillFlag(form.isJobSkillFlag());
+		}
 		memoriaRanking.run();
 	}
 

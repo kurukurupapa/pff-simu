@@ -28,8 +28,7 @@ import com.kurukurupapa.pffsimu.domain.memoria.MemoriaDataSet;
  * </p>
  */
 public class MemoriaItemCombinations {
-	private static Logger mLogger = Logger
-			.getLogger(MemoriaItemCombinations.class);
+	private static Logger mLogger = Logger.getLogger(MemoriaItemCombinations.class);
 
 	private MemoriaDataSet mMemoriaDataSet;
 	private ItemDataSet mItemDataSet;
@@ -37,17 +36,59 @@ public class MemoriaItemCombinations {
 	private FakePartySet mPartySet;
 	private FakeParty[] mPartyArray;
 
+	/**
+	 * リーダースキル考慮フラグ
+	 * <ul>
+	 * <li>有効の場合、リーダースキルなしを含め、各種リーダースキルありの組み合わせを作成します。
+	 * <li>無効の場合、リーダースキルなしの組み合わせのみ作成します。
+	 * <li>デフォルトでは、有効です。
+	 * </ul>
+	 */
+	private boolean mLeaderSkillFlag = true;
+
+	/**
+	 * プレミアムスキル考慮フラグ
+	 * <ul>
+	 * <li>有効の場合、プレミアムスキルなしを含め、各種プレミアムスキルありの組み合わせを作成します。
+	 * <li>無効の場合、プレミアムスキルなしの組み合わせのみ作成します。
+	 * <li>デフォルトでは、有効です。
+	 * </ul>
+	 */
+	private boolean mPremiumSkillFlag = true;
+
+	/**
+	 * ジョブスキル考慮フラグ
+	 * <ul>
+	 * <li>有効の場合、ジョブスキルなしを含め、各種ジョブスキルありの組み合わせを作成します。
+	 * <li>無効の場合、ジョブスキルなしの組み合わせのみ作成します。
+	 * <li>デフォルトでは、有効です。
+	 * </ul>
+	 */
+	private boolean mJobSkillFlag = true;
+
 	protected long mCalcCount;
 	private long mMCount;
 	private long mWCount;
 	private long mMaCount1;
 	private long mMaCount2;
 
-	public MemoriaItemCombinations(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator) {
+	public MemoriaItemCombinations(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet,
+			FitnessCalculator fitnessCalculator) {
 		mMemoriaDataSet = memoriaDataSet;
 		mItemDataSet = itemDataSet;
 		mFitnessCalculator = fitnessCalculator;
+	}
+
+	public void setLeaderSkillFlag(boolean flag) {
+		mLeaderSkillFlag = flag;
+	}
+
+	public void setPremiumSkillFlag(boolean flag) {
+		mPremiumSkillFlag = flag;
+	}
+
+	public void setJobSkillFlag(boolean flag) {
+		mJobSkillFlag = flag;
 	}
 
 	/**
@@ -69,11 +110,13 @@ public class MemoriaItemCombinations {
 			setupParties(m1, null);
 
 			// リーダースキルあり
-			// TODO 同一リーダースキルを持ったメモリアが複数存在する場合を考慮していません。
-			for (MemoriaData m2 : memorias) {
-				LeaderSkill leaderSkill = LeaderSkillFactory.get(m2);
-				if (leaderSkill != null) {
-					setupParties(m1, leaderSkill);
+			if (mLeaderSkillFlag) {
+				// TODO 同一リーダースキルを持ったメモリアが複数存在する場合を考慮していません。
+				for (MemoriaData m2 : memorias) {
+					LeaderSkill leaderSkill = LeaderSkillFactory.get(m2);
+					if (leaderSkill != null) {
+						setupParties(m1, leaderSkill);
+					}
 				}
 			}
 
@@ -81,12 +124,9 @@ public class MemoriaItemCombinations {
 		}
 		mPartyArray = mPartySet.toArray(new FakeParty[] {});
 
-		mLogger.debug("メモリア数=" + memorias.size() + ",武器数="
-				+ mItemDataSet.getWeaponList().size() + ",魔法/アクセサリ数="
-				+ mItemDataSet.getMagicAccessoryList().size() + ",計算回数="
-				+ mCalcCount + "(M:" + mMCount + ",W:" + mWCount + ",A1:"
-				+ mMaCount1 + ",A2:" + mMaCount2 + "),結果要素数="
-				+ mPartyArray.length);
+		mLogger.debug("メモリア数=" + memorias.size() + ",武器数=" + mItemDataSet.getWeaponList().size() + ",魔法/アクセサリ数="
+				+ mItemDataSet.getMagicAccessoryList().size() + ",計算回数=" + mCalcCount + "(M:" + mMCount + ",W:"
+				+ mWCount + ",A1:" + mMaCount1 + ",A2:" + mMaCount2 + "),結果要素数=" + mPartyArray.length);
 	}
 
 	/**
@@ -113,12 +153,10 @@ public class MemoriaItemCombinations {
 		}
 		mPartyArray = mPartySet.toArray(new FakeParty[] {});
 
-		mLogger.debug("メモリア数=" + memorias.size() + ",武器数="
-				+ mItemDataSet.getWeaponList().size() + ",魔法/アクセサリ数="
-				+ mItemDataSet.getMagicAccessoryList().size() + ",LS="
-				+ leaderSkill + ",計算回数=" + mCalcCount + "(M:" + mMCount + ",W:"
-				+ mWCount + ",A1:" + mMaCount1 + ",A2:" + mMaCount2
-				+ "),結果要素数=" + mPartyArray.length);
+		mLogger.debug("メモリア数=" + memorias.size() + ",武器数=" + mItemDataSet.getWeaponList().size() + ",魔法/アクセサリ数="
+				+ mItemDataSet.getMagicAccessoryList().size() + ",LS=" + leaderSkill + ",計算回数=" + mCalcCount + "(M:"
+				+ mMCount + ",W:" + mWCount + ",A1:" + mMaCount1 + ",A2:" + mMaCount2 + "),結果要素数="
+				+ mPartyArray.length);
 	}
 
 	private void setupParties(MemoriaData memoriaData, LeaderSkill leaderSkill) {
@@ -127,20 +165,18 @@ public class MemoriaItemCombinations {
 			// ジョブスキルなし
 			setupParties(memoriaData, leaderSkill, false);
 		}
-		if (jobSkill != null) {
+		if (mJobSkillFlag && jobSkill != null) {
 			// ジョブスキルあり
 			setupParties(memoriaData, leaderSkill, true);
 		}
 	}
 
-	private void setupParties(MemoriaData memoriaData, LeaderSkill leaderSkill,
-			boolean jobSkillFlag) {
+	private void setupParties(MemoriaData memoriaData, LeaderSkill leaderSkill, boolean jobSkillFlag) {
 		List<ItemData> wlist = mItemDataSet.getWeaponList();
 		List<ItemData> malist = mItemDataSet.getMagicAccessoryList();
 
 		// 引数のリーダースキルが自分のリーダースキルか判定
-		boolean selfLeaderSkillFlag = isSelfLeaderSkill(memoriaData,
-				leaderSkill);
+		boolean selfLeaderSkillFlag = isSelfLeaderSkill(memoriaData, leaderSkill);
 
 		// 武器ループ
 		for (ItemData w : wlist) {
@@ -172,8 +208,7 @@ public class MemoriaItemCombinations {
 					}
 
 					// 適応度計算
-					partySet.add(calcParty(memoriaData, w, ma1, ma2,
-							leaderSkill, jobSkillFlag));
+					partySet.add(calcParty(memoriaData, w, ma1, ma2, leaderSkill, jobSkillFlag));
 
 					mMaCount2++;
 				}
@@ -190,21 +225,18 @@ public class MemoriaItemCombinations {
 		// TODO 武器も魔法/アクセサリと同様の考え方で、枝刈り可能。ただし、武器の数は少ないため優先度低。
 	}
 
-	private boolean isSelfLeaderSkill(MemoriaData memoriaData,
-			LeaderSkill leaderSkill) {
+	private boolean isSelfLeaderSkill(MemoriaData memoriaData, LeaderSkill leaderSkill) {
 		if (leaderSkill == null) {
 			return false;
 		}
-		return LeaderSkill.equals(LeaderSkillFactory.get(memoriaData),
-				leaderSkill);
+		return LeaderSkill.equals(LeaderSkillFactory.get(memoriaData), leaderSkill);
 	}
 
-	private FakeParty calcParty(MemoriaData memoriaData, ItemData weapon,
-			ItemData magicAccessory1, ItemData magicAccessory2,
-			LeaderSkill leaderSkill, boolean jobSkillFlag) {
-		Memoria memoria = new Memoria(memoriaData, weapon, magicAccessory1,
-				magicAccessory2);
+	private FakeParty calcParty(MemoriaData memoriaData, ItemData weapon, ItemData magicAccessory1,
+			ItemData magicAccessory2, LeaderSkill leaderSkill, boolean jobSkillFlag) {
+		Memoria memoria = new Memoria(memoriaData, weapon, magicAccessory1, magicAccessory2);
 		memoria.setJobSkillFlag(jobSkillFlag);
+		memoria.setPremiumSkillFlag(mPremiumSkillFlag);
 		FakeParty party = new FakeParty(memoria);
 		party.setLeaderSkill(leaderSkill);
 		party.calcFitness(mFitnessCalculator);

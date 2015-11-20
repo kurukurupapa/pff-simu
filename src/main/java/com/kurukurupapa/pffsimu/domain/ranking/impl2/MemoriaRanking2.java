@@ -28,20 +28,61 @@ public class MemoriaRanking2 {
 	private ItemDataSet mItemDataSet;
 	private FitnessCalculator mFitnessCalculator;
 	private Party mParty;
+
+	/**
+	 * リーダースキル考慮フラグ
+	 * <ul>
+	 * <li>有効の場合、リーダースキルなしを含め、各種リーダースキルありの組み合わせを作成します。
+	 * <li>無効の場合、リーダースキルなしの組み合わせのみ作成します。
+	 * <li>デフォルトでは、有効です。
+	 * </ul>
+	 */
+	private boolean mLeaderSkillFlag = true;
+
+	/**
+	 * プレミアムスキル考慮フラグ
+	 * <ul>
+	 * <li>有効の場合、プレミアムスキルなしを含め、各種プレミアムスキルありの組み合わせを作成します。
+	 * <li>無効の場合、プレミアムスキルなしの組み合わせのみ作成します。
+	 * <li>デフォルトでは、有効です。
+	 * </ul>
+	 */
+	private boolean mPremiumSkillFlag = true;
+
+	/**
+	 * ジョブスキル考慮フラグ
+	 * <ul>
+	 * <li>有効の場合、ジョブスキルなしを含め、各種ジョブスキルありの組み合わせを作成します。
+	 * <li>無効の場合、ジョブスキルなしの組み合わせのみ作成します。
+	 * <li>デフォルトでは、有効です。
+	 * </ul>
+	 */
+	private boolean mJobSkillFlag = true;
+
 	private List<MemoriaFitness> mFitnessList;
 
-	public void setParams(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator) {
+	public void setParams(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator) {
 		setParams(memoriaDataSet, itemDataSet, fitnessCalculator, new Party());
 	}
 
-	public void setParams(MemoriaDataSet memoriaDataSet,
-			ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
+	public void setParams(MemoriaDataSet memoriaDataSet, ItemDataSet itemDataSet, FitnessCalculator fitnessCalculator,
 			Party party) {
 		mMemoriaDataSet = memoriaDataSet;
 		mItemDataSet = itemDataSet;
 		mFitnessCalculator = fitnessCalculator;
 		mParty = party;
+	}
+
+	public void setLeaderSkillFlag(boolean flag) {
+		mLeaderSkillFlag = flag;
+	}
+
+	public void setPremiumSkillFlag(boolean flag) {
+		mPremiumSkillFlag = flag;
+	}
+
+	public void setJobSkillFlag(boolean flag) {
+		mJobSkillFlag = flag;
 	}
 
 	public void run() {
@@ -66,18 +107,25 @@ public class MemoriaRanking2 {
 			// リーダースキルの考慮あり
 			MemoriaDataSet tmpMemoriaDataSet = new MemoriaDataSet(itemDataSet);
 			tmpMemoriaDataSet.add(e);
-			MemoriaItemCombinations combinations = new MemoriaItemCombinations(
-					tmpMemoriaDataSet, itemDataSet, mFitnessCalculator);
+			MemoriaItemCombinations combinations = new MemoriaItemCombinations(tmpMemoriaDataSet, itemDataSet,
+					mFitnessCalculator);
+			combinations.setLeaderSkillFlag(mLeaderSkillFlag);
+			combinations.setPremiumSkillFlag(mPremiumSkillFlag);
+			combinations.setJobSkillFlag(mJobSkillFlag);
 			combinations.setup();
-			combinations.get(0);
-			set.add(combinations.get(0));
+
+			// 組み合わせができない場合もある
+			// ※当該メモリアに適用可能な武器がない場合など。
+
+			if (combinations.size() > 0) {
+				set.add(combinations.get(0));
+			}
 		}
 
 		// 型変換
 		mFitnessList = set.toList();
 
-		mLogger.info("メモリア数=" + mMemoriaDataSet.size() + ",結果件数="
-				+ mFitnessList.size());
+		mLogger.info("メモリア数=" + mMemoriaDataSet.size() + ",結果件数=" + mFitnessList.size());
 		mLogger.trace("End");
 	}
 

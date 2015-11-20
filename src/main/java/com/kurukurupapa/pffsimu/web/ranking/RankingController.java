@@ -36,6 +36,9 @@ public class RankingController {
 		logger.info("getMemoriaRankingForm start");
 
 		MemoriaRankingForm form = new MemoriaRankingForm();
+		form.setLeaderSkillFlag("1");
+		form.setPremiumSkillFlag("1");
+		form.setJobSkillFlag("1");
 		model.addAttribute("form", form);
 		model.addAttribute("battleTypes", BattleType.values());
 		model.addAttribute("attrs", Attr.getValuesWithoutNone());
@@ -45,16 +48,15 @@ public class RankingController {
 	}
 
 	@RequestMapping(value = "/memoria", params = { "btn" })
-	public String calcMemoriaRanking(
-			@Valid @ModelAttribute MemoriaRankingForm form,
-			BindingResult result, Model model) {
+	public String calcMemoriaRanking(@Valid @ModelAttribute MemoriaRankingForm form, BindingResult result,
+			Model model) {
 		logger.info("calcMemoriaRanking start");
 
 		if (result.hasErrors()) {
 			// 入力チェックエラー
 		} else {
 			// 入力チェックOK
-			memoriaRankingService.setup(form.getFitnessCalculator());
+			memoriaRankingService.setup(form);
 			memoriaRankingService.run();
 			model.addAttribute("ranking", memoriaRankingService.getRanking());
 		}
@@ -78,9 +80,7 @@ public class RankingController {
 	}
 
 	@RequestMapping(value = "/weapon", params = { "btn" })
-	public String calcWeaponRanking(
-			@Valid @ModelAttribute WeaponRankingForm form,
-			BindingResult result, Model model) {
+	public String calcWeaponRanking(@Valid @ModelAttribute WeaponRankingForm form, BindingResult result, Model model) {
 		logger.info("calcWeaponRanking start");
 
 		if (result.hasErrors()) {
@@ -109,9 +109,7 @@ public class RankingController {
 	}
 
 	@RequestMapping(value = "/magic", params = { "btn" })
-	public String calcMagicRanking(
-			@Valid @ModelAttribute MagicRankingForm form, BindingResult result,
-			Model model) {
+	public String calcMagicRanking(@Valid @ModelAttribute MagicRankingForm form, BindingResult result, Model model) {
 		logger.info("calcMagicRanking start");
 
 		if (result.hasErrors()) {
@@ -140,9 +138,8 @@ public class RankingController {
 	}
 
 	@RequestMapping(value = "/accessory", params = { "btn" })
-	public String calcAccessoryRanking(
-			@Valid @ModelAttribute AccessoryRankingForm form,
-			BindingResult result, Model model) {
+	public String calcAccessoryRanking(@Valid @ModelAttribute AccessoryRankingForm form, BindingResult result,
+			Model model) {
 		logger.info("calcAccessoryRanking start");
 
 		if (result.hasErrors()) {
@@ -151,8 +148,7 @@ public class RankingController {
 			// 入力チェックOK
 			accessoryRankingService.setup();
 			accessoryRankingService.run();
-			model.addAttribute("ranking",
-					accessoryRankingService.getFitnesses());
+			model.addAttribute("ranking", accessoryRankingService.getFitnesses());
 		}
 		model.addAttribute("form", form);
 

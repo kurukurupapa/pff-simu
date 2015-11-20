@@ -13,6 +13,7 @@ import com.kurukurupapa.pffsimu.domain.fitness.FitnessCalculator;
  * ランキング機能 メモリアランキングフォームクラス
  */
 public class MemoriaRankingForm {
+	private static final String TRUE_STR = "1";
 
 	/** バトル形式 */
 	@NotEmpty
@@ -27,6 +28,15 @@ public class MemoriaRankingForm {
 	/** 敵の物理防御 */
 	@Range(min = 0, max = 1000)
 	private int physicalResistance;
+
+	/** リーダースキル考慮 */
+	private String leaderSkillFlag;
+
+	/** プレミアムスキル考慮 */
+	private String premiumSkillFlag;
+
+	/** ジョブスキル考慮 */
+	private String jobSkillFlag;
 
 	/**
 	 * コンストラクタ
@@ -71,6 +81,42 @@ public class MemoriaRankingForm {
 		this.physicalResistance = physicalResistance;
 	}
 
+	public boolean isLeaderSkillFlag() {
+		return TRUE_STR.equals(leaderSkillFlag);
+	}
+
+	public String getLeaderSkillFlag() {
+		return leaderSkillFlag;
+	}
+
+	public void setLeaderSkillFlag(String leaderSkillFlag) {
+		this.leaderSkillFlag = leaderSkillFlag;
+	}
+
+	public boolean isPremiumSkillFlag() {
+		return TRUE_STR.equals(premiumSkillFlag);
+	}
+
+	public String getPremiumSkillFlag() {
+		return premiumSkillFlag;
+	}
+
+	public void setPremiumSkillFlag(String premiumSkillFlag) {
+		this.premiumSkillFlag = premiumSkillFlag;
+	}
+
+	public boolean isJobSkillFlag() {
+		return TRUE_STR.equals(jobSkillFlag);
+	}
+
+	public String getJobSkillFlag() {
+		return jobSkillFlag;
+	}
+
+	public void setJobSkillFlag(String jobSkillFlag) {
+		this.jobSkillFlag = jobSkillFlag;
+	}
+
 	public FitnessCalculator getFitnessCalculator() {
 		FitnessCalculator fitness = new FitnessCalculator();
 		fitness.setBattleType(getBattleTypeObj());
@@ -87,8 +133,7 @@ public class MemoriaRankingForm {
 
 	@Override
 	public String toString() {
-		return ReflectionToStringBuilder.toString(this,
-				ToStringStyle.SHORT_PREFIX_STYLE);
+		return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 }

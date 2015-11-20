@@ -24,19 +24,21 @@ public class Memoria implements Cloneable {
 	protected ItemData mWeaponData;
 	protected ItemData[] mAccessoryDataArr;
 	protected LeaderSkill mLeaderSkill;
+	protected boolean mPremiumSkillFlag;
 	protected boolean mJobSkillFlag;
 
 	public Memoria(MemoriaData memoriaData) {
 		mMemoriaData = memoriaData;
 		mAccessoryDataArr = new ItemData[] {};
+		// プレミアムスキルフラグは、既存処理との互換性のため、デフォルト有効とする。
+		mPremiumSkillFlag = true;
 		// ジョブスキルフラグは、既存処理との互換性のため、デフォルト有効とする。
 		if (memoriaData.getJobSkill() != null) {
 			mJobSkillFlag = true;
 		}
 	}
 
-	public Memoria(MemoriaData memoriaData, ItemData weapon,
-			ItemData magicAccessory1, ItemData magicAccessory2) {
+	public Memoria(MemoriaData memoriaData, ItemData weapon, ItemData magicAccessory1, ItemData magicAccessory2) {
 		this(memoriaData);
 		if (weapon != null) {
 			setWeapon(weapon);
@@ -54,6 +56,7 @@ public class Memoria implements Cloneable {
 		mWeaponData = memoria.mWeaponData;
 		mAccessoryDataArr = memoria.mAccessoryDataArr.clone();
 		mLeaderSkill = memoria.mLeaderSkill;
+		mPremiumSkillFlag = memoria.mPremiumSkillFlag;
 		mJobSkillFlag = memoria.mJobSkillFlag;
 	}
 
@@ -69,6 +72,9 @@ public class Memoria implements Cloneable {
 		}
 		if (mJobSkillFlag) {
 			sb.append("+" + getJobSkill());
+		}
+		if (mPremiumSkillFlag) {
+			sb.append("+" + getPremiumSkill());
 		}
 		if (mLeaderSkill != null) {
 			sb.append("+" + mLeaderSkill.getName());
@@ -129,8 +135,7 @@ public class Memoria implements Cloneable {
 	public void setWeapon(ItemData weaponData) {
 		Validate.notNull(weaponData);
 		if (!validWeaponData(weaponData)) {
-			throw new RuntimeException("メモリア[" + getName() + "]に武器["
-					+ weaponData.getName() + "]を設定できません。");
+			throw new RuntimeException("メモリア[" + getName() + "]に武器[" + weaponData.getName() + "]を設定できません。");
 		}
 		mWeaponData = weaponData;
 	}
@@ -158,12 +163,10 @@ public class Memoria implements Cloneable {
 	public void addAccessory(ItemData accessoryData) {
 		Validate.notNull(accessoryData);
 		if (!validAccessoryData(accessoryData)) {
-			throw new RuntimeException("メモリア[" + getName() + "]にアクセサリ["
-					+ accessoryData.getName() + "]を設定できません。");
+			throw new RuntimeException("メモリア[" + getName() + "]にアクセサリ[" + accessoryData.getName() + "]を設定できません。");
 		}
 		if (mAccessoryDataArr.length >= MAX_ACCESSORIES) {
-			throw new RuntimeException("メモリア[" + getName() + "]にアクセサリ["
-					+ accessoryData.getName() + "]を設定できません。");
+			throw new RuntimeException("メモリア[" + getName() + "]にアクセサリ[" + accessoryData.getName() + "]を設定できません。");
 		}
 		mAccessoryDataArr = ArrayUtils.add(mAccessoryDataArr, accessoryData);
 	}
@@ -190,6 +193,17 @@ public class Memoria implements Cloneable {
 
 	public MemoriaData getMemoriaData() {
 		return mMemoriaData;
+	}
+
+	public PremiumSkill getPremiumSkill() {
+		if (mPremiumSkillFlag) {
+			return mMemoriaData.getPremiumSkill();
+		}
+		return null;
+	}
+
+	public void setPremiumSkillFlag(boolean flag) {
+		mPremiumSkillFlag = flag;
 	}
 
 	public JobSkill getJobSkill() {
@@ -299,8 +313,7 @@ public class Memoria implements Cloneable {
 	 * @return 与ダメージ
 	 */
 	public int getAttackDamage(int turn, int charge) {
-		return getAttackDamage(turn, charge, new ArrayList<Attr>(),
-				new ArrayList<Attr>(), 0, 0);
+		return getAttackDamage(turn, charge, new ArrayList<Attr>(), new ArrayList<Attr>(), 0, 0);
 	}
 
 	/**
@@ -308,8 +321,7 @@ public class Memoria implements Cloneable {
 	 *
 	 * @return 与ダメージ
 	 */
-	public int getAttackDamage(int turn, int charge, List<Attr> weakList,
-			List<Attr> resistanceList) {
+	public int getAttackDamage(int turn, int charge, List<Attr> weakList, List<Attr> resistanceList) {
 		return getAttackDamage(turn, charge, weakList, resistanceList, 0, 0);
 	}
 
@@ -328,15 +340,13 @@ public class Memoria implements Cloneable {
 	 *            敵の物理防御（デフォルト0）
 	 * @return 与ダメージ
 	 */
-	public int getAttackDamage(int turn, int charge, List<Attr> weakList,
-			List<Attr> resistanceList, int physicalResistance,
-			int magicResistance) {
+	public int getAttackDamage(int turn, int charge, List<Attr> weakList, List<Attr> resistanceList,
+			int physicalResistance, int magicResistance) {
 		float damage = 0f;
 		float tmp = 0f;
 
 		// 全て物理攻撃の場合
-		float physical = getPhysicalAttackDamage(weakList, resistanceList,
-				physicalResistance);
+		float physical = getPhysicalAttackDamage(weakList, resistanceList, physicalResistance);
 		tmp = physical * turn;
 		damage = Math.max(damage, tmp);
 
@@ -344,8 +354,7 @@ public class Memoria implements Cloneable {
 		for (ItemData e : mAccessoryDataArr) {
 			BlackMagicItemDataEx ex = e.getBlackMagicEx();
 			if (ex != null) {
-				float black = getAttackDamageForBlackMagic(e, weakList,
-						resistanceList, magicResistance);
+				float black = getAttackDamageForBlackMagic(e, weakList, resistanceList, magicResistance);
 				float magicTimes = (float) charge / ex.getMagicCharge();
 				float physicalTimes = turn - magicTimes;
 				tmp = black * magicTimes + physical * physicalTimes;
@@ -357,8 +366,7 @@ public class Memoria implements Cloneable {
 		for (ItemData e : mAccessoryDataArr) {
 			SummonMagicItemDataEx ex = e.getSummonMagicEx();
 			if (ex != null) {
-				float summon = getAttackDamageForSummonMagic(e, weakList,
-						resistanceList);
+				float summon = getAttackDamageForSummonMagic(e, weakList, resistanceList);
 				float magicTimes = (float) charge / ex.getMagicCharge();
 				float physicalTimes = turn - magicTimes;
 				tmp = summon * magicTimes + physical * physicalTimes;
@@ -372,8 +380,7 @@ public class Memoria implements Cloneable {
 		// TODO ひとまず、ターン数やブレイクに関わらず、1回発動することとします。
 		// TODO 1ターンとして数えます。
 		if (mJobSkillFlag && getMemoriaData().getJobSkill().isFurea()) {
-			damage += getMemoriaData().getJobSkill().getFureaAttackDamage(
-					getIntelligence(),
+			damage += getMemoriaData().getJobSkill().getFureaAttackDamage(getIntelligence(),
 					getMemoriaData().getMagicAttack(MagicType.BLACK));
 			// turn--;
 		}
@@ -396,7 +403,7 @@ public class Memoria implements Cloneable {
 		}
 
 		// プレミアムスキル
-		if (getMemoriaData().getPremiumSkill().isExist()) {
+		if (mPremiumSkillFlag && getMemoriaData().getPremiumSkill().isExist()) {
 			damage += getMemoriaData().getPremiumSkill().getAttackDamage(turn);
 		}
 
@@ -414,20 +421,17 @@ public class Memoria implements Cloneable {
 	 *            敵の物理防御
 	 * @return 物理与ダメージ
 	 */
-	protected float getPhysicalAttackDamage(List<Attr> weakList,
-			List<Attr> resistanceList, int physicalResistance) {
+	protected float getPhysicalAttackDamage(List<Attr> weakList, List<Attr> resistanceList, int physicalResistance) {
 		float damage = 0f;
 
 		// クリティカル攻撃発動率＝幸運÷500
 		// クリティカル発動時は、物理与ダメージ2倍。
-		float criticalRate = Math
-				.min(getMemoriaData().getLuck() / 500.0f, 1.0f);
+		float criticalRate = Math.min(getMemoriaData().getLuck() / 500.0f, 1.0f);
 
 		// 物理与ダメージ＝(力×攻撃力補正－物理防御力)×倍率
 		// http://wikiwiki.jp/pictlogicaff/?%C0%EF%C6%AE%BE%F0%CA%F3#measure
 		// ※力メメントで物理倍率 1.20を前提とします。
-		damage = (getPower() * getMemoriaData().getPhysicalAttack()
-				* (1.0f + criticalRate) - physicalResistance)
+		damage = (getPower() * getMemoriaData().getPhysicalAttack() * (1.0f + criticalRate) - physicalResistance)
 				* Mement.CHIKARA_PHYSICAL_RATE;
 
 		// ジョブスキル
@@ -451,26 +455,23 @@ public class Memoria implements Cloneable {
 		return damage;
 	}
 
-	protected float getAttackDamageForBlackMagic(ItemData blackMagic,
-			List<Attr> weakList, List<Attr> resistanceList, int magicResistance) {
+	protected float getAttackDamageForBlackMagic(ItemData blackMagic, List<Attr> weakList, List<Attr> resistanceList,
+			int magicResistance) {
 		if (blackMagic == null) {
 			return 0;
 		}
 		return blackMagic.getBlackMagicEx().getAttackDamage(getIntelligence(),
-				getMemoriaData().getMagicAttack(MagicType.BLACK),
-				magicResistance)
+				getMemoriaData().getMagicAttack(MagicType.BLACK), magicResistance)
 				* getAttrRateForBlackMagic(blackMagic, weakList, resistanceList);
 	}
 
-	protected float getAttackDamageForSummonMagic(ItemData summonMagic,
-			List<Attr> weakList, List<Attr> resistanceList) {
+	protected float getAttackDamageForSummonMagic(ItemData summonMagic, List<Attr> weakList,
+			List<Attr> resistanceList) {
 		if (summonMagic == null) {
 			return 0;
 		}
-		return summonMagic.getSummonMagicEx().getAttackDamage(
-				getMemoriaData().getMagicAttack(MagicType.SUMMON))
-				* getAttrRateForSummonMagic(summonMagic, weakList,
-						resistanceList);
+		return summonMagic.getSummonMagicEx().getAttackDamage(getMemoriaData().getMagicAttack(MagicType.SUMMON))
+				* getAttrRateForSummonMagic(summonMagic, weakList, resistanceList);
 	}
 
 	/**
@@ -480,10 +481,8 @@ public class Memoria implements Cloneable {
 	 * @param resistanceList
 	 * @return
 	 */
-	protected float getAttrRateForPhysical(List<Attr> weakList,
-			List<Attr> resistanceList) {
-		return getWeakAttrRateForPhysical(weakList)
-				* getResistanceAttrRateForPhysical(resistanceList);
+	protected float getAttrRateForPhysical(List<Attr> weakList, List<Attr> resistanceList) {
+		return getWeakAttrRateForPhysical(weakList) * getResistanceAttrRateForPhysical(resistanceList);
 	}
 
 	/**
@@ -523,8 +522,7 @@ public class Memoria implements Cloneable {
 	protected float getResistanceAttrRateForPhysical(List<Attr> resistanceList) {
 		float resistance = 1.0f;
 		if (mWeaponData != null) {
-			resistance = mWeaponData.getWeaponEx().getResistanceAttrRate(
-					resistanceList);
+			resistance = mWeaponData.getWeaponEx().getResistanceAttrRate(resistanceList);
 		}
 		return resistance;
 	}
@@ -536,8 +534,7 @@ public class Memoria implements Cloneable {
 	 * @param resistanceList
 	 * @return
 	 */
-	protected float getAttrRateForBlackMagic(ItemData blackMagic,
-			List<Attr> weakList, List<Attr> resistanceList) {
+	protected float getAttrRateForBlackMagic(ItemData blackMagic, List<Attr> weakList, List<Attr> resistanceList) {
 		return getWeakAttrRateForBlackMagic(blackMagic, weakList)
 				* getResistanceAttrRateForBlackMagic(blackMagic, resistanceList);
 	}
@@ -548,8 +545,7 @@ public class Memoria implements Cloneable {
 	 * @param weakList
 	 * @return
 	 */
-	protected float getWeakAttrRateForBlackMagic(ItemData blackMagic,
-			List<Attr> weakList) {
+	protected float getWeakAttrRateForBlackMagic(ItemData blackMagic, List<Attr> weakList) {
 		float weak = 1.0f;
 
 		// 黒魔法の敵弱点係数を取得します。
@@ -575,10 +571,8 @@ public class Memoria implements Cloneable {
 	 * @param resistanceList
 	 * @return
 	 */
-	protected float getResistanceAttrRateForBlackMagic(ItemData blackMagic,
-			List<Attr> resistanceList) {
-		return blackMagic.getBlackMagicEx().getResistanceAttrRate(
-				resistanceList);
+	protected float getResistanceAttrRateForBlackMagic(ItemData blackMagic, List<Attr> resistanceList) {
+		return blackMagic.getBlackMagicEx().getResistanceAttrRate(resistanceList);
 	}
 
 	/**
@@ -588,11 +582,9 @@ public class Memoria implements Cloneable {
 	 * @param resistanceList
 	 * @return
 	 */
-	protected float getAttrRateForSummonMagic(ItemData summonMagic,
-			List<Attr> weakList, List<Attr> resistanceList) {
+	protected float getAttrRateForSummonMagic(ItemData summonMagic, List<Attr> weakList, List<Attr> resistanceList) {
 		return getWeakAttrRateForSummonMagic(summonMagic, weakList)
-				* getResistanceAttrRateForSummonMagic(summonMagic,
-						resistanceList);
+				* getResistanceAttrRateForSummonMagic(summonMagic, resistanceList);
 	}
 
 	/**
@@ -601,8 +593,7 @@ public class Memoria implements Cloneable {
 	 * @param weakList
 	 * @return
 	 */
-	protected float getWeakAttrRateForSummonMagic(ItemData summonMagic,
-			List<Attr> weakList) {
+	protected float getWeakAttrRateForSummonMagic(ItemData summonMagic, List<Attr> weakList) {
 		float weak = 1.0f;
 		// 召喚魔法の敵弱点係数を取得します。
 		weak += summonMagic.getSummonMagicEx().getWeakAttrValue(weakList);
@@ -615,10 +606,8 @@ public class Memoria implements Cloneable {
 	 * @param resistanceList
 	 * @return
 	 */
-	protected float getResistanceAttrRateForSummonMagic(ItemData summonMagic,
-			List<Attr> resistanceList) {
-		return summonMagic.getSummonMagicEx().getResistanceAttrRate(
-				resistanceList);
+	protected float getResistanceAttrRateForSummonMagic(ItemData summonMagic, List<Attr> resistanceList) {
+		return summonMagic.getSummonMagicEx().getResistanceAttrRate(resistanceList);
 	}
 
 	/**
@@ -683,14 +672,11 @@ public class Memoria implements Cloneable {
 		for (ItemData e : mAccessoryDataArr) {
 			WhiteMagicItemDataEx ex = e.getWhiteMagicEx();
 			if (ex != null) {
-				float recovery = ex.getRecovery(getIntelligence(),
-						getMemoriaData().getMagicAttack(MagicType.WHITE));
+				float recovery = ex.getRecovery(getIntelligence(), getMemoriaData().getMagicAttack(MagicType.WHITE));
 
 				// ジョブスキル
-				if (mJobSkillFlag
-						&& getMemoriaData().getJobSkill().isRecoveryMagic()) {
-					recovery = getMemoriaData().getJobSkill()
-							.calcRecoveryMagicDamage(recovery);
+				if (mJobSkillFlag && getMemoriaData().getJobSkill().isRecoveryMagic()) {
+					recovery = getMemoriaData().getJobSkill().calcRecoveryMagicDamage(recovery);
 				}
 
 				float magicTimes = (float) charge / ex.getMagicCharge();
@@ -739,8 +725,7 @@ public class Memoria implements Cloneable {
 	 */
 	protected float getRementTurn(int chikaraTurn, int chieTurn) {
 		// 1ターンあたりのリメントゲージ上昇率（%）
-		float rementRate = (Mement.CHIKARA_REMENT_RATE * chikaraTurn + Mement.CHIE_REMENT_RATE
-				* chieTurn)
+		float rementRate = (Mement.CHIKARA_REMENT_RATE * chikaraTurn + Mement.CHIE_REMENT_RATE * chieTurn)
 				/ (chikaraTurn + chieTurn);
 		// 100%までのターン数
 		return (float) Math.ceil(100.0f / rementRate);
