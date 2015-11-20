@@ -30,7 +30,7 @@ public class PartyFinderService {
 	public void run() {
 		// データ読み込み
 		itemDataSet = new ItemDataSet();
-		itemDataSet.readUserFile();
+		itemDataSet.readUserFile(true);
 		memoriaDataSet = new MemoriaDataSet(itemDataSet);
 		memoriaDataSet.readUserFile();
 

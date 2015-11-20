@@ -26,7 +26,7 @@ public class MagicRankingService {
 	public MagicRankingService() {
 		// データ読み込み
 		itemDataSet = new ItemDataSet();
-		itemDataSet.readUserFile();
+		itemDataSet.readUserFile(true);
 		memoriaDataSet = new MemoriaDataSet(itemDataSet);
 		memoriaDataSet.readUserFile();
 	}
