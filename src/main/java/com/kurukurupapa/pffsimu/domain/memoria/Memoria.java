@@ -1,3 +1,4 @@
+
 package com.kurukurupapa.pffsimu.domain.memoria;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class Memoria implements Cloneable {
 		if (mJobSkillFlag) {
 			sb.append("+" + getJobSkill());
 		}
-		if (mPremiumSkillFlag) {
+		if (mPremiumSkillFlag && getPremiumSkill().isExist()) {
 			sb.append("+" + getPremiumSkill());
 		}
 		if (mLeaderSkill != null) {
@@ -263,6 +264,12 @@ public class Memoria implements Cloneable {
 		for (ItemData e : getAllItemData()) {
 			value += e.getPower(getMemoriaData());
 		}
+
+		// ジョブスキル
+		if (mJobSkillFlag) {
+			value = (int) getJobSkill().calcPower(value);
+		}
+
 		return value;
 	}
 
@@ -375,31 +382,30 @@ public class Memoria implements Cloneable {
 		}
 
 		// ジョブスキル
-		// フレア
-		// ブレイクゲージ200%以上の時に知恵メメントで攻撃すると初回のみフレアを発動
 		// TODO ひとまず、ターン数やブレイクに関わらず、1回発動することとします。
 		// TODO 1ターンとして数えます。
-		if (mJobSkillFlag && getMemoriaData().getJobSkill().isFurea()) {
-			damage += getMemoriaData().getJobSkill().getFureaAttackDamage(getIntelligence(),
-					getMemoriaData().getMagicAttack(MagicType.BLACK));
-			// turn--;
-		}
-		// ホーリー
-		// ブレイクゲージ200%以上の時に祈りメメントで攻撃すると初回のみホーリーを発動
-		// TODO ひとまず、ターン数やブレイクに関わらず、1回発動することとします。
-		// TODO 1ターンとして数えます。
-		if (mJobSkillFlag && getJobSkill().isHoly()) {
-			float holy = getJobSkill().getHolyAttackDamage(getIntelligence(),
-					getMemoriaData().getMagicAttack(MagicType.WHITE));
-
-			// リーダースキル 白魔法効果
-			// ※回復魔法に効果あり
-			if (mLeaderSkill != null) {
-				holy = mLeaderSkill.calcWhiteMagic(holy);
+		if (mJobSkillFlag && getJobSkill().isBreakOne()) {
+			if (getJobSkill().isPhysicalAttack()) {
+				damage += getJobSkill().calcPhysicalAttackDamage(physical);
 			}
 
-			damage += holy;
-			// turn--;
+			if (getJobSkill().isBlackMagicAttack()) {
+				damage += getJobSkill().getBlackMagicAttackDamage(getIntelligence(),
+						getMemoriaData().getMagicAttack(MagicType.BLACK));
+			}
+
+			if (getJobSkill().isWhiteMagicAttack()) {
+				float holy = getJobSkill().getWhiteMagicAttackDamage(getIntelligence(),
+						getMemoriaData().getMagicAttack(MagicType.WHITE));
+
+				// リーダースキル 白魔法効果
+				// ※回復魔法に効果あり
+				if (mLeaderSkill != null) {
+					holy = mLeaderSkill.calcWhiteMagic(holy);
+				}
+
+				damage += holy;
+			}
 		}
 
 		// プレミアムスキル
@@ -622,6 +628,14 @@ public class Memoria implements Cloneable {
 	public int getPhysicalDefenceDamage(int turn, int enemyPower) {
 		// 回避率はおよそ「素早さ÷500」
 		float kaihiRate = Math.min(getSpeed() / 500f, 1f);
+
+		// ジョブスキル
+		if (mJobSkillFlag) {
+			kaihiRate = getJobSkill().calcKaihiRate(kaihiRate);
+		}
+
+		Validate.isTrue(kaihiRate <= 1f);
+
 		float kaihiTurn = kaihiRate * turn;
 		float kaihiDamage = enemyPower * kaihiTurn;
 
@@ -629,7 +643,12 @@ public class Memoria implements Cloneable {
 		// 力＝モンスターの力
 		// 物理防御力＝メモリアの物理防御力＋装備アイテムの物理防御力＋魔法効果
 		// 倍率＝メメント効果×ジョブスキル効果
-		// →防御できる物理ダメージは、物理防御力（物理防御特性）の値と考える。
+		// →防御できる物理ダメージは、
+		// (力)×倍率 － (力－物理防御力)×倍率＝物理防御力×倍率
+		// と考える。
+		// ここで、倍率は、守りメメントのとき0.4、他メメントのとき1.0。
+		// 物理防御の効果を最大限する値を計算したいため、守り以外のメメントで計算する。
+		// 最終的に、防御できる物理ダメージは、物理防御力（物理防御特性）の値と考える。
 		float defenceTurn = turn - kaihiTurn;
 		float defenceDamage = getPhysicalDefence() * defenceTurn;
 
@@ -675,8 +694,8 @@ public class Memoria implements Cloneable {
 				float recovery = ex.getRecovery(getIntelligence(), getMemoriaData().getMagicAttack(MagicType.WHITE));
 
 				// ジョブスキル
-				if (mJobSkillFlag && getMemoriaData().getJobSkill().isRecoveryMagic()) {
-					recovery = getMemoriaData().getJobSkill().calcRecoveryMagicDamage(recovery);
+				if (mJobSkillFlag && getJobSkill().isRecoveryMagic()) {
+					recovery = getJobSkill().calcRecoveryMagicDamage(recovery);
 				}
 
 				float magicTimes = (float) charge / ex.getMagicCharge();

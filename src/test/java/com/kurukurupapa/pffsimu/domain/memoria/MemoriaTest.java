@@ -109,6 +109,7 @@ public class MemoriaTest extends BaseTestCase {
 		mSummonIceBoost2Memoria.setWeapon(rodIce);
 	}
 
+	@Override
 	@Before
 	public void setUp() throws Exception {
 		super.setUp();
@@ -147,7 +148,7 @@ public class MemoriaTest extends BaseTestCase {
 		float physicalAttack = 1.0f;
 		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, power, 1, 1,
 				luck, physicalAttack, 1.0f, 1.0f, 1.0f,
-				WeaponTypeFactory.create("剣"), new JobSkill(""),
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""),
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
@@ -168,7 +169,7 @@ public class MemoriaTest extends BaseTestCase {
 		float physicalAttack = 1.0f;
 		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, power, 1, 1,
 				luck, physicalAttack, 1.0f, 1.0f, 1.0f,
-				WeaponTypeFactory.create("剣"), new JobSkill(""),
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""),
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
@@ -188,7 +189,7 @@ public class MemoriaTest extends BaseTestCase {
 		float physicalAttack = 1.0f;
 		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, power, 1, 1,
 				luck, physicalAttack, 1.0f, 1.0f, 1.0f,
-				WeaponTypeFactory.create("剣"), new JobSkill(""),
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""),
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
@@ -209,7 +210,7 @@ public class MemoriaTest extends BaseTestCase {
 		float physicalAttack = 1.0f;
 		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, power, 1, 1,
 				luck, physicalAttack, 1.0f, 1.0f, 1.0f,
-				WeaponTypeFactory.create("剣"), new JobSkill(""),
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""),
 				new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
@@ -653,9 +654,8 @@ public class MemoriaTest extends BaseTestCase {
 	public void testGetPhysicalDefenceDamage_物理防御力0素早さ0() {
 		// 準備
 		int speed = 0;
-		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1,
-				1f, 1f, 1f, 1f, WeaponTypeFactory.create("剣"),
-				new JobSkill(""), new PremiumSkill(""), mItemDataSet));
+		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1, 1f, 1f, 1f, 1f,
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""), new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
 		int actual = sut.getPhysicalDefenceDamage(TURN, 100);
@@ -668,9 +668,8 @@ public class MemoriaTest extends BaseTestCase {
 	public void testGetPhysicalDefenceDamage_物理防御特性40() {
 		// 準備
 		int speed = 0;
-		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1,
-				1f, 1f, 1f, 1f, WeaponTypeFactory.create("剣"),
-				new JobSkill(""), new PremiumSkill(""), mItemDataSet));
+		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1, 1f, 1f, 1f, 1f,
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""), new PremiumSkill(""), mItemDataSet));
 		sut.addAccessory(mItemDataSet.find("エスカッション(レア4)"));
 
 		// テスト実行
@@ -684,9 +683,8 @@ public class MemoriaTest extends BaseTestCase {
 	public void testGetPhysicalDefenceDamage_素早さ250() {
 		// 準備
 		int speed = 250;
-		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1,
-				1f, 1f, 1f, 1f, WeaponTypeFactory.create("剣"),
-				new JobSkill(""), new PremiumSkill(""), mItemDataSet));
+		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1, 1f, 1f, 1f, 1f,
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""), new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
 		int actual = sut.getPhysicalDefenceDamage(TURN, 100);
@@ -699,9 +697,8 @@ public class MemoriaTest extends BaseTestCase {
 	public void testGetPhysicalDefenceDamage_素早さ500() {
 		// 準備
 		int speed = 500;
-		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1,
-				1f, 1f, 1f, 1f, WeaponTypeFactory.create("剣"),
-				new JobSkill(""), new PremiumSkill(""), mItemDataSet));
+		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1, 1f, 1f, 1f, 1f,
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""), new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
 		int actual = sut.getPhysicalDefenceDamage(TURN, 100);
@@ -714,9 +711,8 @@ public class MemoriaTest extends BaseTestCase {
 	public void testGetPhysicalDefenceDamage_素早さ1000() {
 		// 準備
 		int speed = 1000;
-		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1,
-				1f, 1f, 1f, 1f, WeaponTypeFactory.create("剣"),
-				new JobSkill(""), new PremiumSkill(""), mItemDataSet));
+		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1, 1f, 1f, 1f, 1f,
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""), new PremiumSkill(""), mItemDataSet));
 
 		// テスト実行
 		int actual = sut.getPhysicalDefenceDamage(TURN, 100);
@@ -729,9 +725,8 @@ public class MemoriaTest extends BaseTestCase {
 	public void testGetPhysicalDefenceDamage_アクセサリ素早さアップ() {
 		// 準備
 		int speed = 0;
-		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1,
-				1f, 1f, 1f, 1f, WeaponTypeFactory.create("剣"),
-				new JobSkill(""), new PremiumSkill(""), mItemDataSet));
+		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1, 1f, 1f, 1f, 1f,
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""), new PremiumSkill(""), mItemDataSet));
 		sut.addAccessory(mItemDataSet.find("ルフェインブーツ"));
 
 		// テスト実行
@@ -745,9 +740,8 @@ public class MemoriaTest extends BaseTestCase {
 	public void testGetPhysicalDefenceDamage_物理防御特性40素早さ250() {
 		// 準備
 		int speed = 250;
-		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1,
-				1f, 1f, 1f, 1f, WeaponTypeFactory.create("剣"),
-				new JobSkill(""), new PremiumSkill(""), mItemDataSet));
+		Memoria sut = new Memoria(new MemoriaData("メモリア", 1000, 1, speed, 1, 1, 1f, 1f, 1f, 1f,
+				WeaponTypeFactory.create("剣"), new JobSkillFactory().get(""), new PremiumSkill(""), mItemDataSet));
 		sut.addAccessory(mItemDataSet.find("エスカッション(レア4)"));
 
 		// テスト実行

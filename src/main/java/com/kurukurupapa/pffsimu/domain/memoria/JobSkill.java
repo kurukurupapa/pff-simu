@@ -1,17 +1,17 @@
 package com.kurukurupapa.pffsimu.domain.memoria;
 
-import com.kurukurupapa.pffsimu.domain.Mement;
 import com.kurukurupapa.pffsimu.domain.party.Party;
 
 /**
  * ジョブスキルクラス
  */
-public class JobSkill {
+public abstract class JobSkill {
 	private String mName;
+	private JobSkillCondition mCondition;
 
 	/**
 	 * 引数のジョブスキルと当オブジェクトが排他的な発動条件であるか判定する。
-	 * 
+	 *
 	 * @param arg1
 	 *            ジョブスキル
 	 * @param arg2
@@ -27,7 +27,7 @@ public class JobSkill {
 
 	/**
 	 * 引数のパーティに含まれるジョブスキルが妥当であるか判定します。 パーティにジョブスキルが含まれていない場合も妥当とします。
-	 * 
+	 *
 	 * @param party
 	 *            パーティ
 	 * @return 妥当な場合true
@@ -49,7 +49,7 @@ public class JobSkill {
 	/**
 	 * 引数のパーティに対して、引数のメモリアのジョブスキルが妥当であるか判定します。
 	 * パーティやメモリアにジョブスキルが含まれていない場合も妥当とします。
-	 * 
+	 *
 	 * @param party
 	 *            パーティ
 	 * @param memoria
@@ -66,8 +66,9 @@ public class JobSkill {
 		return true;
 	}
 
-	public JobSkill(String name) {
+	protected JobSkill(String name, JobSkillCondition condition) {
 		mName = name.trim();
+		mCondition = condition;
 	}
 
 	@Override
@@ -84,18 +85,22 @@ public class JobSkill {
 		return mName;
 	}
 
+	protected String getName() {
+		return mName;
+	}
+
 	/**
 	 * 排他的な発動条件であるか判定する。
-	 * 
+	 *
 	 * @return 排他的な場合true
 	 */
 	public boolean isExclusiveCondition() {
-		return isFirstAttackCondition() || isLastAttackCondition();
+		return mCondition.isExclusiveCondition();
 	}
 
 	/**
 	 * 引数のジョブスキルと当オブジェクトが排他的な発動条件であるか判定する。
-	 * 
+	 *
 	 * @param other
 	 *            ジョブスキル
 	 * @return 排他的な場合true
@@ -114,13 +119,11 @@ public class JobSkill {
 	}
 
 	public boolean isFirstAttackCondition() {
-		return "居合い抜き".equals(mName) || "分身".equals(mName)
-				|| "乱れ撃ち".equals(mName) || "スロット".equals(mName);
+		return mCondition.isFirstAttack();
 	}
 
 	public boolean isLastAttackCondition() {
-		// TODO 未実装
-		return false;
+		return mCondition.isLastAttack();
 	}
 
 	public boolean isFurea() {
@@ -133,73 +136,84 @@ public class JobSkill {
 
 	/**
 	 * 物理攻撃に効果があるか判定します。
-	 * 
+	 *
 	 * @return 効果がある場合true
 	 */
 	public boolean isPhysicalAttack() {
-		return "居合い抜き".equals(mName) || "乱れ撃ち".equals(mName)
-				|| "ジャンプ".equals(mName);
+		return false;
 	}
 
 	/**
 	 * 物理攻撃に対する効果を適用します。
-	 * 
+	 *
 	 * @param damage
 	 *            ジョブスキル適用前の物理攻撃値
 	 * @return 物理攻撃値
 	 */
 	public float calcPhysicalAttackDamage(float physicalDamage) {
-		float damage = physicalDamage;
-		if (mName.equals("居合い抜き")) {
-			// 居合い抜き
-			// 自身が一番初めの攻撃を行うと与ダメージ50%アップの居合い抜きを発動
-			damage *= 1.5f;
-		} else if (mName.equals("乱れ撃ち")) {
-			// 乱れ撃ち
-			// 自身が一番初めの攻撃を行うと2～4回の連続攻撃を発動。1回あたりの与ダメージは通常の60%。
-			// ※平均3回攻撃と考えます。
-			damage *= 3 * 0.60f;
-		} else if (mName.equals("ジャンプ")) {
-			// ジャンプ
-			// ブレイク時に攻撃すると与ダメージ20%アップのジャンプを発動
-			// TODO とりあえず、1バトルの半分のターンをブレイク中と考える。
-			damage *= 1.1f;
-		}
-		return damage;
+		return physicalDamage;
 	}
 
 	/**
 	 * 回復魔法に効果があるか判定します。
-	 * 
+	 *
 	 * @return 効果がある場合true
 	 */
 	public boolean isRecoveryMagic() {
-		return "オーラ".equals(mName);
+		return false;
 	}
 
 	/**
 	 * 回復魔法に対する効果を適用します。
-	 * 
+	 *
 	 * @param recoveryDamage
 	 *            ジョブスキル適用前の回復値
 	 * @return 回復値
 	 */
 	public float calcRecoveryMagicDamage(float recoveryDamage) {
-		if (mName.equals("オーラ")) {
-			// オーラ
-			// 自身の白魔法アビリティ効果が上昇
-			// 回復量1.8倍 他の白魔法にも効果あり
-			return recoveryDamage * 1.8f;
-		}
 		return recoveryDamage;
 	}
 
-	public float getFureaAttackDamage(int intelligence, float magicAttack) {
-		return (intelligence + 100f) * magicAttack * Mement.CHIE_BLACK_RATE;
+	public boolean isBlackMagicAttack() {
+		return false;
 	}
 
-	public float getHolyAttackDamage(int intelligence, float magicAttack) {
-		return (intelligence + 100f) * magicAttack * Mement.INORI_WHITE_RATE;
+	public boolean isWhiteMagicAttack() {
+		return false;
+	}
+
+	public float getBlackMagicAttackDamage(int intelligence, float magicAttack) {
+		return 0;
+	}
+
+	public float getWhiteMagicAttackDamage(int intelligence, float magicAttack) {
+		return 0;
+	}
+
+	/**
+	 * 回避率を適用します。
+	 *
+	 * @param kaihiRate
+	 *            ジョブスキル適用前の回避率
+	 * @return
+	 */
+	public float calcKaihiRate(float kaihiRate) {
+		return kaihiRate;
+	}
+
+	/**
+	 * 力を適用します。
+	 *
+	 * @param value
+	 *            ジョブスキル適用前の力
+	 * @return
+	 */
+	public float calcPower(int value) {
+		return value;
+	}
+
+	public boolean isBreakOne() {
+		return mCondition.isBreakOne();
 	}
 
 }

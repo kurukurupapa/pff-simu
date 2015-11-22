@@ -146,7 +146,7 @@ public class MemoriaDataSet implements Iterable<MemoriaData> {
 		if (StringUtils.isEmpty(column)) {
 			return null;
 		} else {
-			return new JobSkill(column.trim());
+			return new JobSkillFactory().get(column.trim());
 		}
 	}
 
